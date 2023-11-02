@@ -1,5 +1,6 @@
 package com.rtb.rtb.view.components
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -27,8 +28,9 @@ class ButtonFragment : Fragment() {
         return binding.root
     }
 
-    fun setupButton(text: String): Button {
+    fun setupButton(text: String, color: Int = -474364): Button {
         binding.btn.text = text
+        binding.btn.setBackgroundColor(color)
         return binding.btn
     }
 

@@ -2,6 +2,7 @@ package com.rtb.rtb.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import com.rtb.rtb.R
 import com.rtb.rtb.databinding.ActivityCreateProjectBinding
@@ -19,7 +20,8 @@ class CreateProject : AppCompatActivity() {
         setContentView(R.layout.activity_create_project)
 
         val projectName = supportFragmentManager.findFragmentById(R.id.projectName) as InputFragment
-        val description = supportFragmentManager.findFragmentById(R.id.projectDescription) as InputFragment
+        val description =
+            supportFragmentManager.findFragmentById(R.id.projectDescription) as InputFragment
         val alias = supportFragmentManager.findFragmentById(R.id.projectAlias) as InputFragment
         val buttonFragment = supportFragmentManager.findFragmentById(R.id.btn) as ButtonFragment
         val appBar = supportFragmentManager.findFragmentById(R.id.appBar) as AppBarFragment
@@ -34,7 +36,7 @@ class CreateProject : AppCompatActivity() {
         alias.setWidth(175F)
 
         val button = buttonFragment.setupButton(getString(R.string.create))
-        button.setOnClickListener{
+        button.setOnClickListener {
             sayMyName(projectName.getText())
             sayMyName(description.getText())
             sayMyName(alias.getText())
