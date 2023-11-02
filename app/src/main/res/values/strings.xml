@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">RTB</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="project_name">Project Name</string>
+    <string name="description">Description</string>
+    <string name="project_alias">Project Alias</string>
+    <string name="project_is_active">Project is Active</string>
+    <string name="new_project">New Project</string>
+    <string name="create">Create</string>
+    <string name="logout">Logout</string>
+    <string name="logout_description">Logout description</string>
+    <string name="back">Back</string>
+    <string name="back_description">Back description</string>
+
+
 </resources>
