@@ -11,5 +11,5 @@ abstract class UserDao {
     abstract fun authenticate(email : String, password : String) : User?
 
     @Insert
-    abstract fun save(user : User)
+    abstract fun save(user : User): Long
 }

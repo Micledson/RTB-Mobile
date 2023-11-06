@@ -8,6 +8,7 @@ import com.rtb.rtb.R
 import com.rtb.rtb.model.User
 import com.rtb.rtb.database.DatabaseHelper
 import com.rtb.rtb.databinding.ActivitySignUpBinding
+import com.rtb.rtb.util.ValidatorUtils
 import com.rtb.rtb.view.components.ButtonFragment
 import com.rtb.rtb.view.components.InputFragment
 
@@ -68,25 +69,73 @@ class SignUp : AppCompatActivity() {
         firstName: InputFragment,
         lastName: InputFragment
     ) {
-        val button = buttonFragment.setupButton(getString(R.string.sign_in))
+        val button = buttonFragment.setupButton(getString(R.string.sign_up))
         button.setOnClickListener {
-            if (password.getText() != confirmPassword.getText()) {
-                showMessage("A senha e a confirmação da senha precisam ser iguais!")
-            } else {
+            val emailAddressText = emailAddress.getText()
+            val firstNameText = firstName.getText()
+            val lastNameText = lastName.getText()
+            val passwordText = password.getText()
+            val confirmPasswordText = confirmPassword.getText()
+
+            val isUserValid = validateUser(emailAddressText, firstNameText, lastNameText, passwordText, confirmPasswordText)
+            if (isUserValid) {
                 val user = User(
-                    emailAddress.getText(),
-                    firstName.getText(),
-                    lastName.getText(),
-                    password.getText()
+                    emailAddressText,
+                    firstNameText,
+                    lastNameText,
+                    passwordText
                 )
 
-                dao.save(user)
-                showMessage("Usuário cadastrado com sucesso!")
-                val intent = Intent(this, ProjectHome::class.java)
-                startActivity(intent)
-                finish()
+                val result = dao.save(user)
+                if (result > 0) {
+                    showMessage("Usuário cadastrado com sucesso!")
+                    val intent = Intent(this, ProjectHome::class.java)
+                    startActivity(intent)
+                    finish()
+                } else {
+                    showMessage("Não foi possível cadastrar o usuário, tente novamente!")
+                }
             }
         }
+    }
+
+    private fun validateUser(
+        emailAddress: String?,
+        firstName: String?,
+        lastName: String?,
+        password: String?,
+        confirmPassword: String?
+    ): Boolean {
+        if (emailAddress.isNullOrEmpty()) {
+            showMessage("O campo de endereço de e-mail não pode estar vazio!")
+            return false
+        } else if (!ValidatorUtils.isEmailValid(emailAddress)) {
+            showMessage("O campo de endereço de e-mail não possui um formato válido!")
+            return false
+        } else if(firstName.isNullOrEmpty()) {
+            showMessage("O campo de primeiro nome não pode estar vazio!")
+            return false
+        } else if(lastName.isNullOrEmpty()) {
+            showMessage("O campo de último nome não pode estar vazio!")
+            return false
+        } else if(password.isNullOrEmpty()) {
+            showMessage("O campo de senha não pode estar vazio!")
+            return false
+        } else if(password.length < 6) {
+            showMessage("O campo de senha precisa ter pelo menos 6 caracteres!")
+            return false
+        } else if(confirmPassword.isNullOrEmpty()) {
+            showMessage("O campo de confirmação da senha não pode estar vazio!")
+            return false
+        } else if(confirmPassword.length < 6) {
+            showMessage("O campo de confirmação da senha precisa ter pelo menos 6 caracteres!")
+            return false
+        } else if (password != confirmPassword) {
+            showMessage("A senha e a confirmação da senha precisam ser iguais!")
+            return false
+        }
+
+        return true
     }
 
     private fun showMessage(message: String) {
