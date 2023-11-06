@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import com.rtb.rtb.R
 import com.rtb.rtb.databinding.FragmentButtonBinding
 
 class ButtonFragment : Fragment() {
@@ -28,6 +29,7 @@ class ButtonFragment : Fragment() {
     fun setupButton(text: String, color: Int = -474364): Button {
         binding.btn.text = text
         binding.btn.setBackgroundColor(color)
+        binding.btn.setBackgroundResource(R.drawable.rounded_button)
         return binding.btn
     }
 

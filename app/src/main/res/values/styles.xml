@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="txtInterbold64">
+        <item name="android:textSize">64sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/interbold</item>
+    </style>
+    <style name="txtInterbold24">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/black_900</item>
+        <item name="android:fontFamily">@font/interbold</item>
+    </style>
+    <style name="txtIntersemibold30">
+        <item name="android:textSize">30sp</item>
+        <item name="android:textColor">@color/gray_900</item>
+        <item name="android:fontFamily">@font/intersemibold</item>
+    </style>
+</resources>

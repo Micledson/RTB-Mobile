@@ -1,10 +1,12 @@
 package com.rtb.rtb.view.components
 
 import android.os.Bundle
+import android.text.InputType
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.android.material.textfield.TextInputLayout.END_ICON_PASSWORD_TOGGLE
 import com.rtb.rtb.databinding.FragmentInputBinding
 
 class InputFragment : Fragment() {
@@ -42,6 +44,12 @@ class InputFragment : Fragment() {
     fun getText(): String {
         return binding.editTextInput.text.toString()
     }
+
+    fun configureTextPasswordInputType() {
+        binding.editTextInput.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+        binding.textInputLayout.endIconMode = END_ICON_PASSWORD_TOGGLE
+    }
+
     private fun Float.dpToFloat(): Float {
         val scale = resources.displayMetrics.density
         return (this * scale)

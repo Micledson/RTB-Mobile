@@ -5,12 +5,11 @@
     <string name="search_all">All</string>
     <string name="search_actives">Actives</string>
     <string name="search_inactives">Inactivates</string>
-
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
     <string name="project_id">Project ID</string>
     <string name="project_home">Project Home</string>
     <string name="project_name">Project Name</string>
+    <string name="description">Description</string>
     <string name="project_alias">Project Alias</string>
     <string name="project_is_active">Project is Active</string>
     <string name="active">Active</string>
@@ -18,13 +17,19 @@
     <string name="created_at">Created At</string>
     <string name="updated_at">Updated At</string>
     <string name="new_project">New Project</string>
-
-    <string name="description">Description</string>
     <string name="create">Create</string>
-
     <string name="logout">Logout</string>
     <string name="logout_description">Logout description</string>
-
-    <string name="back_description">Back description</string>
     <string name="back">Back</string>
+    <string name="back_description">Back description</string>
+    <string name="sign_in">Sign in</string>
+    <string name="email_address">Email Address</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="slogan">You can do more!</string>
+    <string name="no_account">No account?</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="sign_up">Sign up</string>
 </resources>

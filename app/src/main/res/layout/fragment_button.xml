@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".view.components.ButtonFragment">
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,8 +13,12 @@
         android:layout_marginEnd="10dp"
         android:textStyle="bold"
         android:textColor="@color/white"
+        android:fontFamily="@font/inter"
+        android:textFontWeight="600"
+        android:textSize="20sp"
+        android:textAllCaps="false"
         android:backgroundTint="@color/yellow"
-        />
+        tools:targetApi="p" />
 
 
 
