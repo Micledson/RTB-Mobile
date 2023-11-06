@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.ProjectHome"
+    tools:ignore="MissingConstraints"
+    android:background="@color/light_gray">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <fragment
+            android:id="@+id/appBar"
+            android:name="com.rtb.rtb.view.components.AppBarFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/ph_text_view_home_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/project_home"
+
+            android:textSize="30sp"
+            android:textStyle="bold"
+
+            android:layout_marginTop="20dp"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/appBar" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ph_constraint_layout_search_filters_components"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="20dp"
+
+            app:layout_constraintTop_toBottomOf="@id/ph_text_view_home_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <LinearLayout
+                android:id="@+id/ph_linear_layout_search_component"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/ph_text_input_layout_search_project_field"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:paddingEnd="6dp"
+
+                    app:boxCornerRadiusTopStart="8dp"
+                    app:boxCornerRadiusTopEnd="8dp"
+                    app:boxCornerRadiusBottomStart="8dp"
+                    app:boxCornerRadiusBottomEnd="8dp"
+
+                    app:boxStrokeColor="@color/black"
+                    app:cursorColor="@color/black">
+
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/ph_edit_text_input_search_project"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top"
+                        android:hint="@string/search_project"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/sf_card_view_search_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="8dp">
+                    <ImageView
+                        android:id="@+id/ph_image_view_search_glass"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@color/yellow"
+                        android:src="@drawable/baseline_search_32"
+
+                        android:padding="16dp" />
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/sf_linear_layout_filters_component"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ph_linear_layout_search_component">
+
+                <Button
+                    android:id="@+id/ph_button_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:backgroundTint="@color/blue_50"
+                    android:textColor="@color/white"
+
+                    android:text="@string/search_all"
+                    android:textStyle="bold"
+
+                    android:layout_marginEnd="8dp"
+
+                    app:cornerRadius="32dp" />
+
+                <Button
+                    android:id="@+id/ph_button_actives"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:backgroundTint="@color/green_50"
+                    android:textColor="@color/white"
+
+                    android:text="@string/search_actives"
+                    android:textStyle="bold"
+
+                    android:layout_marginEnd="8dp"
+
+                    app:cornerRadius="32dp" />
+
+                <Button
+                    android:id="@+id/ph_button_inactivates"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/red_50"
+
+                    android:text="@string/search_inactives"
+                    android:textStyle="bold"
+
+                    app:cornerRadius="32dp" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ListView
+            android:id="@+id/ph_list_view_of_projects"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:nestedScrollingEnabled="true"
+
+            android:divider="@android:color/transparent"
+            android:dividerHeight="0dp"
+
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/ph_button_new_project"
+            app:layout_constraintTop_toBottomOf="@id/ph_constraint_layout_search_filters_components" />
+
+        <Button
+            android:id="@+id/ph_button_new_project"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="8dp"
+
+            android:text="@string/new_project"
+
+            android:textSize="16sp"
+            android:textStyle="bold"
+
+            app:cornerRadius="16dp"
+
+            android:textColor="@color/white"
+            android:backgroundTint="@color/yellow"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ph_list_view_of_projects" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
