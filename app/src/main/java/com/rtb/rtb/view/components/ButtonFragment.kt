@@ -1,15 +1,12 @@
 package com.rtb.rtb.view.components
 
-import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import com.rtb.rtb.R
 import com.rtb.rtb.databinding.FragmentButtonBinding
-import com.rtb.rtb.databinding.FragmentInputBinding
 
 class ButtonFragment : Fragment() {
     private lateinit var binding: FragmentButtonBinding

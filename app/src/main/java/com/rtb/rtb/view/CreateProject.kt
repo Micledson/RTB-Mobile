@@ -2,7 +2,6 @@ package com.rtb.rtb.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import com.rtb.rtb.R
 import com.rtb.rtb.databinding.ActivityCreateProjectBinding
