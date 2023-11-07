@@ -13,7 +13,7 @@ import com.rtb.rtb.view.components.InputFragment
 import java.util.Date
 import java.util.UUID
 
-class CreateProject : AppCompatActivity() {
+class CreateProject : BaseActivity() {
     private val binding by lazy {
         ActivityCreateProjectBinding.inflate(layoutInflater)
     }

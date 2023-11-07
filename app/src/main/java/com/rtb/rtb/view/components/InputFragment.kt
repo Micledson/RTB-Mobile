@@ -84,4 +84,8 @@ class InputFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {}
         })
     }
+
+    fun setText(newText: String) {
+        binding.editTextInput.setText(newText)
+    }
 }

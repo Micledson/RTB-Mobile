@@ -20,7 +20,7 @@ import com.rtb.rtb.view.components.InputFragment
 import java.util.Date
 import java.util.UUID
 
-class UpdateProject : AppCompatActivity() {
+class UpdateProject : BaseActivity() {
 
     private val binding by lazy {
         ActivityUpdateProjectBinding.inflate(layoutInflater)
@@ -30,10 +30,14 @@ class UpdateProject : AppCompatActivity() {
         DatabaseHelper.getInstance(this).projectDao()
     }
 
+    lateinit var project: Project
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        val uuid = UUID.fromString(intent.getStringExtra("uuid"))
+        getProject(uuid)
 
         val projectName = supportFragmentManager.findFragmentById(R.id.projectName) as InputFragment
         val description =
@@ -45,22 +49,22 @@ class UpdateProject : AppCompatActivity() {
 
 
         projectName.setHint(getString(R.string.project_name))
+        projectName.setText(project.name)
 
         description.setHint(getString(R.string.description))
         description.setHeight(175F)
+        description.setText(project.description)
 
         alias.setHint(getString(R.string.project_alias))
         alias.setWidth(175F)
+        alias.setText(project.alias)
 
-        val button = buttonFragment.setupButton(getString(R.string.create))
+        val button = buttonFragment.setupButton(getString(R.string.update))
         button.setOnClickListener {
-
-            val uuid = intent.getStringExtra("uuid")
-
             val isActive = binding.switch1.isChecked
 
             val project = Project(
-                UUID.fromString(uuid),
+                uuid,
                 projectName.getText(),
                 alias.getText(),
                 description.getText(),
@@ -77,5 +81,11 @@ class UpdateProject : AppCompatActivity() {
         }
 
     }
+
+    private fun getProject(uuid: UUID) {
+        project = dao.getProjectByUUID(uuid)
+
+    }
+
 
 }
