@@ -13,14 +13,14 @@ import java.util.UUID
 data class Requirement (
     @PrimaryKey
     val id: UUID,
-    val type: String,
+    val code: String,
     val title: String,
     val description: String,
     val userStory: String,
+    val type: String,
+    val origin: String,
     val priority: String,
-    val projectId: UUID,
-    val isActive: Boolean,
+    val projectID: UUID,
     val createdAt: Date,
-    val updatedAt: Date?,
-    val deletedAt: Date?,
+    val updatedAt: Date?
 ): Parcelable

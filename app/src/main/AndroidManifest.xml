@@ -19,7 +19,7 @@
             android:theme="@style/Theme.RTB">
         </activity>
         <activity
-            android:name=".view.Splash"
+            android:name=".view.RequirementHome"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -47,6 +47,9 @@
             android:exported="false" />
         <activity
             android:name=".view.SignUp"
+            android:exported="false" />
+        <activity
+            android:name=".view.ViewRequirement"
             android:exported="false" />
     </application>
 

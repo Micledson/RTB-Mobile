@@ -3,8 +3,8 @@
 
     <string name="search_project">Search for Project</string>
     <string name="search_all">All</string>
-    <string name="search_actives">Actives</string>
-    <string name="search_inactives">Inactivates</string>
+    <string name="search_active">Active</string>
+    <string name="search_inactive">Inactive</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="project_id">Project ID</string>
     <string name="project_home">Project Home</string>
@@ -18,11 +18,20 @@
     <string name="updated_at">Updated At</string>
     <string name="new_project">New Project</string>
     <string name="update_project">Update Project</string>
+    <string name="search_requirement">Search for Requirement</string>
+    <string name="requirement_home">Requirement Home</string>
     <string name="new_requirement">New Requirement</string>
+    <string name="requirement_id">Requirement ID</string>
+    <string name="requirement_code">Code</string>
     <string name="requirement_title">Title</string>
     <string name="requirement_description">Description</string>
-    <string name="requirement_user_story">User Story</string>
+    <string name="requirement_user_story">User story</string>
     <string name="requirement_type">Type</string>
+    <string name="requirement_origin">Origin</string>
+    <string name="requirement_priority">Priority</string>
+    <string name="requirement_project">Project</string>
+    <string name="requirement_created_at">Created at</string>
+    <string name="requirement_updated_at">Updated at</string>
     <string name="create">Create</string>
     <string name="update">Update</string>
     <string name="logout">Logout</string>

@@ -100,16 +100,16 @@ class CreateRequirement : BaseActivity() {
             if (project != null && isRequirementValid) {
                 val requirement = Requirement(
                     UUID.randomUUID(),
-                    typeText,
+                    UUID.randomUUID().toString(),
                     titleText,
                     descriptionText,
                     userStoryText,
+                    typeText,
+                    "Origin",
                     priorityText,
                     project.id,
-                    true,
                     Calendar.getInstance().time,
                     null,
-                    null
                 )
 
                 val result = dao.save(requirement)
