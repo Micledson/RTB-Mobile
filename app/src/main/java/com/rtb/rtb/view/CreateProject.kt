@@ -59,7 +59,6 @@ class CreateProject : AppCompatActivity() {
             sayMyName(projectName.getText())
             sayMyName(description.getText())
             sayMyName(alias.getText())
-
         }
 
     }

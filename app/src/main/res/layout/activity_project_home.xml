@@ -47,37 +47,11 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-            <LinearLayout
-                android:id="@+id/ph_linear_layout_search_component"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:orientation="horizontal">
-
                 <fragment
-                    android:id="@+id/ph_text_input_layout_search_project_field"
+                    android:id="@+id/ph_text_input_search_project"
                     android:name="com.rtb.rtb.view.components.InputFragment"
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:paddingEnd="6dp"/>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/ph_card_view_search_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="8dp">
-                    <ImageView
-                        android:id="@+id/ph_image_view_search_glass"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:background="@color/yellow"
-                        android:src="@drawable/baseline_search_32"
-
-                        android:padding="14dp" />
-                </androidx.cardview.widget.CardView>
-            </LinearLayout>
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
             <LinearLayout
                 android:id="@+id/ph_linear_layout_filters_component"
@@ -91,7 +65,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ph_linear_layout_search_component">
+                app:layout_constraintTop_toBottomOf="@id/ph_text_input_search_project">
 
                 <Button
                     android:id="@+id/ph_button_all"
