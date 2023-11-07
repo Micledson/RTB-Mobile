@@ -1,20 +1,23 @@
 package com.rtb.rtb.view
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.content.ContextCompat
 import com.rtb.rtb.R
 import com.rtb.rtb.adapters.ResumeCardAdapter
+import com.rtb.rtb.database.DatabaseHelper
 import com.rtb.rtb.databinding.ActivityProjectHomeBinding
-import com.rtb.rtb.model.ProjectModel
 import com.rtb.rtb.view.components.AppBarFragment
-import java.util.Date
-import java.util.UUID
+import com.rtb.rtb.view.components.ButtonFragment
+import com.rtb.rtb.view.components.InputFragment
 
-class ProjectHome : AppCompatActivity() {
+class ProjectHome : BaseActivity() {
     private val binding by lazy {
         ActivityProjectHomeBinding.inflate(layoutInflater)
+    }
+
+    private val dao by lazy {
+        DatabaseHelper.getInstance(this).projectDao()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,27 +31,25 @@ class ProjectHome : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        var projectsMock = setProjectModelMutableList()
+        var projects = dao.getProjects()
 
-        var searchProjectsMock: MutableList<ProjectModel>
-        var (activeProjectsMock, inactivateProjectsMock) = fillFilters(projectsMock)
+        val searchedProjects = supportFragmentManager.findFragmentById(R.id.ph_text_input_layout_search_project_field) as InputFragment
+        searchedProjects.setHint(getString(R.string.search_project))
 
         val readAllProjects = binding.phButtonAll
+        readAllProjects.setBackgroundColor(ContextCompat.getColor(this, R.color.blue))
         val readActiveProjects = binding.phButtonActives
         val readInactiveProjects = binding.phButtonInactivates
 
         val projectListView = binding.phListViewOfProjects
-        val projectsCardAdapter = ResumeCardAdapter(this, projectsMock)
+        val projectsCardAdapter = ResumeCardAdapter(this, projects)
         projectListView.adapter = projectsCardAdapter
 
         val searchProjectByName = binding.phImageViewSearchGlass
         searchProjectByName.setOnClickListener {
-            val searchedProjects = binding.phEditTextInputSearchProject.text.toString()
+            val searchProjects = dao.getProjectsByName(searchedProjects.getText())
 
-            searchProjectsMock = mutableListOf()
-            getProjectsByName(projectsMock, searchedProjects, searchProjectsMock)
-
-            val searchProjectsCardAdapter = ResumeCardAdapter(this, searchProjectsMock)
+            val searchProjectsCardAdapter = ResumeCardAdapter(this, searchProjects)
             projectListView.adapter = searchProjectsCardAdapter
         }
 
@@ -57,10 +58,9 @@ class ProjectHome : AppCompatActivity() {
             readActiveProjects.setBackgroundColor(ContextCompat.getColor(this, R.color.green_50))
             readInactiveProjects.setBackgroundColor(ContextCompat.getColor(this, R.color.red_50))
 
-            projectsMock = mutableListOf()
-            getAllProjects(activeProjectsMock, projectsMock, inactivateProjectsMock)
+            projects = dao.getProjects()
 
-            val projectsCardAdapter = ResumeCardAdapter(this, projectsMock)
+            val projectsCardAdapter = ResumeCardAdapter(this, projects)
             projectListView.adapter = projectsCardAdapter
         }
 
@@ -69,10 +69,9 @@ class ProjectHome : AppCompatActivity() {
             readActiveProjects.setBackgroundColor(ContextCompat.getColor(this, R.color.green))
             readInactiveProjects.setBackgroundColor(ContextCompat.getColor(this, R.color.red_50))
 
-            activeProjectsMock = mutableListOf()
-            getActiveProjects(projectsMock, activeProjectsMock)
+            val activeProjects = dao.getProjectsByIsActive(true)
 
-            val activeProjectsCardAdapter = ResumeCardAdapter(this, activeProjectsMock)
+            val activeProjectsCardAdapter = ResumeCardAdapter(this, activeProjects)
             projectListView.adapter = activeProjectsCardAdapter
         }
 
@@ -81,124 +80,17 @@ class ProjectHome : AppCompatActivity() {
             readActiveProjects.setBackgroundColor(ContextCompat.getColor(this, R.color.green_50))
             readInactiveProjects.setBackgroundColor(ContextCompat.getColor(this, R.color.red))
 
-            inactivateProjectsMock = mutableListOf()
-            getInactiveProjects(projectsMock, inactivateProjectsMock)
+            val inactivateProjects = dao.getProjectsByIsActive(false)
 
-            val inactiveProjectsCardAdapter = ResumeCardAdapter(this, inactivateProjectsMock)
+            val inactiveProjectsCardAdapter = ResumeCardAdapter(this, inactivateProjects)
             projectListView.adapter = inactiveProjectsCardAdapter
         }
 
-        val createProject = binding.phButtonNewProject
-        createProject.setOnClickListener{
+        val createProject = supportFragmentManager.findFragmentById(R.id.ph_button_new_project) as ButtonFragment
+        val createButton = createProject.setupButton(getString(R.string.new_project))
+        createButton.setOnClickListener {
             val createProjectIntent = Intent(this, CreateProject::class.java)
             startActivity(createProjectIntent)
         }
-    }
-
-    private fun getInactiveProjects(
-        projectsMock: MutableList<ProjectModel>,
-        inactivateProjectsMock: MutableList<ProjectModel>
-    ) {
-        for (project in projectsMock) {
-            if (!project.isActive) {
-                inactivateProjectsMock.add(project)
-            }
-        }
-    }
-
-    private fun getActiveProjects(
-        projectsMock: MutableList<ProjectModel>,
-        activeProjectsMock: MutableList<ProjectModel>
-    ) {
-        for (project in projectsMock) {
-            if (project.isActive) {
-                activeProjectsMock.add(project)
-            }
-        }
-    }
-
-    private fun getAllProjects(
-        activeProjectsMock: MutableList<ProjectModel>,
-        projectsMock: MutableList<ProjectModel>,
-        inactivateProjectsMock: MutableList<ProjectModel>
-    ) {
-        for (project in activeProjectsMock) {
-            projectsMock.add(project)
-        }
-        for (project in inactivateProjectsMock) {
-            projectsMock.add(project)
-        }
-    }
-
-    private fun getProjectsByName(
-        projectsMock: MutableList<ProjectModel>,
-        searchedProjects: String,
-        searchProjectsMock: MutableList<ProjectModel>
-    ) {
-        for (project in projectsMock) {
-            if (project.name.lowercase() == searchedProjects.lowercase()) {
-                searchProjectsMock.add(project)
-            }
-        }
-    }
-
-    private fun fillFilters(projectsMock: MutableList<ProjectModel>): Pair<MutableList<ProjectModel>, MutableList<ProjectModel>> {
-        val activeProjectsMock = mutableListOf<ProjectModel>()
-        val inactivateProjectsMock = mutableListOf<ProjectModel>()
-        for (project in projectsMock) {
-            if (project.isActive) {
-                activeProjectsMock.add(project)
-            } else {
-                inactivateProjectsMock.add(project)
-            }
-        }
-        return Pair(activeProjectsMock, inactivateProjectsMock)
-    }
-
-    private fun setProjectModelMutableList(): MutableList<ProjectModel> {
-        val fakeDate = Date()
-        val projectsMock = mutableListOf(
-            ProjectModel(
-                UUID.randomUUID(),
-                "MyBackendProject",
-                "MBP",
-                "This is my backend project",
-                false,
-                fakeDate,
-                null,
-                null
-            ),
-            ProjectModel(
-                UUID.randomUUID(),
-                "RMS Project",
-                "RMS",
-                "Document your project requirements efficiently and effectively. Using rich tools that enable quick and easy editing",
-                true,
-                fakeDate,
-                null,
-                null
-            ),
-            ProjectModel(
-                UUID.randomUUID(),
-                "PMS Project",
-                "RTB",
-                "Manage your sprint board, create your tickets and view your team's productivity graph",
-                true,
-                fakeDate,
-                null,
-                null
-            ),
-            ProjectModel(
-                UUID.randomUUID(),
-                "TCMS Project",
-                "TCMS",
-                "Test your system in an integrated way, taking advantage of intuitive, detailed and complete fields",
-                true,
-                fakeDate,
-                null,
-                null
-            )
-        )
-        return projectsMock
     }
 }

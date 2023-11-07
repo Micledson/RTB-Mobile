@@ -15,18 +15,18 @@ tools:ignore="MissingConstraints">
     android:layout_height="wrap_content"
     android:orientation="horizontal">
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/rc_constraint_layout_project_content"
+        android:id="@+id/pc_constraint_layout_project_content"
         android:layout_width="300dp"
         android:layout_height="match_parent">
 
         <android.gesture.GestureOverlayView
-            android:id="@+id/rc_overlay_view_is_active"
+            android:id="@+id/pc_overlay_view_is_active"
             android:layout_width="8dp"
             android:layout_height="match_parent"
             android:background="@color/green"/>
 
         <TextView
-            android:id="@+id/rc_text_view_project_name"
+            android:id="@+id/pc_text_view_project_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
@@ -41,7 +41,7 @@ tools:ignore="MissingConstraints">
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/rc_text_view_project_alias"
+            android:id="@+id/pc_text_view_project_alias"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
@@ -51,10 +51,10 @@ tools:ignore="MissingConstraints">
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rc_text_view_project_name"/>
+            app:layout_constraintTop_toBottomOf="@id/pc_text_view_project_name"/>
 
         <TextView
-            android:id="@+id/rc_text_view_project_created_at"
+            android:id="@+id/pc_text_view_project_created_at"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
@@ -73,14 +73,17 @@ tools:ignore="MissingConstraints">
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/rc_image_view_read"
+            android:id="@+id/pc_image_view_read"
             android:layout_width="75dp"
             android:layout_height="35dp"
             android:background="@color/blue"
-            android:src="@drawable/baseline_eye_16" />
+            android:src="@drawable/baseline_eye_16"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
-            android:id="@+id/rc_image_view_edit"
+            android:id="@+id/pc_image_view_edit"
             android:layout_width="75dp"
             android:layout_height="35dp"
 
@@ -88,9 +91,11 @@ tools:ignore="MissingConstraints">
 
             android:background="@color/yellow"
 
-            app:layout_constraintTop_toBottomOf="@id/rc_image_view_read" />
+            app:layout_constraintTop_toBottomOf="@id/pc_image_view_read"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
         <ImageView
-            android:id="@+id/rc_image_view_delete"
+            android:id="@+id/pc_image_view_delete"
             android:layout_width="75dp"
             android:layout_height="35dp"
 
@@ -98,7 +103,9 @@ tools:ignore="MissingConstraints">
 
             android:src="@drawable/baseline_delete_16"
 
-            app:layout_constraintTop_toBottomOf="@id/rc_image_view_edit" />
+            app:layout_constraintTop_toBottomOf="@id/pc_image_view_edit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
 </androidx.cardview.widget.CardView>

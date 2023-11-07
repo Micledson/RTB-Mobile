@@ -1,18 +1,18 @@
 package com.rtb.rtb.view
 
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.rtb.rtb.R
 import com.rtb.rtb.databinding.ActivityViewProjectBinding
-import com.rtb.rtb.model.ProjectModel
+import com.rtb.rtb.model.Project
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class ViewProject : AppCompatActivity() {
+class ViewProject : BaseActivity() {
     private val binding by lazy {
         ActivityViewProjectBinding.inflate(layoutInflater)
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -23,19 +23,19 @@ class ViewProject : AppCompatActivity() {
 
     }
 
-    private fun getProjectModelAccordingVersion(): ProjectModel? {
+    private fun getProjectModelAccordingVersion(): Project? {
         val viewProject = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra("projectModel", ProjectModel::class.java)
+            intent.getParcelableExtra("projectModel", Project::class.java)
         } else {
             intent.getParcelableExtra("projectModel")
         }
         return viewProject
     }
 
-    private fun getProject(viewProject: ProjectModel?) {
+    private fun getProject(viewProject: Project?) {
         binding.vpTextViewProjectName.text = viewProject?.name
         binding.vpTextViewProjectAlias.text = viewProject?.alias
-        binding.vpTextViewProjectIDField.text = viewProject?.id.toString()
+        binding.vpTextViewProjectIdField.text = viewProject?.id.toString()
         binding.vpTextViewProjectDescription.text = viewProject?.description
 
         if (!viewProject?.isActive!!) {
