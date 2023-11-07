@@ -1,5 +1,6 @@
 package com.rtb.rtb.view.components
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -7,12 +8,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import com.google.android.material.appbar.MaterialToolbar
 import com.rtb.rtb.R
 import com.rtb.rtb.database.preferences.SharedPrefs
 import com.rtb.rtb.databinding.FragmentAppBarBinding
-import com.rtb.rtb.view.CreateProject
 import com.rtb.rtb.view.SignIn
 
 class AppBarFragment : Fragment() {
@@ -33,17 +31,19 @@ class AppBarFragment : Fragment() {
         return binding.root
     }
 
-    fun setupAppBar(context: Context) {
-        binding.topAppBar.setNavigationOnClickListener{
-            Toast.makeText(context, "back", Toast.LENGTH_SHORT).show()
+    fun setupAppBar(context: Context, disableBackButton: Boolean = false) {
+        if (disableBackButton) {
+            binding.topAppBar.navigationIcon = null
+        } else {
+            binding.topAppBar.setNavigationOnClickListener{
+                activity?.onBackPressedDispatcher?.onBackPressed()
+            }
         }
+
         binding.topAppBar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.logout -> {
-                    SharedPrefs(context).setUserValue(false)
-
-                    val intent = Intent(context, SignIn::class.java)
-                    startActivity(intent)
+                    logout(context)
                     true
                 }
 
@@ -52,4 +52,24 @@ class AppBarFragment : Fragment() {
         }
     }
 
+    private fun logout(context: Context) {
+        val alertDialogBuilder = AlertDialog.Builder(context)
+        alertDialogBuilder.setTitle("Exit the app?")
+        alertDialogBuilder.setMessage("Are you sure you want to exit the app?")
+
+        alertDialogBuilder.setPositiveButton("Exit") { dialog, _ ->
+            dialog.dismiss()
+            SharedPrefs(context).setUserValue(false)
+
+            val intent = Intent(context, SignIn::class.java)
+            startActivity(intent)
+        }
+
+        alertDialogBuilder.setNegativeButton("Cancel") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        val alertDialog = alertDialogBuilder.create()
+        alertDialog.show()
+    }
 }

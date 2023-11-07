@@ -5,6 +5,7 @@ import android.os.Bundle
 import com.rtb.rtb.R
 import com.rtb.rtb.databinding.ActivityViewProjectBinding
 import com.rtb.rtb.model.Project
+import com.rtb.rtb.view.components.AppBarFragment
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -16,6 +17,9 @@ class ViewProject : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        val appBar = supportFragmentManager.findFragmentById(R.id.appBar) as AppBarFragment
+        appBar.setupAppBar(this)
 
         val viewProject = getProjectModelAccordingVersion()
 

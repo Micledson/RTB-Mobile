@@ -25,7 +25,7 @@ class ProjectHome : BaseActivity() {
         setContentView(binding.root)
 
         val appBar = supportFragmentManager.findFragmentById(R.id.appBar) as AppBarFragment
-        appBar.setupAppBar(this)
+        appBar.setupAppBar(this, true)
     }
 
     override fun onResume() {
@@ -33,7 +33,7 @@ class ProjectHome : BaseActivity() {
 
         var projects = dao.getProjects()
 
-        val searchedProjects = supportFragmentManager.findFragmentById(R.id.ph_text_input_layout_search_project_field) as InputFragment
+        val searchedProjects = supportFragmentManager.findFragmentById(R.id.ph_text_input_search_project) as InputFragment
         searchedProjects.setHint(getString(R.string.search_project))
 
         val readAllProjects = binding.phButtonAll
@@ -42,12 +42,11 @@ class ProjectHome : BaseActivity() {
         val readInactiveProjects = binding.phButtonInactivates
 
         val projectListView = binding.phListViewOfProjects
-        val projectsCardAdapter = ResumeCardAdapter(this, projects)
+        var projectsCardAdapter = ResumeCardAdapter(this, projects)
         projectListView.adapter = projectsCardAdapter
 
-        val searchProjectByName = binding.phImageViewSearchGlass
-        searchProjectByName.setOnClickListener {
-            val searchProjects = dao.getProjectsByName(searchedProjects.getText())
+        searchedProjects.addTextChangedListener { newText ->
+            val searchProjects = dao.getProjectsByName(newText)
 
             val searchProjectsCardAdapter = ResumeCardAdapter(this, searchProjects)
             projectListView.adapter = searchProjectsCardAdapter
@@ -60,7 +59,7 @@ class ProjectHome : BaseActivity() {
 
             projects = dao.getProjects()
 
-            val projectsCardAdapter = ResumeCardAdapter(this, projects)
+            projectsCardAdapter = ResumeCardAdapter(this, projects)
             projectListView.adapter = projectsCardAdapter
         }
 
