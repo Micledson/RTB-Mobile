@@ -32,4 +32,14 @@
     <string name="no_account">No account?</string>
     <string name="already_have_an_account">Already have an account?</string>
     <string name="sign_up">Sign up</string>
+    <string name="requirement_code">Code</string>
+    <string name="requirement_title">Title</string>
+    <string name="requirement_description">Description</string>
+    <string name="requirement_user_story">User story</string>
+    <string name="requirement_type">Type</string>
+    <string name="requirement_origin">Origin</string>
+    <string name="requirement_priority">Priority</string>
+    <string name="requirement_project">Project</string>
+    <string name="requirement_created_at">Created at</string>
+    <string name="requirement_updated_at">Updated at</string>
 </resources>
