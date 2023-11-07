@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:textSize="30sp"
         android:textStyle="bold"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:text="@string/new_requirement"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,18 +40,24 @@
         android:layout_height="wrap_content"
         android:textSize="30sp"
         android:textStyle="bold"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginHorizontal="3dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:paddingStart="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/create_requirement_new_requirement"/>
+        app:layout_constraintTop_toBottomOf="@id/create_requirement_new_requirement"
+        android:background="@drawable/spinner_rounded_border" />
 
     <fragment
         android:id="@+id/create_requirement_title"
         android:name="com.rtb.rtb.view.components.InputFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/create_requirement_type" />
@@ -61,7 +67,7 @@
         android:name="com.rtb.rtb.view.components.InputFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:lines="5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -72,23 +78,30 @@
         android:name="com.rtb.rtb.view.components.InputFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:lines="5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/create_requirement_description" />
 
-    <Spinner
-        android:id="@+id/create_requirement_priority"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        android:layout_marginTop="32dp"
-        android:layout_marginHorizontal="3dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/create_requirement_user_story"/>
+
+        <Spinner
+            android:id="@+id/create_requirement_priority"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginHorizontal="3dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:paddingStart="8dp"
+            android:background="@drawable/spinner_rounded_border"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/create_requirement_user_story" />
 
     <fragment
         android:id="@+id/create_requirement_button"
