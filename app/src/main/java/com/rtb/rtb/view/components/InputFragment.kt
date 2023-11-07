@@ -6,11 +6,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import com.google.android.material.textfield.TextInputLayout.END_ICON_PASSWORD_TOGGLE
 import com.rtb.rtb.databinding.FragmentInputBinding
 
 class InputFragment : Fragment() {
     private lateinit var binding: FragmentInputBinding
+
+    private var nextFocusField: View? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,5 +56,17 @@ class InputFragment : Fragment() {
     private fun Float.dpToFloat(): Float {
         val scale = resources.displayMetrics.density
         return (this * scale)
+    }
+
+    fun setNextFocus(nextField: View) {
+        this.nextFocusField = nextField
+        binding.editTextInput.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                this.nextFocusField?.requestFocus()
+                true
+            } else {
+                false
+            }
+        }
     }
 }

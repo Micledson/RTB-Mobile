@@ -96,8 +96,7 @@
         tools:ignore="MissingConstraints">
         <TextView android:id="@+id/txtNoaccount"
             android:layout_height="wrap_content"
-            android:layout_weight="0.35"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:singleLine="true"
             android:text="@string/no_account"
             android:textColor="@color/gray_600"
@@ -106,8 +105,7 @@
             tools:targetApi="p"/>
         <TextView android:id="@+id/signUpLabel"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:paddingStart="8dp"
             android:singleLine="true"
             android:text="@string/sign_up"

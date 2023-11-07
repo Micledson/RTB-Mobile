@@ -1,9 +1,7 @@
 package com.rtb.rtb.view
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import com.rtb.rtb.R
 import com.rtb.rtb.model.User
 import com.rtb.rtb.database.DatabaseHelper
@@ -12,7 +10,7 @@ import com.rtb.rtb.util.ValidatorUtils
 import com.rtb.rtb.view.components.ButtonFragment
 import com.rtb.rtb.view.components.InputFragment
 
-class SignUp : AppCompatActivity() {
+class SignUp : BaseActivity() {
     private val binding by lazy {
         ActivitySignUpBinding.inflate(layoutInflater)
     }
@@ -47,6 +45,7 @@ class SignUp : AppCompatActivity() {
         emailAddress.setHint(getString(R.string.email_address))
         firstName.setHint(getString(R.string.first_name))
         lastName.setHint(getString(R.string.last_name))
+        lastName.view?.let { firstName.setNextFocus(it) }
         password.setHint(getString(R.string.password))
         password.configureTextPasswordInputType()
         confirmPassword.setHint(getString(R.string.confirm_password))
@@ -136,13 +135,5 @@ class SignUp : AppCompatActivity() {
         }
 
         return true
-    }
-
-    private fun showMessage(message: String) {
-        Toast.makeText(
-            this,
-            message,
-            Toast.LENGTH_LONG,
-        ).show()
     }
 }

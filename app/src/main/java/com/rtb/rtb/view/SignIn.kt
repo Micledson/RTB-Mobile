@@ -2,16 +2,14 @@ package com.rtb.rtb.view
 
 import com.rtb.rtb.database.DatabaseHelper
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import com.rtb.rtb.R
 import com.rtb.rtb.database.preferences.SharedPrefs
 import com.rtb.rtb.databinding.ActivitySignInBinding
 import com.rtb.rtb.view.components.ButtonFragment
 import com.rtb.rtb.view.components.InputFragment
 
-class SignIn : AppCompatActivity() {
+class SignIn : BaseActivity() {
     private val binding by lazy {
         ActivitySignInBinding.inflate(layoutInflater)
     }
@@ -67,13 +65,5 @@ class SignIn : AppCompatActivity() {
                 finish()
             } ?: showMessage("Usuário/Senha Incorreto(s)")
         }
-    }
-
-    private fun showMessage(message: String) {
-        Toast.makeText(
-            this,
-            message,
-            Toast.LENGTH_LONG,
-        ).show()
     }
 }
