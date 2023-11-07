@@ -57,7 +57,7 @@ class SignIn : BaseActivity() {
     ) {
         val button = buttonFragment.setupButton(getString(R.string.sign_in))
         button.setOnClickListener {
-            dao.authenticate(emailAddress.getText(), password.getText())?.let {
+            dao.authenticate(emailAddress.getText().lowercase(), password.getText())?.let {
                 SharedPrefs(this).setUserValue(true)
 
                 val intent = Intent(this, ProjectHome::class.java)
