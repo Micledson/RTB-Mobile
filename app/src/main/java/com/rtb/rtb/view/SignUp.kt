@@ -90,12 +90,12 @@ class SignUp : BaseActivity() {
 
                 try {
                     dao.save(user)
-                    showMessage("User created successfully!")
+                    showMessage(getString(R.string.new_user))
                     val intent = Intent(this, ProjectHome::class.java)
                     startActivity(intent)
                     finish()
                 } catch (e: Exception) {
-                    showMessage("Unable to register user, please try again!")
+                    showMessage(getString(R.string.new_user_error))
                 }
             }
         }

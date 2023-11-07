@@ -100,7 +100,6 @@ class InputFragment : Fragment() {
         if (getText().trim().isNotEmpty()) {
             return true
         }
-        binding.editTextInput.error = getString(R.string.required_field)
         return false
     }
 

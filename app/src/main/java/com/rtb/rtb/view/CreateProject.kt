@@ -63,6 +63,9 @@ class CreateProject : BaseActivity() {
 
                 finish()
             }
+            else {
+                Toast.makeText(this, getString(R.string.required_field), Toast.LENGTH_SHORT).show()
+            }
 
 
         }
