@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import com.google.android.material.textfield.TextInputLayout.END_ICON_PASSWORD_TOGGLE
+import com.rtb.rtb.R
 import com.rtb.rtb.databinding.FragmentInputBinding
 
 class InputFragment : Fragment() {
@@ -56,7 +57,8 @@ class InputFragment : Fragment() {
     }
 
     fun configureTextPasswordInputType() {
-        binding.editTextInput.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+        binding.editTextInput.inputType =
+            InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
         binding.textInputLayout.endIconMode = END_ICON_PASSWORD_TOGGLE
     }
 
@@ -93,4 +95,13 @@ class InputFragment : Fragment() {
     fun setText(newText: String) {
         binding.editTextInput.setText(newText)
     }
+
+    fun hasText(): Boolean {
+        if (getText().trim().isNotEmpty()) {
+            return true
+        }
+        binding.editTextInput.error = getString(R.string.required_field)
+        return false
+    }
+
 }

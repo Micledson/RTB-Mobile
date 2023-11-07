@@ -26,7 +26,8 @@ class CreateProject : BaseActivity() {
         setContentView(binding.root)
 
         val projectName = supportFragmentManager.findFragmentById(R.id.projectName) as InputFragment
-        val description = supportFragmentManager.findFragmentById(R.id.projectDescription) as InputFragment
+        val description =
+            supportFragmentManager.findFragmentById(R.id.projectDescription) as InputFragment
         val alias = supportFragmentManager.findFragmentById(R.id.projectAlias) as InputFragment
         val buttonFragment = supportFragmentManager.findFragmentById(R.id.btn) as ButtonFragment
         val appBar = supportFragmentManager.findFragmentById(R.id.appBar) as AppBarFragment
@@ -44,22 +45,26 @@ class CreateProject : BaseActivity() {
         button.setOnClickListener {
             val isActive = binding.switch1.isChecked
 
-            val project = Project(
-                UUID.randomUUID(),
-                projectName.getText().lowercase(),
-                alias.getText(),
-                description.getText(),
-                isActive,
-                Date(),
-                null,
-                null
-            )
+            if(projectName.hasText() && description.hasText() && alias.hasText()) {
+                val project = Project(
+                    UUID.randomUUID(),
+                    projectName.getText(),
+                    alias.getText(),
+                    description.getText(),
+                    isActive,
+                    Date(),
+                    null,
+                    null
+                )
 
-            dao.createProject(project)
+                dao.createProject(project)
 
-            Toast.makeText(this, getString(R.string.new_project_toast), Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.new_project_toast), Toast.LENGTH_SHORT).show()
 
-            finish()
+                finish()
+            }
+
+
         }
 
     }
