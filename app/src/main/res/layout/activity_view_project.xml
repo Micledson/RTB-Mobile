@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,180 +7,186 @@
     tools:context=".view.ViewProject"
     tools:ignore="MissingConstraints">
 
-    <fragment
-        android:id="@+id/appBar"
-        android:name="com.rtb.rtb.view.components.AppBarFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/vp_text_view_project_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:textSize="30sp"
-        android:textStyle="bold"
-
-        android:layout_marginTop="32dp"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/appBar" />
-
-    <TextView
-        android:id="@+id/vp_text_view_project_alias"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:textColor="@color/dark_gray"
-
-        android:textSize="30sp"
-        android:textStyle="bold"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/vp_text_view_project_name" />
-
-    <TextView
-        android:id="@+id/vp_text_view_project_ID"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:text="@string/project_id"
-
-        android:textSize="16sp"
-
-        android:layout_marginTop="16dp"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/vp_text_view_project_alias" />
-
-    <TextView
-        android:id="@+id/vp_text_view_project_ID_field"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:textSize="16sp"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/vp_text_view_project_ID" />
-
-    <LinearLayout
-        android:id="@+id/vp_linear_layout_is_active_block"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_marginTop="20dp"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/vp_text_view_project_ID_field">
-
-        <ImageView
-            android:id="@+id/vp_image_view_is_active_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:layout_marginEnd="8dp"
-
-            android:src="@drawable/baseline_is_active_24" />
-
-        <TextView
-            android:id="@+id/vp_text_view_is_active_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:text="@string/active"
-
-            android:textSize="20sp"
-
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/vp_text_view_project_ID" />
-    </LinearLayout>
-
-    <ScrollView
-        android:id="@+id/vp_scroll_view_project_description"
-        android:layout_width="match_parent"
-        android:layout_height="180dp"
-
-        android:layout_marginTop="32dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/vp_linear_layout_is_active_block">
-        <TextView
-            android:id="@+id/vp_text_view_project_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:textSize="20sp"
-
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/vp_linear_layout_is_active_block" />
-    </ScrollView>
-
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/vp_linear_layout_dates_block"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        android:layout_marginTop="24dp"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/vp_scroll_view_project_description">
+        <fragment
+            android:id="@+id/appBar"
+            android:name="com.rtb.rtb.view.components.AppBarFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <TextView
-            android:id="@+id/vp_text_view_created_at"
+            android:id="@+id/vp_text_view_project_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:text="@string/created_at"
+            android:textSize="30sp"
+            android:textStyle="bold"
 
-            android:textSize="20sp"
+            android:layout_marginTop="32dp"
 
-            android:layout_marginEnd="58dp"
-
-            app:layout_constraintEnd_toStartOf="@id/vp_text_view_updated_at"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/vp_text_view_created_at_field"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:textSize="20sp"
-
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/vp_text_view_created_at" />
+            app:layout_constraintTop_toBottomOf="@id/appBar" />
 
         <TextView
-            android:id="@+id/vp_text_view_updated_at"
+            android:id="@+id/vp_text_view_project_alias"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:text="@string/updated_at"
+            android:textColor="@color/dark_gray"
 
-            android:textSize="20sp"
+            android:textSize="30sp"
+            android:textStyle="bold"
 
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/vp_text_view_created_at" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/vp_text_view_project_name" />
 
         <TextView
-            android:id="@+id/vp_text_view_updated_at_field"
+            android:id="@+id/vp_text_view_project_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:textSize="20sp"
+            android:text="@string/project_id"
+
+            android:textSize="16sp"
+
+            android:layout_marginTop="16dp"
 
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/vp_text_view_updated_at" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/vp_text_view_project_alias" />
+
+        <TextView
+            android:id="@+id/vp_text_view_project_id_field"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:textSize="16sp"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/vp_text_view_project_id" />
+
+        <LinearLayout
+            android:id="@+id/vp_linear_layout_is_active_block"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="20dp"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/vp_text_view_project_id_field">
+
+            <ImageView
+                android:id="@+id/vp_image_view_is_active_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginEnd="8dp"
+
+                android:src="@drawable/baseline_is_active_24" />
+
+            <TextView
+                android:id="@+id/vp_text_view_is_active_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="@string/active"
+
+                android:textSize="20sp"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/vp_text_view_project_id" />
+        </LinearLayout>
+
+        <ScrollView
+            android:id="@+id/vp_scroll_view_project_description"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:nestedScrollingEnabled="true"
+
+            android:layout_marginTop="32dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/vp_linear_layout_is_active_block">
+            <TextView
+                android:id="@+id/vp_text_view_project_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:textSize="20sp"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/vp_linear_layout_is_active_block" />
+        </ScrollView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/vp_linear_layout_dates_block"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="24dp"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/vp_scroll_view_project_description">
+
+            <TextView
+                android:id="@+id/vp_text_view_created_at"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="@string/created_at"
+
+                android:textSize="20sp"
+
+                android:layout_marginEnd="58dp"
+
+                app:layout_constraintEnd_toStartOf="@id/vp_text_view_updated_at"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/vp_text_view_created_at_field"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:textSize="20sp"
+
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/vp_text_view_created_at" />
+
+            <TextView
+                android:id="@+id/vp_text_view_updated_at"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="@string/updated_at"
+
+                android:textSize="20sp"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/vp_text_view_created_at" />
+
+            <TextView
+                android:id="@+id/vp_text_view_updated_at_field"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:textSize="20sp"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/vp_text_view_updated_at" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
