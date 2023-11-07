@@ -3,11 +3,16 @@ package com.rtb.rtb.view.components
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import com.rtb.rtb.R
 import com.rtb.rtb.database.preferences.SharedPrefs
 import com.rtb.rtb.databinding.FragmentAppBarBinding
@@ -72,4 +77,16 @@ class AppBarFragment : Fragment() {
         val alertDialog = alertDialogBuilder.create()
         alertDialog.show()
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun setModule(module: String) {
+        if (module == "RMS") {
+            val moduleColor = Color.argb(255, 93, 63, 211)
+            binding.topAppBar.title = "RMS"
+            binding.topAppBar.setTitleTextColor(moduleColor)
+            binding.topAppBar.setNavigationIconTint(moduleColor)
+            binding.topAppBar.menu.findItem(R.id.logout).iconTintList = ColorStateList.valueOf(moduleColor)
+        }
+    }
+
 }

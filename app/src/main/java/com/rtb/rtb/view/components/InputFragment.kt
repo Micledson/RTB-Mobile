@@ -46,6 +46,11 @@ class InputFragment : Fragment() {
         binding.editTextInput.minWidth = width.dpToFloat().toInt()
     }
 
+    fun setLines(lines: Int) {
+        binding.editTextInput.isSingleLine = false
+        binding.editTextInput.setLines(lines)
+    }
+
     fun getText(): String {
         return binding.editTextInput.text.toString()
     }
