@@ -8,12 +8,7 @@ import kotlinx.parcelize.Parcelize
 import java.util.Date
 import java.util.UUID
 
-@Entity(foreignKeys = [ForeignKey(
-    entity = Project::class,
-    parentColumns = ["id"],
-    childColumns = ["id"],
-    onDelete = ForeignKey.CASCADE
-)])
+@Entity
 @Parcelize
 data class Requirement (
     @PrimaryKey

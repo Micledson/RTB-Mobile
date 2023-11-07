@@ -48,10 +48,10 @@ val MIGRATION_1_3 = object : Migration(1, 3) {
                 userStory TEXT NOT NULL,
                 priority TEXT NOT NULL,
                 project_id UUID NOT NULL,
-                `is_active` BOOLEAN NOT NULL,
-                `created_at` TEXT NOT NULL,
-                `updated_at` TEXT NOT NULL,
-                `deleted_at` TEXT NOT NULL,
+                is_active BOOLEAN NOT NULL,
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL,
+                deleted_at TEXT NOT NULL,
                 FOREIGN KEY (project_id) REFERENCES project (id)
             );
         """
