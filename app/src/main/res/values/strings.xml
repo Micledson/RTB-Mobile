@@ -19,6 +19,8 @@
     <string name="new_project">New Project</string>
     <string name="update_project">Update Project</string>
     <string name="new_requirement">New Requirement</string>
+    <string name="update_requirement">Update Requirement</string>
+    <string name="requirement_id">Requirement ID</string>
     <string name="requirement_title">Title</string>
     <string name="requirement_description">Description</string>
     <string name="requirement_user_story">User Story</string>

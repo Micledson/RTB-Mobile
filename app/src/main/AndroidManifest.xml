@@ -43,6 +43,9 @@
             android:name=".view.CreateRequirement"
             android:exported="false" />
         <activity
+            android:name=".view.UpdateRequirement"
+            android:exported="false" />
+        <activity
             android:name=".view.SignIn"
             android:exported="false" />
         <activity
