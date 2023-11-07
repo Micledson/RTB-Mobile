@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import com.rtb.rtb.model.Project
 
 @Dao
@@ -21,5 +22,8 @@ abstract class ProjectDao {
     abstract fun deleteProject(myProject : Project)
     @Insert
     abstract fun createProject(myProject : Project)
+
+    @Update
+    abstract fun updateProject(project: Project)
 
 }

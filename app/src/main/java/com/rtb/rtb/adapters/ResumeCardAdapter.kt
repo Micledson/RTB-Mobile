@@ -4,15 +4,19 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
 import com.rtb.rtb.R
 import com.rtb.rtb.database.DatabaseHelper
 import com.rtb.rtb.databinding.ComponentProjectCardBinding
 import com.rtb.rtb.model.Project
+import com.rtb.rtb.view.UpdateProject
 import com.rtb.rtb.view.ViewProject
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -58,7 +62,11 @@ class ResumeCardAdapter(val context: Context, val projects: MutableList<Project>
 
         val updateProject = projectCardBinding.pcImageViewEdit
         updateProject.setOnClickListener {
-            //TODO: Implement me
+            val intent = Intent(context, UpdateProject::class.java)
+
+            val project = getItem(i) as Project
+            intent.putExtra("uuid", project.id.toString())
+            context.startActivity(intent)
         }
 
         val deleteProject = projectCardBinding.pcImageViewDelete

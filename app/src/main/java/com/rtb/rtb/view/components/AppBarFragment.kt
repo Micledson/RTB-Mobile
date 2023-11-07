@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.google.android.material.appbar.MaterialToolbar
 import com.rtb.rtb.R
 import com.rtb.rtb.database.preferences.SharedPrefs
 import com.rtb.rtb.databinding.FragmentAppBarBinding
@@ -28,8 +29,6 @@ class AppBarFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentAppBarBinding.inflate(inflater, container, false)
-
-
 
         return binding.root
     }
