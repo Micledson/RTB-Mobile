@@ -4,14 +4,11 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.startActivity
 import com.rtb.rtb.R
 import com.rtb.rtb.database.DatabaseHelper
 import com.rtb.rtb.databinding.ComponentProjectCardBinding
@@ -44,17 +41,12 @@ class ResumeCardAdapter(val context: Context, val projects: MutableList<Project>
 
         projectSetup(projectCardBinding, i)
 
-        val selectProject = projectCardBinding.pcConstraintLayoutProjectContent
-        selectProject.setOnClickListener {
-            //TODO: Implement me
-        }
-
         val readProject = projectCardBinding.pcImageViewRead
         readProject.setOnClickListener {
             val projectCardIntent = Intent(context, ViewProject::class.java)
 
             val bundle = Bundle()
-            bundle.putParcelable("projectModel", projects[i])
+            bundle.putParcelable("readProject", projects[i])
 
             projectCardIntent.putExtras(bundle)
             context.startActivity(projectCardIntent)
@@ -79,7 +71,6 @@ class ResumeCardAdapter(val context: Context, val projects: MutableList<Project>
 
     private fun deleteProjectMethod(myProject: Project, i : Int) {
         val alertDialogBuilder = AlertDialog.Builder(context)
-        alertDialogBuilder.setIcon(R.drawable.baseline_are_you_sure_delete_24)
         alertDialogBuilder.setTitle("Delete this?")
         alertDialogBuilder.setMessage("This action cannot be undone!")
 

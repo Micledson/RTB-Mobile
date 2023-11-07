@@ -29,9 +29,9 @@ class ViewProject : BaseActivity() {
 
     private fun getProjectModelAccordingVersion(): Project? {
         val viewProject = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra("projectModel", Project::class.java)
+            intent.getParcelableExtra("readProject", Project::class.java)
         } else {
-            intent.getParcelableExtra("projectModel")
+            intent.getParcelableExtra("readProject")
         }
         return viewProject
     }
