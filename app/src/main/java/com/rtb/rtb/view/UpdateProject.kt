@@ -59,6 +59,8 @@ class UpdateProject : BaseActivity() {
         alias.setWidth(175F)
         alias.setText(project.alias)
 
+        binding.switch1.isChecked = project.isActive
+
         val button = buttonFragment.setupButton(getString(R.string.update))
         button.setOnClickListener {
             val isActive = binding.switch1.isChecked
