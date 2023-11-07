@@ -56,10 +56,7 @@ class CreateProject : AppCompatActivity() {
 
             dao.createProject(project)
 
-            sayMyName(projectName.getText())
-            sayMyName(description.getText())
-            sayMyName(alias.getText())
-
+            finish()
         }
 
     }
