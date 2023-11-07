@@ -73,7 +73,7 @@ class UpdateRequirement : BaseActivity() {
         priority.setSelection(position)
 
         configInputFields(title, description, userStory)
-        configUpdateRequirementButton(buttonFragment, type, title, description, userStory, priority, requirement.createdAt, requirement.id)
+        configUpdateRequirementButton(buttonFragment, type, title, description, userStory, priority, requirement.createdAt, requirement.projectId, requirement.id)
     }
 
     private fun getRequirementById(requirementId: UUID): Requirement {
@@ -98,6 +98,7 @@ class UpdateRequirement : BaseActivity() {
         userStory: InputFragment,
         priority: Spinner,
         createdAt: Date,
+        projectId: UUID,
         id: UUID
     ) {
         val button = buttonFragment.setupButton(getString(R.string.update), Color.argb(255, 93, 63, 211))
@@ -117,7 +118,7 @@ class UpdateRequirement : BaseActivity() {
                     descriptionText,
                     userStoryText,
                     priorityText,
-                    id,
+                    projectId,
                     true,
                     createdAt,
                     Calendar.getInstance().time,
