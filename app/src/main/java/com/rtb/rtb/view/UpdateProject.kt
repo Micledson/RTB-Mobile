@@ -28,7 +28,7 @@ class UpdateProject : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val uuid = UUID.fromString(intent.getStringExtra("uuid"))
+        val uuid = UUID.fromString(intent.getStringExtra(ID))
         getProject(uuid)
 
         val projectName = supportFragmentManager.findFragmentById(R.id.projectName) as InputFragment
@@ -75,6 +75,9 @@ class UpdateProject : BaseActivity() {
 
                 finish()
             }
+            else {
+                Toast.makeText(this, getString(R.string.required_field), Toast.LENGTH_SHORT).show()
+            }
 
         }
 
@@ -85,5 +88,8 @@ class UpdateProject : BaseActivity() {
 
     }
 
+    companion object {
+        const val ID: String = "uuid"
+    }
 
 }

@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">RTB</string>
+    <string name="rms">RMS</string>
 
     <string name="search_project">Search for Project</string>
     <string name="search_all">All</string>
@@ -48,11 +49,17 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
-    <string name="new_project_toast">Projeco criado com sucesso!</string>
-    <string name="update_project_toast">Projeto atualizado com sucesso!</string>
+    <string name="new_project_toast">Project created successfully!</string>
+    <string name="update_project_toast">Project updated successfully!</string>
 
-    <string name="required_field">O campo deve ser preenchido!</string>
+    <string name="required_field">The field must be filled!</string>
 
+    <string name="new_user">User created successfully!</string>
+    <string name="new_user_error">Unable to register user, please try again!</string>
+
+
+    <string name="requirement_must_linked">Requirement must be linked to a project!</string>
+    <string name="select_requirement_type">"Select the requirement type..."</string>
 
 
     <string name="lorem_ipsum">
