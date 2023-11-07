@@ -18,6 +18,11 @@
     <string name="updated_at">Updated At</string>
     <string name="new_project">New Project</string>
     <string name="update_project">Update Project</string>
+    <string name="new_requirement">New Requirement</string>
+    <string name="requirement_title">Title</string>
+    <string name="requirement_description">Description</string>
+    <string name="requirement_user_story">User Story</string>
+    <string name="requirement_type">Type</string>
     <string name="create">Create</string>
     <string name="update">Update</string>
     <string name="logout">Logout</string>
