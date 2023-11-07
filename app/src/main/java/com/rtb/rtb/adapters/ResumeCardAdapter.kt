@@ -13,6 +13,7 @@ import com.rtb.rtb.R
 import com.rtb.rtb.database.DatabaseHelper
 import com.rtb.rtb.databinding.ComponentProjectCardBinding
 import com.rtb.rtb.model.Project
+import com.rtb.rtb.view.RequirementHome
 import com.rtb.rtb.view.UpdateProject
 import com.rtb.rtb.view.ViewProject
 import java.text.SimpleDateFormat
@@ -40,6 +41,15 @@ class ResumeCardAdapter(val context: Context, val projects: MutableList<Project>
         val projectCardBinding = ComponentProjectCardBinding.inflate(projectCardInflater, viewGroup, false)
 
         projectSetup(projectCardBinding, i)
+
+        val selectProject = projectCardBinding.pcConstraintLayoutProjectContent
+        selectProject.setOnClickListener {
+            val projectCardIntent = Intent(context, RequirementHome::class.java)
+            val bundle = Bundle()
+            bundle.putString("projectId", projects[i].id.toString())
+            projectCardIntent.putExtras(bundle)
+            context.startActivity(projectCardIntent)
+        }
 
         val readProject = projectCardBinding.pcImageViewRead
         readProject.setOnClickListener {

@@ -32,7 +32,7 @@ abstract class DatabaseHelper : RoomDatabase() {
 
     companion object {
         fun getInstance(context: Context): DatabaseHelper {
-            return Room.databaseBuilder(context, DatabaseHelper::class.java, "rtb.db")
+            return Room.databaseBuilder(context, DatabaseHelper::class.java, "◊")
                 .allowMainThreadQueries()
                 .addMigrations(MIGRATION_2_3)
                 .build()

@@ -18,6 +18,8 @@
     <string name="updated_at">Updated At</string>
     <string name="new_project">New Project</string>
     <string name="update_project">Update Project</string>
+    <string name="requirement_home">Requirement Home</string>
+    <string name="search_requirement">Search for Requirement</string>
     <string name="new_requirement">New Requirement</string>
     <string name="update_requirement">Update Requirement</string>
     <string name="requirement_id">Requirement ID</string>
@@ -25,6 +27,10 @@
     <string name="requirement_description">Description</string>
     <string name="requirement_user_story">User Story</string>
     <string name="requirement_type">Type</string>
+    <string name="requirement_priority">Priority</string>
+    <string name="requirement_project">Project</string>
+    <string name="requirement_created_at">Created at</string>
+    <string name="requirement_updated_at">Updated at</string>
     <string name="create">Create</string>
     <string name="update">Update</string>
     <string name="logout">Logout</string>

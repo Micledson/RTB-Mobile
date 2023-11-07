@@ -19,7 +19,7 @@
             android:theme="@style/Theme.RTB">
         </activity>
         <activity
-            android:name=".view.Splash"
+            android:name=".view.ProjectHome"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,13 +31,16 @@
             android:name=".view.projectComponents.ProjectCardComponent"
             android:exported="false" />
         <activity
-            android:name=".view.ProjectHome"
-            android:exported="false" />
-        <activity
             android:name=".view.ViewProject"
             android:exported="false" />
         <activity
             android:name=".view.CreateProject"
+            android:exported="false" />
+        <activity
+            android:name=".view.RequirementHome"
+            android:exported="false" />
+        <activity
+            android:name=".view.ViewRequirement"
             android:exported="false" />
         <activity
             android:name=".view.CreateRequirement"
