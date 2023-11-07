@@ -46,7 +46,10 @@ class ProjectHome : BaseActivity() {
         projectListView.adapter = projectsCardAdapter
 
         searchedProjects.addTextChangedListener { newText ->
-            val searchProjects = dao.getProjectsByName(newText)
+            readAllProjects.setBackgroundColor(ContextCompat.getColor(this, R.color.blue_50))
+            readActiveProjects.setBackgroundColor(ContextCompat.getColor(this, R.color.green_50))
+            readInactiveProjects.setBackgroundColor(ContextCompat.getColor(this, R.color.red_50))
+            val searchProjects = dao.getProjectsByName(newText.lowercase())
 
             val searchProjectsCardAdapter = ResumeCardAdapter(this, searchProjects)
             projectListView.adapter = searchProjectsCardAdapter

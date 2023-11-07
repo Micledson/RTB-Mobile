@@ -1,6 +1,5 @@
 package com.rtb.rtb.view
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import com.rtb.rtb.R
@@ -47,7 +46,7 @@ class CreateProject : BaseActivity() {
 
             val project = Project(
                 UUID.randomUUID(),
-                projectName.getText(),
+                projectName.getText().lowercase(),
                 alias.getText(),
                 description.getText(),
                 isActive,

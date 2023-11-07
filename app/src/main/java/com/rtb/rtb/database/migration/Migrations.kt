@@ -37,7 +37,7 @@ val MIGRATION_1_2 = object : Migration(1, 2) {
     }
 }
 
-val MIGRATION_1_3 = object : Migration(1, 3) {
+val MIGRATION_2_3 = object : Migration(2, 3) {
     override fun migrate(database: SupportSQLiteDatabase) {
         val sql = """ 
             CREATE TABLE IF NOT EXISTS RequirementModel (

@@ -1,17 +1,9 @@
 package com.rtb.rtb.view
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
 import com.rtb.rtb.R
 import com.rtb.rtb.database.DatabaseHelper
-import com.rtb.rtb.databinding.ActivityCreateProjectBinding
 import com.rtb.rtb.databinding.ActivityUpdateProjectBinding
 import com.rtb.rtb.model.Project
 import com.rtb.rtb.view.components.AppBarFragment
