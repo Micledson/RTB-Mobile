@@ -35,6 +35,7 @@ class ProjectHome : BaseActivity() {
 
         val searchedProjects = supportFragmentManager.findFragmentById(R.id.ph_text_input_search_project) as InputFragment
         searchedProjects.setHint(getString(R.string.search_project))
+        searchedProjects.configSearchInputType()
 
         val readAllProjects = binding.phButtonAll
         readAllProjects.setBackgroundColor(ContextCompat.getColor(this, R.color.blue))

@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textfield.TextInputLayout.END_ICON_PASSWORD_TOGGLE
 import com.rtb.rtb.R
 import com.rtb.rtb.databinding.FragmentInputBinding
@@ -60,6 +61,13 @@ class InputFragment : Fragment() {
         binding.editTextInput.inputType =
             InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
         binding.textInputLayout.endIconMode = END_ICON_PASSWORD_TOGGLE
+    }
+
+    fun configSearchInputType() {
+        binding.editTextInput.inputType =
+            InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_FILTER
+        binding.textInputLayout.endIconMode = TextInputLayout.END_ICON_CUSTOM
+        binding.textInputLayout.setEndIconDrawable(R.drawable.baseline_search_24)
     }
 
     private fun Float.dpToFloat(): Float {
