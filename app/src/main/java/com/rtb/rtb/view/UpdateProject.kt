@@ -57,21 +57,25 @@ class UpdateProject : BaseActivity() {
         button.setOnClickListener {
             val isActive = binding.switch1.isChecked
 
-            val project = Project(
-                uuid,
-                projectName.getText(),
-                alias.getText(),
-                description.getText(),
-                isActive,
-                Date(),
-                Date(),
-                null
-            )
-            dao.updateProject(project)
+            if (projectName.hasText() && description.hasText() && alias.hasText()) {
+                val project = Project(
+                    uuid,
+                    projectName.getText(),
+                    alias.getText(),
+                    description.getText(),
+                    isActive,
+                    Date(),
+                    Date(),
+                    null
+                )
+                dao.updateProject(project)
 
-            Toast.makeText(this, getString(R.string.update_project_toast), Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.update_project_toast), Toast.LENGTH_SHORT)
+                    .show()
 
-            finish()
+                finish()
+            }
+
         }
 
     }

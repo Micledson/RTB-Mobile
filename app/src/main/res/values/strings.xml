@@ -49,6 +49,8 @@
     <string name="new_project_toast">Projeco criado com sucesso!</string>
     <string name="update_project_toast">Projeto atualizado com sucesso!</string>
 
+    <string name="required_field">O campo deve ser preenchido!</string>
+
 
 
     <string name="lorem_ipsum">
