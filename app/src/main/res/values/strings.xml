@@ -19,6 +19,7 @@
     <string name="new_project">New Project</string>
     <string name="update_project">Update Project</string>
     <string name="create">Create</string>
+    <string name="update">Update</string>
     <string name="logout">Logout</string>
     <string name="logout_description">Logout description</string>
     <string name="back">Back</string>
