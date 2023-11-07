@@ -25,9 +25,12 @@
             app:titleCentered="true"
             app:titleTextColor="@color/yellow"
             android:background="@color/white"
-            style="@style/Widget.MaterialComponents.Toolbar.Primary"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary" />
 
-            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/white" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
