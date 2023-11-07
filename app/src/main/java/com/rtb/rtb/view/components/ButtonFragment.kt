@@ -1,5 +1,6 @@
 package com.rtb.rtb.view.components
 
+import android.graphics.PorterDuff
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -30,6 +31,7 @@ class ButtonFragment : Fragment() {
         binding.btn.text = text
         binding.btn.setBackgroundColor(color)
         binding.btn.setBackgroundResource(R.drawable.rounded_button)
+        binding.btn.background.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
         return binding.btn
     }
 

@@ -34,6 +34,9 @@
             android:name=".view.CreateProject"
             android:exported="false" />
         <activity
+            android:name=".view.CreateRequirement"
+            android:exported="false" />
+        <activity
             android:name=".view.SignIn"
             android:exported="false" />
         <activity
