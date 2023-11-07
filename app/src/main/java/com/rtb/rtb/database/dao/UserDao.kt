@@ -10,6 +10,9 @@ abstract class UserDao {
     @Query("SELECT * FROM user WHERE email = :email AND password = :password")
     abstract fun authenticate(email : String, password : String) : User?
 
+    @Query("SELECT 1 FROM user WHERE email = :email")
+    abstract fun getUserByEmail(email : String) : Boolean
+
     @Insert
-    abstract fun save(user : User): Long
+    abstract fun save(user : User)
 }

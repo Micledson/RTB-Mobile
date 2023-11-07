@@ -11,7 +11,7 @@ import com.rtb.rtb.model.User
 import com.rtb.rtb.database.dao.UserDao
 import com.rtb.rtb.model.Project
 import com.rtb.rtb.util.converter.Converter
-import com.rtb.rtb.database.migration.MIGRATION_1_3
+import com.rtb.rtb.database.migration.MIGRATION_2_3
 import com.rtb.rtb.model.Requirement
 
 @Database(
@@ -34,7 +34,7 @@ abstract class DatabaseHelper : RoomDatabase() {
         fun getInstance(context: Context): DatabaseHelper {
             return Room.databaseBuilder(context, DatabaseHelper::class.java, "rtb.db")
                 .allowMainThreadQueries()
-                .addMigrations(MIGRATION_1_3)
+                .addMigrations(MIGRATION_2_3)
                 .build()
         }
     }

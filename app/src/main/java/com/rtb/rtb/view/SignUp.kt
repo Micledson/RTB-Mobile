@@ -6,11 +6,14 @@ import com.rtb.rtb.R
 import com.rtb.rtb.model.User
 import com.rtb.rtb.database.DatabaseHelper
 import com.rtb.rtb.databinding.ActivitySignUpBinding
+import com.rtb.rtb.messages.SignUpMessages
 import com.rtb.rtb.util.ValidatorUtils
 import com.rtb.rtb.view.components.ButtonFragment
 import com.rtb.rtb.view.components.InputFragment
 
 class SignUp : BaseActivity() {
+    private val signUpMessages = SignUpMessages()
+
     private val binding by lazy {
         ActivitySignUpBinding.inflate(layoutInflater)
     }
@@ -79,20 +82,20 @@ class SignUp : BaseActivity() {
             val isUserValid = validateUser(emailAddressText, firstNameText, lastNameText, passwordText, confirmPasswordText)
             if (isUserValid) {
                 val user = User(
-                    emailAddressText,
+                    emailAddressText.lowercase(),
                     firstNameText,
                     lastNameText,
                     passwordText
                 )
 
-                val result = dao.save(user)
-                if (result > 0) {
-                    showMessage("Usuário cadastrado com sucesso!")
+                try {
+                    dao.save(user)
+                    showMessage("User created successfully!")
                     val intent = Intent(this, ProjectHome::class.java)
                     startActivity(intent)
                     finish()
-                } else {
-                    showMessage("Não foi possível cadastrar o usuário, tente novamente!")
+                } catch (e: Exception) {
+                    showMessage("Unable to register user, please try again!")
                 }
             }
         }
@@ -106,31 +109,34 @@ class SignUp : BaseActivity() {
         confirmPassword: String?
     ): Boolean {
         if (emailAddress.isNullOrEmpty()) {
-            showMessage("O campo de endereço de e-mail não pode estar vazio!")
+            showMessage(signUpMessages.emailIsNullErrorMessage)
             return false
         } else if (!ValidatorUtils.isEmailValid(emailAddress)) {
-            showMessage("O campo de endereço de e-mail não possui um formato válido!")
+            showMessage(signUpMessages.emailIsInvalidErrorMessage)
             return false
         } else if(firstName.isNullOrEmpty()) {
-            showMessage("O campo de primeiro nome não pode estar vazio!")
+            showMessage(signUpMessages.firstNameIsNullErrorMessage)
             return false
         } else if(lastName.isNullOrEmpty()) {
-            showMessage("O campo de último nome não pode estar vazio!")
+            showMessage(signUpMessages.lastNameIsNullErrorMessage)
             return false
         } else if(password.isNullOrEmpty()) {
-            showMessage("O campo de senha não pode estar vazio!")
+            showMessage(signUpMessages.passwordIsNullErrorMessage)
             return false
         } else if(password.length < 6) {
-            showMessage("O campo de senha precisa ter pelo menos 6 caracteres!")
+            showMessage(signUpMessages.passwordIsInvalidErrorMessage)
             return false
         } else if(confirmPassword.isNullOrEmpty()) {
-            showMessage("O campo de confirmação da senha não pode estar vazio!")
+            showMessage(signUpMessages.passwordConfirmationIsNullErrorMessage)
             return false
         } else if(confirmPassword.length < 6) {
-            showMessage("O campo de confirmação da senha precisa ter pelo menos 6 caracteres!")
+            showMessage(signUpMessages.passwordConfirmationIsInvalidErrorMessage)
             return false
         } else if (password != confirmPassword) {
-            showMessage("A senha e a confirmação da senha precisam ser iguais!")
+            showMessage(signUpMessages.passwordsIsNotEqualsErrorMessage)
+            return false
+        } else if (dao.getUserByEmail(emailAddress)) {
+            showMessage(signUpMessages.emailIsAlreadyRegisteredErrorMessage)
             return false
         }
 
