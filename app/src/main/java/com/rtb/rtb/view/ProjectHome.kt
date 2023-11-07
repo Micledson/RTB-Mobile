@@ -25,7 +25,7 @@ class ProjectHome : BaseActivity() {
         setContentView(binding.root)
 
         val appBar = supportFragmentManager.findFragmentById(R.id.appBar) as AppBarFragment
-        appBar.setupAppBar(this)
+        appBar.setupAppBar(this, true)
     }
 
     override fun onResume() {

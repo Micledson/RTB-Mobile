@@ -74,20 +74,14 @@ class InputFragment : Fragment() {
 
     fun addTextChangedListener(textChangeCallback: (String) -> Unit) {
         binding.editTextInput.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                val newText = s.toString()
-                textChangeCallback(newText)
-            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val newText = s.toString()
                 textChangeCallback(newText)
             }
 
-            override fun afterTextChanged(s: Editable?) {
-                val newText = s.toString()
-                textChangeCallback(newText)
-            }
+            override fun afterTextChanged(s: Editable?) {}
         })
     }
 }
