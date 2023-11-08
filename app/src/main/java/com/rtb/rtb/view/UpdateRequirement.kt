@@ -1,7 +1,6 @@
 package com.rtb.rtb.view
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.widget.ArrayAdapter
@@ -28,139 +27,174 @@ class UpdateRequirement : BaseActivity() {
         DatabaseHelper.getInstance(this).requirementDao()
     }
 
+    private val projectDao by lazy {
+        DatabaseHelper.getInstance(this).projectDao()
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
         val requirementId = UUID.fromString(intent.getStringExtra("requirementId"))
-        val requirement = getRequirementById(requirementId)
+        val requirement = dao.getRequirementById(requirementId)
 
-        val appBar = supportFragmentManager.findFragmentById(R.id.appBar) as AppBarFragment
+        val appBar = supportFragmentManager.findFragmentById(R.id.app_bar) as AppBarFragment
         appBar.setupAppBar(this)
-        appBar.setModule("RMS")
+        appBar.setModule(getString(R.string.rms))
 
-        val requirementIdTextView = findViewById<TextView>(R.id.update_requirement_requirement_id)
+        val requirementCodeTextView = findViewById<TextView>(R.id.update_requirement_requirement_code)
+        requirementCodeTextView.text = getString(R.string.requirement_code_value,
+            projectDao.getProjectAliasByProjectId(requirement.projectId), requirement.code)
+
         val type = findViewById<Spinner>(R.id.update_requirement_type)
-        val title = supportFragmentManager.findFragmentById(R.id.update_requirement_title) as InputFragment
-        val description = supportFragmentManager.findFragmentById(R.id.update_requirement_description) as InputFragment
-        val userStory = supportFragmentManager.findFragmentById(R.id.update_requirement_user_story) as InputFragment
-        val priority = findViewById<Spinner>(R.id.update_requirement_priority)
-        val buttonFragment = supportFragmentManager.findFragmentById(R.id.update_requirement_button) as ButtonFragment
-
-        requirementIdTextView.text = requirementId.toString()
-
-        var options = listOf("Select the requirement type...", "Functional Requirement", "Non-Functional Requirement", "Inverse Requirement", "Business Rule")
+        var options = listOf(
+            getString(R.string.requirement_select_type),
+            getString(R.string.requirement_select_type_functional),
+            getString(R.string.requirement_select_type_non_functional),
+            getString(R.string.requirement_select_type_inverse),
+            getString(R.string.requirement_select_type_business_rule)
+        )
         var adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         type.adapter = adapter
         var position = options.indexOf(requirement.type)
         type.setSelection(position)
 
-        title.setText(requirement.title)
+        val origin = findViewById<Spinner>(R.id.update_requirement_origin)
+        options = listOf(
+            getString(R.string.requirement_select_origin),
+            getString(R.string.requirement_select_origin_product),
+            getString(R.string.requirement_select_origin_organization),
+            getString(R.string.requirement_select_origin_external),
+        )
+        adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        origin.adapter = adapter
+        position = options.indexOf(requirement.origin)
+        origin.setSelection(position)
 
-        description.setLines(5)
-        description.setText(requirement.description)
-
-        userStory.setLines(5)
-        userStory.setText(requirement.userStory)
-
-        options = listOf("Select the requirement priority...", "Urgent", "High", "Normal", "Low")
+        val priority = findViewById<Spinner>(R.id.update_requirement_priority)
+        options = listOf(
+            getString(R.string.requirement_select_priority),
+            getString(R.string.requirement_select_priority_urgent),
+            getString(R.string.requirement_select_priority_high),
+            getString(R.string.requirement_select_priority_normal),
+            getString(R.string.requirement_select_priority_low),
+        )
         adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         priority.adapter = adapter
         position = options.indexOf(requirement.priority)
         priority.setSelection(position)
 
-        configInputFields(title, description, userStory)
-        configUpdateRequirementButton(buttonFragment, type, title, description, userStory, priority, requirement.createdAt, requirement.projectId, requirement.id)
-    }
+        val title = supportFragmentManager.findFragmentById(R.id.update_requirement_title) as InputFragment
+        title.setText(requirement.title)
 
-    private fun getRequirementById(requirementId: UUID): Requirement {
-        return dao.getRequirementById(requirementId)
+        val userStory = supportFragmentManager.findFragmentById(R.id.update_requirement_user_story) as InputFragment
+        userStory.setLines(5)
+        userStory.setText(requirement.userStory)
+
+        val notes = supportFragmentManager.findFragmentById(R.id.update_requirement_notes) as InputFragment
+        notes.setLines(5)
+        notes.setText(requirement.notes)
+
+        val buttonFragment = supportFragmentManager.findFragmentById(R.id.update_requirement_button) as ButtonFragment
+
+        configInputFields(title, userStory, notes)
+        configUpdateRequirementButton(buttonFragment, requirement.id, requirement.code, type,
+            origin, priority, title, userStory, notes, requirement.projectId, requirement.createdAt)
     }
 
     private fun configInputFields(
         title: InputFragment,
-        description: InputFragment,
-        userStory: InputFragment
+        userStory: InputFragment,
+        notes: InputFragment
     ) {
         title.setHint(getString(R.string.requirement_title))
-        description.setHint(getString(R.string.requirement_description))
         userStory.setHint(getString(R.string.requirement_user_story))
+        notes.setHint(getString(R.string.requirement_notes))
     }
 
     private fun configUpdateRequirementButton(
         buttonFragment: ButtonFragment,
+        id: UUID,
+        code: Int,
         type: Spinner,
-        title: InputFragment,
-        description: InputFragment,
-        userStory: InputFragment,
+        origin: Spinner,
         priority: Spinner,
-        createdAt: Date,
+        title: InputFragment,
+        userStory: InputFragment,
+        notes: InputFragment,
         projectId: UUID,
-        id: UUID
+        createdAt: Date,
     ) {
-        val button = buttonFragment.setupButton(getString(R.string.update), Color.argb(255, 93, 63, 211))
+        val button = buttonFragment.setupButton(getString(R.string.update), getColor(R.color.rms_purple))
         button.setOnClickListener {
             val typeText = type.selectedItem.toString()
-            val titleText = title.getText()
-            val descriptionText = description.getText()
-            val userStoryText = userStory.getText()
+            val originText = origin.selectedItem.toString()
             val priorityText = priority.selectedItem.toString()
+            val titleText = title.getText()
+            val userStoryText = userStory.getText()
+            val notesText = notes.getText()
 
-            val isRequirementValid = validateRequirement(typeText, titleText, descriptionText, userStoryText, priorityText, id)
+            val isRequirementValid = validateRequirement(id, typeText, originText, priorityText, titleText, userStoryText)
             if (isRequirementValid) {
                 val requirement = Requirement(
                     id,
+                    code,
                     typeText,
-                    titleText,
-                    descriptionText,
-                    userStoryText,
+                    originText,
                     priorityText,
+                    titleText,
+                    userStoryText,
+                    notesText,
                     projectId,
-                    true,
                     createdAt,
                     Calendar.getInstance().time,
                     null
                 )
 
-                dao.updateRequirement(requirement)
-                showMessage("Requirement successfully updated!")
+                try {
+                    dao.updateRequirement(requirement)
+                    showMessage(getString(R.string.requirement_updated_successfully))
 
-                val intent = Intent(this, ProjectHome::class.java)
-                startActivity(intent)
+                    val intent = Intent(this, ProjectHome::class.java)
+                    startActivity(intent)
 
-                finish()
+                    finish()
+                } catch (e: Exception) {
+                    showMessage(getString(R.string.requirement_not_updated))
+                }
             }
         }
     }
 
     private fun validateRequirement(
+        id: UUID?,
         type: String?,
-        title: String?,
-        description: String?,
-        userStory: String?,
+        origin: String?,
         priority: String?,
-        id: UUID?
+        title: String?,
+        userStory: String?
     ): Boolean {
         if (id == null){
-            showMessage("Requirement ID not found!")
+            showMessage(getString(R.string.requirement_id_validation))
             return false
-        } else if (type.equals("Select the requirement type...")) {
-            showMessage("Requirement Type needs to be selected!")
+        } else if (type.equals(getString(R.string.requirement_select_type))) {
+            showMessage(getString(R.string.requirement_type_field_validation))
+            return false
+        } else if (origin.equals(getString(R.string.requirement_select_origin))) {
+            showMessage(getString(R.string.requirement_origin_field_validation))
+            return false
+        } else if (priority.equals(getString(R.string.requirement_select_priority))) {
+            showMessage(getString(R.string.requirement_priority_field_validation))
             return false
         } else if (title.isNullOrEmpty()) {
-            showMessage("Title field cannot be empty!")
-            return false
-        } else if(description.isNullOrEmpty()) {
-            showMessage("Description field cannot be empty!")
+            showMessage(getString(R.string.requirement_title_field_validation))
             return false
         } else if(userStory.isNullOrEmpty()) {
-            showMessage("User Story field cannot be empty!")
-            return false
-        } else if(priority.equals("Select the requirement priority...")) {
-            showMessage("Requirement Priority needs to be selected!")
+            showMessage(getString(R.string.requirement_user_story_field_validation))
             return false
         }
 

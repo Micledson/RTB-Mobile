@@ -4,14 +4,12 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.rtb.rtb.R
 import com.rtb.rtb.database.preferences.SharedPrefs
@@ -80,12 +78,12 @@ class AppBarFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun setModule(module: String) {
-        if (module == "RMS") {
-            val moduleColor = Color.argb(255, 93, 63, 211)
-            binding.topAppBar.title = "RMS"
-            binding.topAppBar.setTitleTextColor(moduleColor)
-            binding.topAppBar.setNavigationIconTint(moduleColor)
-            binding.topAppBar.menu.findItem(R.id.logout).iconTintList = ColorStateList.valueOf(moduleColor)
+        if (module == getString(R.string.rms)) {
+            val mainModuleColor = requireContext().getColor(R.color.rms_purple)
+            binding.topAppBar.title = getString(R.string.rms)
+            binding.topAppBar.setTitleTextColor(mainModuleColor)
+            binding.topAppBar.setNavigationIconTint(mainModuleColor)
+            binding.topAppBar.menu.findItem(R.id.logout).iconTintList = ColorStateList.valueOf(mainModuleColor)
         }
     }
 
