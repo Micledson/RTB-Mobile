@@ -22,6 +22,9 @@ abstract class ProjectDao {
     @Query("SELECT * FROM project WHERE id = :uuid")
     abstract fun getProjectByUUID(uuid: UUID) : Project
 
+    @Query("SELECT alias FROM project WHERE id = :uuid")
+    abstract fun getProjectAliasByProjectId(uuid: UUID) : String
+
     @Delete
     abstract fun deleteProject(myProject : Project)
     @Insert

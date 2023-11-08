@@ -42,13 +42,14 @@ val MIGRATION_2_3 = object : Migration(2, 3) {
         val sql = """ 
             CREATE TABLE IF NOT EXISTS RequirementModel (
                 id UUID PRIMARY KEY,
+                code INTEGER NOT NULL,
                 type TEXT NOT NULL,
-                title TEXT NOT NULL,
-                description TEXT NOT NULL,
-                userStory TEXT NOT NULL,
+                origin TEXT NOT NULL,
                 priority TEXT NOT NULL,
+                title TEXT NOT NULL,
+                userStory TEXT NOT NULL,
+                notes TEXT NOT NULL,
                 project_id UUID NOT NULL,
-                is_active BOOLEAN NOT NULL,
                 created_at TEXT NOT NULL,
                 updated_at TEXT NOT NULL,
                 deleted_at TEXT NOT NULL,

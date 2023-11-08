@@ -21,9 +21,10 @@
     <string name="update_project">Update Project</string>
     <string name="new_requirement">New Requirement</string>
     <string name="update_requirement">Update Requirement</string>
-    <string name="requirement_id">Requirement ID</string>
+    <string name="requirement_code">Requirement Code</string>
+    <string name="requirement_code_value">%1$s-%2$d</string>
     <string name="requirement_title">Title</string>
-    <string name="requirement_description">Description</string>
+    <string name="requirement_notes">Notes</string>
     <string name="requirement_user_story">User Story</string>
     <string name="requirement_type">Type</string>
     <string name="create">Create</string>
@@ -57,9 +58,36 @@
     <string name="new_user">User created successfully!</string>
     <string name="new_user_error">Unable to register user, please try again!</string>
 
+    <string name="requirement_registered_successfully">Requirement successfully registered!</string>
+    <string name="requirement_not_registered">The requirement could not be registered, please try again!</string>
 
-    <string name="requirement_must_linked">Requirement must be linked to a project!</string>
-    <string name="select_requirement_type">"Select the requirement type..."</string>
+    <string name="requirement_updated_successfully">Requirement successfully updated!</string>
+    <string name="requirement_not_updated">The requirement could not be updated, please try again!</string>
+
+    <string name="requirement_select_type">Select type…</string>
+    <string name="requirement_select_type_functional">Functional Requirement</string>
+    <string name="requirement_select_type_non_functional">Non-Functional Requirement</string>
+    <string name="requirement_select_type_inverse">Inverse Requirement</string>
+    <string name="requirement_select_type_business_rule">Business Rule</string>
+
+    <string name="requirement_select_origin">Select origin…</string>
+    <string name="requirement_select_origin_product">Product</string>
+    <string name="requirement_select_origin_organization">Organizational</string>
+    <string name="requirement_select_origin_external">External</string>
+
+    <string name="requirement_select_priority">Select priority…</string>
+    <string name="requirement_select_priority_urgent">Urgent</string>
+    <string name="requirement_select_priority_high">High</string>
+    <string name="requirement_select_priority_normal">Normal</string>
+    <string name="requirement_select_priority_low">Low</string>
+
+    <string name="requirement_id_validation">Requirement ID not found!</string>
+    <string name="requirement_project_id_validation">Requirement must be linked to a project!</string>
+    <string name="requirement_type_field_validation">Requirement Type needs to be selected!</string>
+    <string name="requirement_origin_field_validation">Requirement Origin needs to be selected!</string>
+    <string name="requirement_priority_field_validation">Requirement Priority needs to be selected!</string>
+    <string name="requirement_title_field_validation">Title field cannot be empty!</string>
+    <string name="requirement_user_story_field_validation">User Story field cannot be empty!</string>
 
 
     <string name="lorem_ipsum">

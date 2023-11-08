@@ -16,6 +16,9 @@ abstract class RequirementDao {
     @Update
     abstract fun updateRequirement(requirement: Requirement)
 
-    @Query("SELECT * FROM requirement WHERE id = :uuid")
+    @Query("SELECT * FROM requirement WHERE id = :uuid AND deletedAt IS NULL")
     abstract fun getRequirementById(uuid: UUID) : Requirement
+
+    @Query("SELECT code FROM requirement WHERE id = :uuid AND deletedAt IS NULL ORDER BY code DESC LIMIT 1")
+    abstract fun getLastRequirementCodeByProjectId(uuid: UUID) : Int
 }
