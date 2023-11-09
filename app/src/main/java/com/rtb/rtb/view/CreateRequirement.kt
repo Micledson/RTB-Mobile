@@ -13,7 +13,7 @@ import com.rtb.rtb.model.Requirement
 import com.rtb.rtb.view.components.AppBarFragment
 import com.rtb.rtb.view.components.ButtonFragment
 import com.rtb.rtb.view.components.InputFragment
-import java.util.Calendar
+import java.util.Date
 import java.util.UUID
 
 class CreateRequirement : BaseActivity() {
@@ -127,20 +127,14 @@ class CreateRequirement : BaseActivity() {
                     userStoryText,
                     notesText,
                     projectId,
-                    Calendar.getInstance().time,
-                    null,
+                    Date(),
+                    Date(),
                     null
                 )
 
                 try {
                     dao.createRequirement(requirement)
                     showMessage(getString(R.string.requirement_registered_successfully))
-
-                    val intent = Intent(this, RequirementHome::class.java)
-                    val bundle = Bundle()
-                    bundle.putString("projectId", projectId.toString())
-                    intent.putExtras(bundle)
-                    startActivity(intent)
 
                     finish()
                 } catch (e: Exception) {
