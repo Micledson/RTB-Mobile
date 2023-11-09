@@ -17,6 +17,7 @@
     <color name="black_900">#59000000</color>
     <color name="dark_gray">#4C4C4C</color>
     <color name="light_gray">#F5F5F5</color>
+    <color name="medium_gray">#C9C9C9</color>
     <color name="gray">#808080</color>
     <color name="white">#FFFFFFFF</color>
     <color name="yellow">#F8C304</color>

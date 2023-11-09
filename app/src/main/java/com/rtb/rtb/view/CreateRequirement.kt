@@ -136,7 +136,10 @@ class CreateRequirement : BaseActivity() {
                     dao.createRequirement(requirement)
                     showMessage(getString(R.string.requirement_registered_successfully))
 
-                    val intent = Intent(this, ProjectHome::class.java)
+                    val intent = Intent(this, RequirementHome::class.java)
+                    val bundle = Bundle()
+                    bundle.putString("projectId", projectId.toString())
+                    intent.putExtras(bundle)
                     startActivity(intent)
 
                     finish()
