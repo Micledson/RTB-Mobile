@@ -2,6 +2,7 @@ package com.rtb.rtb.view.components
 
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputFilter
 import android.text.InputType
 import android.text.TextWatcher
 import androidx.fragment.app.Fragment
@@ -111,4 +112,8 @@ class InputFragment : Fragment() {
         return false
     }
 
+    fun setMaxLenght(maxLength: Int) {
+        val inputFilter = InputFilter.LengthFilter(maxLength)
+        binding.editTextInput.filters = arrayOf(inputFilter)
+    }
 }

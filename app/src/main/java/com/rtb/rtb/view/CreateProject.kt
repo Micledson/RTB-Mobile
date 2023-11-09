@@ -34,12 +34,15 @@ class CreateProject : BaseActivity() {
         appBar.setupAppBar(this)
 
         projectName.setHint(getString(R.string.project_name))
+        projectName.setMaxLenght(30)
 
         description.setHint(getString(R.string.description))
         description.setHeight(175F)
+        description.setLines(5)
 
         alias.setHint(getString(R.string.project_alias))
         alias.setWidth(175F)
+        alias.setMaxLenght(12)
 
         val button = buttonFragment.setupButton(getString(R.string.create))
         button.setOnClickListener {
@@ -53,7 +56,7 @@ class CreateProject : BaseActivity() {
                     description.getText(),
                     isActive,
                     Date(),
-                    null,
+                    Date(),
                     null
                 )
 

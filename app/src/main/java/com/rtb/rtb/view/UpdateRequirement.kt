@@ -159,12 +159,6 @@ class UpdateRequirement : BaseActivity() {
                     dao.updateRequirement(requirement)
                     showMessage(getString(R.string.requirement_updated_successfully))
 
-                    val intent = Intent(this, RequirementHome::class.java)
-                    val bundle = Bundle()
-                    bundle.putString("projectId", projectId.toString())
-                    intent.putExtras(bundle)
-                    startActivity(intent)
-
                     finish()
                 } catch (e: Exception) {
                     showMessage(getString(R.string.requirement_not_updated))
