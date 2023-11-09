@@ -10,27 +10,27 @@ import java.util.UUID
 
 @Dao
 abstract class ProjectDao {
-    @Query("SELECT * FROM project")
+    @Insert
+    abstract fun createProject(myProject : Project)
+
+    @Query("SELECT * FROM project WHERE id = :uuid AND deletedAt IS NULL")
+    abstract fun getProjectByUUID(uuid: UUID) : Project
+
+    @Query("SELECT * FROM project WHERE deletedAt IS NULL ORDER BY name")
     abstract fun getProjects() : MutableList<Project>
 
-    @Query("SELECT * FROM project WHERE isActive = :isActive")
+    @Query("SELECT * FROM project WHERE isActive = :isActive AND deletedAt IS NULL ORDER BY name")
     abstract fun getProjectsByIsActive(isActive : Boolean) : MutableList<Project>
 
-    @Query("SELECT * FROM project WHERE name LIKE '%' || :name || '%'")
+    @Query("SELECT * FROM project WHERE name LIKE '%' || :name || '%' AND deletedAt IS NULL ORDER BY name")
     abstract fun getProjectsByName(name : String) : MutableList<Project>
-
-    @Query("SELECT * FROM project WHERE id = :uuid")
-    abstract fun getProjectByUUID(uuid: UUID) : Project
 
     @Query("SELECT alias FROM project WHERE id = :uuid")
     abstract fun getProjectAliasByProjectId(uuid: UUID) : String
 
-    @Delete
-    abstract fun deleteProject(myProject : Project)
-    @Insert
-    abstract fun createProject(myProject : Project)
-
     @Update
     abstract fun updateProject(project: Project)
 
+    @Delete
+    abstract fun deleteProject(myProject : Project)
 }

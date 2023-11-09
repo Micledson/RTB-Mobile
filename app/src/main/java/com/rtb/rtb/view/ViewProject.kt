@@ -43,8 +43,8 @@ class ViewProject : BaseActivity() {
         binding.vpTextViewProjectDescription.text = viewProject?.description
 
         if (!viewProject?.isActive!!) {
-            binding.vpImageViewIsActiveIcon.setImageResource(R.drawable.baseline_inactive_24)
-            binding.vpTextViewIsActiveText.text = getString(R.string.inactive)
+            binding.vpTextViewIsActive.setCompoundDrawablesRelativeWithIntrinsicBounds(getDrawable(R.drawable.baseline_inactive_24), null, null, null)
+            binding.vpTextViewIsActive.text = getString(R.string.inactive)
         }
 
         val dateConverter = SimpleDateFormat("MM/dd/yyyy", Locale.US)
