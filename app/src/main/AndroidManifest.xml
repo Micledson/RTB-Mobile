@@ -40,6 +40,12 @@
             android:name=".view.CreateProject"
             android:exported="false" />
         <activity
+            android:name=".view.RequirementHome"
+            android:exported="false" />
+        <activity
+            android:name=".view.ViewRequirement"
+            android:exported="false" />
+        <activity
             android:name=".view.CreateRequirement"
             android:exported="false" />
         <activity
