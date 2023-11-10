@@ -46,8 +46,8 @@ class ViewRequirement : AppCompatActivity() {
         binding.vrRequirementNotesValue.text = requirement?.notes
 
         val dateConverter = SimpleDateFormat("MM/dd/yyyy", Locale.US)
-        val createdAt = dateConverter.format(requirement?.createdAt)
-        val updatedAt = dateConverter.format(requirement?.updatedAt)
+        val createdAt = dateConverter.format(requirement?.createdAt!!)
+        val updatedAt = dateConverter.format(requirement.updatedAt!!)
 
         binding.vrRequirementCreatedAtValue.text = createdAt
         binding.vrRequirementUpdatedAtValue.text = updatedAt

@@ -43,14 +43,17 @@ class UpdateProject : BaseActivity() {
 
         projectName.setHint(getString(R.string.project_name))
         projectName.setText(project.name)
+        projectName.setMaxLenght(30)
 
         description.setHint(getString(R.string.description))
         description.setHeight(175F)
         description.setText(project.description)
+        description.setLines(5)
 
         alias.setHint(getString(R.string.project_alias))
         alias.setWidth(175F)
         alias.setText(project.alias)
+        alias.setMaxLenght(12)
 
         binding.switch1.isChecked = project.isActive
 

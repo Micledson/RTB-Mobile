@@ -21,10 +21,13 @@ abstract class RequirementDao {
     @Query("SELECT * FROM requirement")
     abstract fun getRequirements() : MutableList<Requirement>
 
+    @Query("SELECT * FROM requirement WHERE projectId = :uuid")
+    abstract fun getRequirementsByProjectId(uuid: UUID) : MutableList<Requirement>
+
     @Query("SELECT * FROM requirement WHERE id = :uuid AND deletedAt IS NULL")
     abstract fun getRequirementById(uuid: UUID) : Requirement
 
-    @Query("SELECT requirement.code FROM requirement INNER JOIN project WHERE project.id = :uuid AND requirement.deletedAt IS NULL ORDER BY requirement.code DESC LIMIT 1")
+    @Query("SELECT requirement.code FROM requirement WHERE projectId = :uuid AND requirement.deletedAt IS NULL ORDER BY requirement.code DESC LIMIT 1")
     abstract fun getLastRequirementCodeByProjectId(uuid: UUID) : Int
 
     @Delete

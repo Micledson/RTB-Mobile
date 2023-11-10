@@ -64,7 +64,7 @@ class RequirementHome : AppCompatActivity() {
     }
 
     private fun setupListView() {
-        val requirements = dao.getRequirements()
+        val requirements = dao.getRequirementsByProjectId(projectId)
         val project = projectDao.getProjectByUUID(projectId)
         val requirementListView = binding.rhListViewOfRequirements
         val requirementsCardAdapter = RequirementResumeCardAdapter(this, requirements, project)
