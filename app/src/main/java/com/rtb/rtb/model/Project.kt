@@ -22,7 +22,7 @@ data class Project (
     val description: String,
     val isActive: Boolean,
     val createdAt: Date,
-    val updatedAt: Date?,
+    val updatedAt: Date,
     val deletedAt: Date?,
     val owner: String?
 ): Parcelable

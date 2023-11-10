@@ -28,7 +28,7 @@ val MIGRATION_1_2 = object : Migration(1, 2) {
             `description` TEXT NOT NULL,
             `is_active` BOOLEAN NOT NULL,
             `created_at` TEXT NOT NULL,
-            `updated_at` TEXT,
+            `updated_at` TEXT NOT NULL,
             `deleted_at` TEXT,
             `owner` TEXT NOT NULL,
             FOREIGN KEY (owner) REFERENCES user (email));
