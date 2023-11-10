@@ -22,15 +22,16 @@ val MIGRATION_1_2 = object : Migration(1, 2) {
     override fun migrate(database: SupportSQLiteDatabase) {
         val sql = """
            CREATE TABLE IF NOT EXISTS `Project` (
-            `id` TEXT NOT NULL,
+            `id` UUID PRIMARY KEY,
             `name` TEXT NOT NULL,
             `alias` TEXT NOT NULL,
             `description` TEXT NOT NULL,
             `is_active` BOOLEAN NOT NULL,
             `created_at` TEXT NOT NULL,
-            `updated_at` TEXT NOT NULL,
-            `deleted_at` TEXT NOT NULL,
-            PRIMARY KEY(`id`));
+            `updated_at` TEXT,
+            `deleted_at` TEXT,
+            `owner` TEXT NOT NULL,
+            FOREIGN KEY (owner) REFERENCES user (email));
         """
 
         database.execSQL(sql)
