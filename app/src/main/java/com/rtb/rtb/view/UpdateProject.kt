@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.Toast
 import com.rtb.rtb.R
 import com.rtb.rtb.database.DatabaseHelper
+import com.rtb.rtb.database.preferences.SharedPrefs
 import com.rtb.rtb.databinding.ActivityUpdateProjectBinding
 import com.rtb.rtb.model.Project
 import com.rtb.rtb.view.components.AppBarFragment
@@ -69,7 +70,8 @@ class UpdateProject : BaseActivity() {
                     isActive,
                     Date(),
                     Date(),
-                    null
+                    null,
+                    SharedPrefs(this).getUserEmail()
                 )
                 dao.updateProject(project)
 

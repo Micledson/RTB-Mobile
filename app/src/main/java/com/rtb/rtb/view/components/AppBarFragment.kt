@@ -63,6 +63,7 @@ class AppBarFragment : Fragment() {
         alertDialogBuilder.setPositiveButton("Exit") { dialog, _ ->
             dialog.dismiss()
             SharedPrefs(context).setUserValue(false)
+            SharedPrefs(context).setUserEmail(null)
 
             val intent = Intent(context, SignIn::class.java)
             startActivity(intent)

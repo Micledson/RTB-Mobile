@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat
 import com.rtb.rtb.R
 import com.rtb.rtb.adapters.ResumeCardAdapter
 import com.rtb.rtb.database.DatabaseHelper
+import com.rtb.rtb.database.preferences.SharedPrefs
 import com.rtb.rtb.databinding.ActivityProjectHomeBinding
 import com.rtb.rtb.view.components.AppBarFragment
 import com.rtb.rtb.view.components.ButtonFragment
@@ -31,7 +32,9 @@ class ProjectHome : BaseActivity() {
     override fun onResume() {
         super.onResume()
 
-        var projects = dao.getProjects()
+        val loggedUserEmail = SharedPrefs(this).getUserEmail()
+
+        var projects = loggedUserEmail?.let { dao.getProjects(it) }
 
         val searchedProjects = supportFragmentManager.findFragmentById(R.id.ph_text_input_search_project) as InputFragment
         searchedProjects.setHint(getString(R.string.search_project))
@@ -43,16 +46,17 @@ class ProjectHome : BaseActivity() {
         val readInactiveProjects = binding.phButtonInactivates
 
         val projectListView = binding.phListViewOfProjects
-        var projectsCardAdapter = ResumeCardAdapter(this, projects)
+        var projectsCardAdapter = projects?.let { ResumeCardAdapter(this, it) }
         projectListView.adapter = projectsCardAdapter
 
         searchedProjects.addTextChangedListener { newText ->
             readAllProjects.setBackgroundColor(ContextCompat.getColor(this, R.color.blue_50))
             readActiveProjects.setBackgroundColor(ContextCompat.getColor(this, R.color.green_50))
             readInactiveProjects.setBackgroundColor(ContextCompat.getColor(this, R.color.red_50))
-            val searchProjects = dao.getProjectsByName(newText.lowercase())
+            val searchProjects =
+                loggedUserEmail?.let { dao.getProjectsByName(newText.lowercase(), it) }
 
-            val searchProjectsCardAdapter = ResumeCardAdapter(this, searchProjects)
+            val searchProjectsCardAdapter = searchProjects?.let { ResumeCardAdapter(this, it) }
             projectListView.adapter = searchProjectsCardAdapter
         }
 
@@ -61,9 +65,9 @@ class ProjectHome : BaseActivity() {
             readActiveProjects.setBackgroundColor(ContextCompat.getColor(this, R.color.green_50))
             readInactiveProjects.setBackgroundColor(ContextCompat.getColor(this, R.color.red_50))
 
-            projects = dao.getProjects()
+            projects = loggedUserEmail?.let { owner -> dao.getProjects(owner) }
 
-            projectsCardAdapter = ResumeCardAdapter(this, projects)
+            projectsCardAdapter = ResumeCardAdapter(this, projects!!)
             projectListView.adapter = projectsCardAdapter
         }
 
@@ -72,9 +76,13 @@ class ProjectHome : BaseActivity() {
             readActiveProjects.setBackgroundColor(ContextCompat.getColor(this, R.color.green))
             readInactiveProjects.setBackgroundColor(ContextCompat.getColor(this, R.color.red_50))
 
-            val activeProjects = dao.getProjectsByIsActive(true)
+            val activeProjects = loggedUserEmail?.let { owner ->
+                dao.getProjectsByIsActive(true, owner)
+            }
 
-            val activeProjectsCardAdapter = ResumeCardAdapter(this, activeProjects)
+            val activeProjectsCardAdapter = activeProjects?.let { activeProjectsCardAdapter ->
+                ResumeCardAdapter(this, activeProjectsCardAdapter)
+            }
             projectListView.adapter = activeProjectsCardAdapter
         }
 
@@ -83,9 +91,11 @@ class ProjectHome : BaseActivity() {
             readActiveProjects.setBackgroundColor(ContextCompat.getColor(this, R.color.green_50))
             readInactiveProjects.setBackgroundColor(ContextCompat.getColor(this, R.color.red))
 
-            val inactivateProjects = dao.getProjectsByIsActive(false)
+            val inactivateProjects =
+                loggedUserEmail?.let { owner -> dao.getProjectsByIsActive(false, owner) }
 
-            val inactiveProjectsCardAdapter = ResumeCardAdapter(this, inactivateProjects)
+            val inactiveProjectsCardAdapter =
+                inactivateProjects?.let { inactiveProjectsCardAdapter -> ResumeCardAdapter(this, inactiveProjectsCardAdapter) }
             projectListView.adapter = inactiveProjectsCardAdapter
         }
 

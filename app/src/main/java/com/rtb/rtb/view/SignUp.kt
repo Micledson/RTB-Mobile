@@ -5,6 +5,7 @@ import android.os.Bundle
 import com.rtb.rtb.R
 import com.rtb.rtb.model.User
 import com.rtb.rtb.database.DatabaseHelper
+import com.rtb.rtb.database.preferences.SharedPrefs
 import com.rtb.rtb.databinding.ActivitySignUpBinding
 import com.rtb.rtb.messages.SignUpMessages
 import com.rtb.rtb.util.ValidatorUtils
@@ -90,6 +91,7 @@ class SignUp : BaseActivity() {
 
                 try {
                     dao.save(user)
+                    SharedPrefs(this).setUserEmail(emailAddressText)
                     showMessage(getString(R.string.new_user))
                     val intent = Intent(this, ProjectHome::class.java)
                     startActivity(intent)
