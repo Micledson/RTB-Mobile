@@ -17,7 +17,7 @@ class SharedPrefs (context: Context) {
         return sharedPrefs.getBoolean(userKey, false)
     }
 
-    fun setUserEmail(value : String) {
+    fun setUserEmail(value : String?) {
         sharedPrefs.edit().putString(emailKey, value).apply()
     }
 

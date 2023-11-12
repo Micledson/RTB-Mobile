@@ -59,7 +59,7 @@ class SignIn : BaseActivity() {
         button.setOnClickListener {
             dao.authenticate(emailAddress.getText().lowercase(), password.getText())?.let {
                 SharedPrefs(this).setUserValue(true)
-                SharedPrefs(this).setUserEmail(emailAddress.getText())
+                SharedPrefs(this).setUserEmail(emailAddress.getText().lowercase())
 
                 val intent = Intent(this, ProjectHome::class.java)
                 startActivity(intent)
