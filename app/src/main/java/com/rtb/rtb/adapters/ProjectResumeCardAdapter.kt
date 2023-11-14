@@ -19,7 +19,7 @@ import com.rtb.rtb.view.ViewProject
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class ResumeCardAdapter(val context: Context, val projects: MutableList<Project>): BaseAdapter() {
+class ProjectResumeCardAdapter(val context: Context, val projects: MutableList<Project>): BaseAdapter() {
     private val dao by lazy {
         DatabaseHelper.getInstance(context).projectDao()
     }
@@ -44,31 +44,31 @@ class ResumeCardAdapter(val context: Context, val projects: MutableList<Project>
 
         val selectProject = projectCardBinding.pcConstraintLayoutProjectContent
         selectProject.setOnClickListener {
-            val projectCardIntent = Intent(context, RequirementHome::class.java)
+            val selectProjectIntent = Intent(context, RequirementHome::class.java)
             val bundle = Bundle()
             bundle.putString("projectId", projects[i].id.toString())
-            projectCardIntent.putExtras(bundle)
-            context.startActivity(projectCardIntent)
+            selectProjectIntent.putExtras(bundle)
+            context.startActivity(selectProjectIntent)
         }
 
         val readProject = projectCardBinding.pcImageViewRead
         readProject.setOnClickListener {
-            val projectCardIntent = Intent(context, ViewProject::class.java)
+            val readProjectIntent = Intent(context, ViewProject::class.java)
 
             val bundle = Bundle()
             bundle.putParcelable("readProject", projects[i])
 
-            projectCardIntent.putExtras(bundle)
-            context.startActivity(projectCardIntent)
+            readProjectIntent.putExtras(bundle)
+            context.startActivity(readProjectIntent)
         }
 
         val updateProject = projectCardBinding.pcImageViewEdit
         updateProject.setOnClickListener {
-            val intent = Intent(context, UpdateProject::class.java)
+            val updateProjectIntent = Intent(context, UpdateProject::class.java)
 
             val project = getItem(i) as Project
-            intent.putExtra("uuid", project.id.toString())
-            context.startActivity(intent)
+            updateProjectIntent.putExtra("uuid", project.id.toString())
+            context.startActivity(updateProjectIntent)
         }
 
         val deleteProject = projectCardBinding.pcImageViewDelete

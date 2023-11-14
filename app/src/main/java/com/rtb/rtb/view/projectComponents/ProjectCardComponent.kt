@@ -14,13 +14,4 @@ class ProjectCardComponent : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
     }
-
-    override fun onResume() {
-        super.onResume()
-
-        val selectProject = binding.pcConstraintLayoutProjectContent
-        selectProject.setOnClickListener {
-            //TODO: Implement me
-        }
-    }
 }
