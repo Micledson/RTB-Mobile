@@ -7,6 +7,8 @@ import com.rtb.rtb.database.DatabaseHelper
 import com.rtb.rtb.database.preferences.SharedPrefs
 import com.rtb.rtb.databinding.ActivityUpdateProjectBinding
 import com.rtb.rtb.model.Project
+import com.rtb.rtb.model.toRequest
+import com.rtb.rtb.networks.ProjectRepository
 import com.rtb.rtb.view.components.AppBarFragment
 import com.rtb.rtb.view.components.ButtonFragment
 import com.rtb.rtb.view.components.InputFragment
@@ -73,6 +75,7 @@ class UpdateProject : BaseActivity() {
                     null,
                     SharedPrefs(this).getUserEmail()
                 )
+                updateProject(uuid, project)
                 dao.updateProject(project)
 
                 Toast.makeText(this, getString(R.string.update_project_toast), Toast.LENGTH_SHORT)
@@ -92,6 +95,12 @@ class UpdateProject : BaseActivity() {
         project = dao.getProjectByUUID(uuid)
 
     }
+
+    private fun updateProject(id: UUID, project: Project) {
+        val projectRepository = ProjectRepository()
+        projectRepository.updateProject(this, id, project.toRequest())
+    }
+
 
     companion object {
         const val ID: String = "uuid"
