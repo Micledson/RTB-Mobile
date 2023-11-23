@@ -100,8 +100,8 @@ class CreateRequirement : BaseActivity() {
                 )
 
                 try {
-                    //val requirementRepository = RequirementRepository()
-                    //requirementRepository.createRequirement(this, requirement.toRequest())
+                    val requirementRepository = RequirementRepository()
+                    requirementRepository.createRequirement(this, requirement.toRequest())
                     dao.createRequirement(requirement)
                     showMessage(getString(R.string.requirement_registered_successfully))
 

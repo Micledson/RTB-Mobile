@@ -17,8 +17,8 @@ class RequirementRepository {
     val retrofit = ApiService.instance
     val service = retrofit.create(RequirementInterface::class.java)
 
-    fun getRequirements(callback: (List<RequirementResponse>?) -> Unit) {
-        val request = service.getRequirements()
+    fun getRequirements(projectId: UUID? = null, callback: (List<RequirementResponse>?) -> Unit) {
+        val request = service.getRequirements(projectId)
 
         request.enqueue(object : Callback<List<RequirementResponse>> {
             override fun onResponse(
@@ -67,10 +67,7 @@ class RequirementRepository {
                 call: Call<Void>,
                 response: Response<Void>
             ) {
-                if (response.isSuccessful) {
-                    Toast.makeText(context, "Requisito criado", Toast.LENGTH_SHORT)
-                        .show()
-                } else {
+                if (!response.isSuccessful) {
                     Toast.makeText(context, "Erro ${response.errorBody()}", Toast.LENGTH_SHORT)
                         .show()
                 }
@@ -92,10 +89,7 @@ class RequirementRepository {
                 call: Call<Void>,
                 response: Response<Void>
             ) {
-                if (response.isSuccessful) {
-                    Toast.makeText(context, "Requirement Atualizado", Toast.LENGTH_SHORT)
-                        .show()
-                } else {
+                if (!response.isSuccessful) {
                     Toast.makeText(context, "Erro ${response.errorBody()}", Toast.LENGTH_SHORT)
                         .show()
                 }
@@ -117,10 +111,7 @@ class RequirementRepository {
                 call: Call<Void>,
                 response: Response<Void>
             ) {
-                if (response.isSuccessful) {
-                    Toast.makeText(context, "Requirement deletado", Toast.LENGTH_SHORT)
-                        .show()
-                } else {
+                if (!response.isSuccessful) {
                     Toast.makeText(context, "Erro ${response.errorBody()}", Toast.LENGTH_SHORT)
                         .show()
                 }

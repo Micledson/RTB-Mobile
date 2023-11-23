@@ -15,7 +15,7 @@ import java.util.UUID
 interface RequirementInterface {
     @GET("/api/requirements")
     fun getRequirements(
-        @Query("projectID") projectId: Int? = null
+        @Query("projectID") projectId: UUID? = null
     ): Call<List<RequirementResponse>>
 
 

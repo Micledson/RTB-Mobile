@@ -66,8 +66,6 @@ class ProjectRepository {
                 response: Response<ProjectResponse>
             ) {
                 if (response.isSuccessful) {
-                    Toast.makeText(context, "Projeto criado", Toast.LENGTH_SHORT)
-                        .show()
                     response.body()?.let { callback.invoke(it) }
                 } else {
                     Toast.makeText(context, "Erro ${response.errorBody()}", Toast.LENGTH_SHORT)
@@ -91,10 +89,7 @@ class ProjectRepository {
                 call: Call<ProjectResponse>,
                 response: Response<ProjectResponse>
             ) {
-                if (response.isSuccessful) {
-                    Toast.makeText(context, "Projeto Atualizado", Toast.LENGTH_SHORT)
-                        .show()
-                } else {
+                if (!response.isSuccessful) {
                     Toast.makeText(context, "Erro ${response.errorBody()}", Toast.LENGTH_SHORT)
                         .show()
                 }
