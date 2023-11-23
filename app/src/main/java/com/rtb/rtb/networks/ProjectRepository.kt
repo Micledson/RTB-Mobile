@@ -36,6 +36,27 @@ class ProjectRepository {
         })
     }
 
+    fun getProjectByID(id: UUID, callback: (ProjectResponse?) -> Unit) {
+        val request = service.getProjectByID(id)
+
+        request.enqueue(object : Callback<ProjectResponse> {
+            override fun onResponse(
+                call: Call<ProjectResponse>,
+                response: Response<ProjectResponse>
+            ) {
+                if (response.isSuccessful) {
+                    callback.invoke(response.body())
+                } else {
+                    callback.invoke(null)
+                }
+            }
+
+            override fun onFailure(call: Call<ProjectResponse>, t: Throwable) {
+                callback.invoke(null)
+            }
+        })
+    }
+
     fun createProject(context: Context, body: ProjectRequest) {
         val request = service.createProject(body)
 

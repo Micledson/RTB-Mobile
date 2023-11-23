@@ -58,6 +58,7 @@
 
     <string name="new_project_toast">Project created successfully!</string>
     <string name="update_project_toast">Project updated successfully!</string>
+    <string name="error_getting_project_toast">Error getting project!</string>
 
     <string name="required_field">The field must be filled!</string>
 

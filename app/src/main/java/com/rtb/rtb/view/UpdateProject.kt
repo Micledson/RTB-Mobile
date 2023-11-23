@@ -1,17 +1,24 @@
 package com.rtb.rtb.view
 
 import android.os.Bundle
+import android.view.View
+import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.rtb.rtb.R
 import com.rtb.rtb.database.DatabaseHelper
 import com.rtb.rtb.database.preferences.SharedPrefs
 import com.rtb.rtb.databinding.ActivityUpdateProjectBinding
 import com.rtb.rtb.model.Project
+import com.rtb.rtb.model.fromResponse
 import com.rtb.rtb.model.toRequest
 import com.rtb.rtb.networks.ProjectRepository
 import com.rtb.rtb.view.components.AppBarFragment
 import com.rtb.rtb.view.components.ButtonFragment
 import com.rtb.rtb.view.components.InputFragment
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import java.util.Date
 import java.util.UUID
 
@@ -30,10 +37,37 @@ class UpdateProject : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
+        val bodyLayout = findViewById<ConstraintLayout>(R.id.body_constraint_layout)
+
+        progressBar.visibility = View.VISIBLE
+        bodyLayout.visibility = View.GONE
 
         val uuid = UUID.fromString(intent.getStringExtra(ID))
-        getProject(uuid)
 
+        runBlocking {
+            withContext(Dispatchers.IO) {
+                val projectRepository = ProjectRepository()
+                projectRepository.getProjectByID(uuid) { projectResponse ->
+                    if (projectResponse != null) {
+                        project = fromResponse(projectResponse)
+                        progressBar.visibility = View.GONE
+                        bodyLayout.visibility = View.VISIBLE
+                        setupProjectUI(uuid)
+                    } else {
+                        Toast.makeText(
+                            this@UpdateProject,
+                            getString(R.string.error_getting_project_toast),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        finish()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setupProjectUI(uuid: UUID) {
         val projectName = supportFragmentManager.findFragmentById(R.id.projectName) as InputFragment
         val description =
             supportFragmentManager.findFragmentById(R.id.projectDescription) as InputFragment
@@ -82,18 +116,11 @@ class UpdateProject : BaseActivity() {
                     .show()
 
                 finish()
-            }
-            else {
+            } else {
                 Toast.makeText(this, getString(R.string.required_field), Toast.LENGTH_SHORT).show()
             }
 
         }
-
-    }
-
-    private fun getProject(uuid: UUID) {
-        project = dao.getProjectByUUID(uuid)
-
     }
 
     private fun updateProject(id: UUID, project: Project) {
