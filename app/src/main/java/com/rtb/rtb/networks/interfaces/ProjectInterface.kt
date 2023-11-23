@@ -4,6 +4,7 @@ import com.rtb.rtb.networks.dto.request.ProjectRequest
 import com.rtb.rtb.networks.dto.response.ProjectResponse
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
@@ -23,4 +24,7 @@ interface ProjectInterface {
 
     @PUT("/api/projects/{id}")
     fun updateProject(@Path("id") id: UUID, @Body body: ProjectRequest): Call<ProjectResponse>
+
+    @DELETE("/api/projects/{id}")
+    fun deleteProject(@Path("id") id: UUID): Call<Void>
 }

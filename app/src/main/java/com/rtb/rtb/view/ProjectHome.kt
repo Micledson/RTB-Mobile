@@ -4,24 +4,24 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ListView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.rtb.rtb.R
 import com.rtb.rtb.adapters.ProjectResumeCardAdapter
-import com.rtb.rtb.database.DatabaseHelper
-import com.rtb.rtb.database.preferences.SharedPrefs
 import com.rtb.rtb.databinding.ActivityProjectHomeBinding
 import com.rtb.rtb.model.Project
+import com.rtb.rtb.model.fromResponse
+import com.rtb.rtb.networks.ProjectRepository
 import com.rtb.rtb.view.components.AppBarFragment
 import com.rtb.rtb.view.components.ButtonFragment
 import com.rtb.rtb.view.components.InputFragment
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 class ProjectHome : BaseActivity() {
     private val binding by lazy {
         ActivityProjectHomeBinding.inflate(layoutInflater)
-    }
-
-    private val dao by lazy {
-        DatabaseHelper.getInstance(this).projectDao()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,9 +35,6 @@ class ProjectHome : BaseActivity() {
     override fun onResume() {
         super.onResume()
 
-        val loggedUserEmail = SharedPrefs(this).getUserEmail()
-        var projects = loggedUserEmail?.let { dao.getProjects(it) }
-
         val searchedProjects = supportFragmentManager.findFragmentById(R.id.ph_text_input_search_project) as InputFragment
         searchedProjects.setHint(getString(R.string.search_project))
         searchedProjects.configSearchInputType()
@@ -48,20 +45,39 @@ class ProjectHome : BaseActivity() {
         val readInactiveProjects = binding.phButtonInactivates
 
         val projectListView = binding.phListViewOfProjects
-        var projectsCardAdapter = projects?.let { ProjectResumeCardAdapter(this, it) }
-        projectListView.adapter = projectsCardAdapter
 
-        callSearchedProjects(searchedProjects, readAllProjects, readActiveProjects,
-            readInactiveProjects, loggedUserEmail, projectListView)
+        val projectList = mutableListOf<Project>()
 
-        callAllProjects(readAllProjects, readActiveProjects, readInactiveProjects,
-            loggedUserEmail, projectListView)
+        runBlocking {
+            withContext(Dispatchers.IO){
+                try {
+                    val projectRepository = ProjectRepository()
+                    projectRepository.getProjects {
+                        it?.map { project ->
+                            projectList.add(fromResponse(project))
+                        }
 
-        callActiveProjects(readActiveProjects, readAllProjects, readInactiveProjects,
-            loggedUserEmail, projectListView)
+                        val projectsCardAdapter =  ProjectResumeCardAdapter(this@ProjectHome, projectList)
+                        projectListView.adapter = projectsCardAdapter
 
-        callInactiveProjects(readInactiveProjects, readAllProjects, readActiveProjects,
-            loggedUserEmail, projectListView)
+                        callSearchedProjects(searchedProjects, readAllProjects, readActiveProjects, readInactiveProjects, projectListView)
+
+                        callAllProjects(readAllProjects, readActiveProjects, readInactiveProjects, projectListView)
+
+                        callActiveProjects(readActiveProjects, readAllProjects, readInactiveProjects, projectListView)
+
+                        callInactiveProjects(readInactiveProjects, readAllProjects, readActiveProjects, projectListView)
+                    }
+                } catch (e: Exception) {
+                    Toast.makeText(
+                        this@ProjectHome,
+                        "An unexpected error appeared",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    finish()
+                }
+            }
+        }
 
         val createProject = supportFragmentManager.findFragmentById(R.id.ph_button_new_project) as ButtonFragment
         val createButton = createProject.setupButton(getString(R.string.new_project))
@@ -71,73 +87,166 @@ class ProjectHome : BaseActivity() {
         }
     }
 
-    private fun callInactiveProjects(readInactiveProjects: Button, readAllProjects: Button, readActiveProjects: Button,
-        loggedUserEmail: String?, projectListView: ListView) {
+    private fun callInactiveProjects(
+        readInactiveProjects: Button,
+        readAllProjects: Button,
+        readActiveProjects: Button,
+        projectListView: ListView,
+    ) {
         readInactiveProjects.setOnClickListener {
             readAllProjects.setBackgroundColor(ContextCompat.getColor(this, R.color.blue_50))
             readActiveProjects.setBackgroundColor(ContextCompat.getColor(this, R.color.green_50))
             readInactiveProjects.setBackgroundColor(ContextCompat.getColor(this, R.color.red))
 
-            val inactivateProjects =
-                loggedUserEmail?.let { owner -> dao.getProjectsByIsActive(false, owner) }
+            val inactiveProjectList = mutableListOf<Project>()
 
-            val inactiveProjectsCardAdapter =
-                inactivateProjects?.let { inactiveProjectsCardAdapter ->
-                    ProjectResumeCardAdapter(
-                        this,
-                        inactiveProjectsCardAdapter
-                    )
+            runBlocking {
+                withContext(Dispatchers.IO){
+                    try {
+                        val projectRepository = ProjectRepository()
+                        projectRepository.getProjects {
+                            it?.map { project ->
+                                if (project.isActive == false) {
+                                    inactiveProjectList.add(fromResponse(project))
+                                }
+                            }
+
+                            val inactiveProjectCardAdapter =  ProjectResumeCardAdapter(this@ProjectHome, inactiveProjectList)
+                            projectListView.adapter = inactiveProjectCardAdapter
+                        }
+                    } catch (e: Exception) {
+                        Toast.makeText(
+                            this@ProjectHome,
+                            "An unexpected error appeared",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        finish()
+                    }
                 }
-            projectListView.adapter = inactiveProjectsCardAdapter
+            }
         }
     }
 
-    private fun callActiveProjects(readActiveProjects: Button, readAllProjects: Button,
-       readInactiveProjects: Button, loggedUserEmail: String?, projectListView: ListView) {
+    private fun callActiveProjects(
+        readActiveProjects: Button,
+        readAllProjects: Button,
+        readInactiveProjects: Button,
+        projectListView: ListView,
+    ) {
         readActiveProjects.setOnClickListener {
             readAllProjects.setBackgroundColor(ContextCompat.getColor(this, R.color.blue_50))
             readActiveProjects.setBackgroundColor(ContextCompat.getColor(this, R.color.green))
             readInactiveProjects.setBackgroundColor(ContextCompat.getColor(this, R.color.red_50))
 
-            val activeProjects = loggedUserEmail?.let { owner ->
-                dao.getProjectsByIsActive(true, owner)
-            }
+            val activeProjectList = mutableListOf<Project>()
 
-            val activeProjectsCardAdapter = activeProjects?.let { activeProjectsCardAdapter ->
-                ProjectResumeCardAdapter(this, activeProjectsCardAdapter)
+            runBlocking {
+                withContext(Dispatchers.IO){
+                    try {
+                        val projectRepository = ProjectRepository()
+                        projectRepository.getProjects {
+                            it?.map { project ->
+                                if (project.isActive == true) {
+                                    activeProjectList.add(fromResponse(project))
+                                }
+                            }
+
+                            val activeProjectCardAdapter =  ProjectResumeCardAdapter(this@ProjectHome, activeProjectList)
+                            projectListView.adapter = activeProjectCardAdapter
+                        }
+                    } catch (e: Exception) {
+                        Toast.makeText(
+                            this@ProjectHome,
+                            "An unexpected error appeared",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        finish()
+                    }
+                }
             }
-            projectListView.adapter = activeProjectsCardAdapter
         }
     }
 
-    private fun callAllProjects(readAllProjects: Button, readActiveProjects: Button, readInactiveProjects: Button,
-        loggedUserEmail: String?, projectListView: ListView) {
-        var projects: MutableList<Project>?
-        var projectsCardAdapter: ProjectResumeCardAdapter?
+    private fun callAllProjects(
+        readAllProjects: Button,
+        readActiveProjects: Button,
+        readInactiveProjects: Button,
+        projectListView: ListView,
+    ) {
         readAllProjects.setOnClickListener {
             readAllProjects.setBackgroundColor(ContextCompat.getColor(this, R.color.blue))
             readActiveProjects.setBackgroundColor(ContextCompat.getColor(this, R.color.green_50))
             readInactiveProjects.setBackgroundColor(ContextCompat.getColor(this, R.color.red_50))
 
-            projects = loggedUserEmail?.let { owner -> dao.getProjects(owner) }
+            val projectList = mutableListOf<Project>()
 
-            projectsCardAdapter = ProjectResumeCardAdapter(this, projects!!)
-            projectListView.adapter = projectsCardAdapter
+            runBlocking {
+                withContext(Dispatchers.IO){
+                    try {
+                        val projectRepository = ProjectRepository()
+                        projectRepository.getProjects {
+                            it?.map { project ->
+                                projectList.add(fromResponse(project))
+                            }
+
+                            val projectCardAdapter =  ProjectResumeCardAdapter(this@ProjectHome, projectList)
+                            projectListView.adapter = projectCardAdapter
+                        }
+                    } catch (e: Exception) {
+                        Toast.makeText(
+                            this@ProjectHome,
+                            "An unexpected error appeared",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        finish()
+                    }
+                }
+            }
         }
     }
 
-    private fun callSearchedProjects(searchedProjects: InputFragment, readAllProjects: Button, readActiveProjects: Button,
-         readInactiveProjects: Button, loggedUserEmail: String?, projectListView: ListView) {
+    private fun callSearchedProjects(
+        searchedProjects: InputFragment,
+        readAllProjects: Button,
+        readActiveProjects: Button,
+        readInactiveProjects: Button,
+        projectListView: ListView,
+        ) {
         searchedProjects.addTextChangedListener { newText ->
             readAllProjects.setBackgroundColor(ContextCompat.getColor(this, R.color.blue_50))
             readActiveProjects.setBackgroundColor(ContextCompat.getColor(this, R.color.green_50))
             readInactiveProjects.setBackgroundColor(ContextCompat.getColor(this, R.color.red_50))
-            val searchProjects =
-                loggedUserEmail?.let { dao.getProjectsByName(newText.lowercase(), it) }
 
-            val searchProjectsCardAdapter =
-                searchProjects?.let { ProjectResumeCardAdapter(this, it) }
-            projectListView.adapter = searchProjectsCardAdapter
+            val searchedProjectList = mutableListOf<Project>()
+
+            runBlocking {
+                withContext(Dispatchers.IO){
+                    try {
+                        val projectRepository = ProjectRepository()
+                        projectRepository.getProjects { projectsResponse ->
+                            projectsResponse?.let {
+                                val filteredProjects = it.filter { project ->
+                                    project.name!!.contains(newText, ignoreCase = true)
+                                }
+
+                                searchedProjectList.addAll(filteredProjects.map { filteredProject ->
+                                    fromResponse(filteredProject)
+                                })
+                            }
+
+                            val searchedProjectsCardAdapter =  ProjectResumeCardAdapter(this@ProjectHome, searchedProjectList)
+                            projectListView.adapter = searchedProjectsCardAdapter
+                        }
+                    } catch (e: Exception) {
+                        Toast.makeText(
+                            this@ProjectHome,
+                            "An unexpected error appeared",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        finish()
+                    }
+                }
+            }
         }
     }
 }

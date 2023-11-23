@@ -108,6 +108,30 @@ class ProjectRepository {
         })
     }
 
+    fun deleteProject(context: Context, id: UUID) {
+        val request = service.deleteProject(id)
+
+        request.enqueue(object : Callback<Void> {
+            override fun onResponse(
+                call: Call<Void>,
+                response: Response<Void>
+            ) {
+                if (response.isSuccessful) {
+                    Toast.makeText(context, "Project Deleted Successfully!", Toast.LENGTH_SHORT)
+                        .show()
+                } else {
+                    Toast.makeText(context, "Error deleting project: ${response.errorBody()}", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Toast.makeText(context, "Error deleting project: ${t.message}", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        })
+    }
+
 }
 
 

@@ -13,6 +13,7 @@ import com.rtb.rtb.R
 import com.rtb.rtb.database.DatabaseHelper
 import com.rtb.rtb.databinding.ComponentProjectCardBinding
 import com.rtb.rtb.model.Project
+import com.rtb.rtb.networks.ProjectRepository
 import com.rtb.rtb.view.RequirementHome
 import com.rtb.rtb.view.UpdateProject
 import com.rtb.rtb.view.ViewProject
@@ -85,6 +86,8 @@ class ProjectResumeCardAdapter(val context: Context, val projects: MutableList<P
         alertDialogBuilder.setMessage("This action cannot be undone!")
 
         alertDialogBuilder.setPositiveButton("Delete") { dialog, _ ->
+            val projectRepository = ProjectRepository()
+            projectRepository.deleteProject(context, myProject.id)
             dao.deleteProject(myProject)
             projects.removeAt(i)
             notifyDataSetChanged()

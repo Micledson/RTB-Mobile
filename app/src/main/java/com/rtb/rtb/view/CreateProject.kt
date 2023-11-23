@@ -1,7 +1,6 @@
 package com.rtb.rtb.view
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import com.rtb.rtb.R
 import com.rtb.rtb.database.DatabaseHelper
@@ -75,13 +74,6 @@ class CreateProject : BaseActivity() {
         }
 
     }
-
-//    fun getProjects() {
-//        val todoRepository = ProjectRepository()
-//        todoRepository.getProjects {
-//            it?.map { project -> }
-//        }
-//    }
 
     private fun createProject(project: Project) {
         val projectRepository = ProjectRepository()
