@@ -38,12 +38,12 @@ class ViewRequirement : AppCompatActivity() {
 
         binding.vrRequirementCodeValue.text = "${project?.alias}-${requirement?.code}"
         binding.vrRequirementTitleValue.text = requirement?.title
-        binding.vrRequirementTypeValue.text = requirement?.type
-        binding.vrRequirementOriginValue.text = requirement?.origin
-        binding.vrRequirementPriorityValue.text = requirement?.priority
+        binding.vrRequirementTypeValue.text = "salve"//requirement?.type
+        binding.vrRequirementOriginValue.text = "salve"//requirement?.origin
+        binding.vrRequirementPriorityValue.text = "salve"//requirement?.priority
         binding.vrRequirementProjectValue.text = project?.name
         binding.vrRequirementUserStoryValue.text = requirement?.userStory
-        binding.vrRequirementNotesValue.text = requirement?.notes
+        binding.vrRequirementNotesValue.text = "salve"//requirement?.notes
 
         val dateConverter = SimpleDateFormat("MM/dd/yyyy", Locale.US)
         val createdAt = dateConverter.format(requirement?.createdAt!!)

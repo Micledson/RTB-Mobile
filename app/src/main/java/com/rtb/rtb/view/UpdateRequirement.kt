@@ -10,7 +10,12 @@ import androidx.annotation.RequiresApi
 import com.rtb.rtb.R
 import com.rtb.rtb.database.DatabaseHelper
 import com.rtb.rtb.databinding.ActivityUpdateRequirementBinding
+import com.rtb.rtb.model.Origin
+import com.rtb.rtb.model.Priority
 import com.rtb.rtb.model.Requirement
+import com.rtb.rtb.model.Type
+import com.rtb.rtb.model.fromResponse
+import com.rtb.rtb.networks.ResourceRepository
 import com.rtb.rtb.view.components.AppBarFragment
 import com.rtb.rtb.view.components.ButtonFragment
 import com.rtb.rtb.view.components.InputFragment
@@ -31,10 +36,16 @@ class UpdateRequirement : BaseActivity() {
         DatabaseHelper.getInstance(this).projectDao()
     }
 
+    private lateinit var types: List<Type>
+    private lateinit var priorities: List<Priority>
+    private lateinit var origins: List<Origin>
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        getResource()
 
         val requirementId = UUID.fromString(intent.getStringExtra("requirementId"))
         val requirement = dao.getRequirementById(requirementId)
@@ -48,18 +59,13 @@ class UpdateRequirement : BaseActivity() {
             projectDao.getProjectAliasByProjectId(requirement.projectId), requirement.code)
 
         val type = findViewById<Spinner>(R.id.update_requirement_type)
-        var options = listOf(
-            getString(R.string.requirement_select_type),
-            getString(R.string.requirement_select_type_functional),
-            getString(R.string.requirement_select_type_non_functional),
-            getString(R.string.requirement_select_type_inverse),
-            getString(R.string.requirement_select_type_business_rule)
-        )
+        var options = types.map { it.name }
+
         var adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         type.adapter = adapter
-        var position = options.indexOf(requirement.type)
-        type.setSelection(position)
+//        var position = options.indexOf(requirement.type)
+//        type.setSelection(position)
 
         val origin = findViewById<Spinner>(R.id.update_requirement_origin)
         options = listOf(
@@ -71,8 +77,8 @@ class UpdateRequirement : BaseActivity() {
         adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         origin.adapter = adapter
-        position = options.indexOf(requirement.origin)
-        origin.setSelection(position)
+//        position = options.indexOf(requirement.origin)
+//        origin.setSelection(position)
 
         val priority = findViewById<Spinner>(R.id.update_requirement_priority)
         options = listOf(
@@ -85,8 +91,8 @@ class UpdateRequirement : BaseActivity() {
         adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         priority.adapter = adapter
-        position = options.indexOf(requirement.priority)
-        priority.setSelection(position)
+//        position = options.indexOf(requirement.priority)
+//        priority.setSelection(position)
 
         val title = supportFragmentManager.findFragmentById(R.id.update_requirement_title) as InputFragment
         title.setText(requirement.title)
@@ -97,7 +103,7 @@ class UpdateRequirement : BaseActivity() {
 
         val notes = supportFragmentManager.findFragmentById(R.id.update_requirement_notes) as InputFragment
         notes.setLines(5)
-        notes.setText(requirement.notes)
+//        notes.setText(requirement.notes)
 
         val buttonFragment = supportFragmentManager.findFragmentById(R.id.update_requirement_button) as ButtonFragment
 
@@ -143,16 +149,15 @@ class UpdateRequirement : BaseActivity() {
                 val requirement = Requirement(
                     id,
                     code,
-                    typeText,
-                    originText,
-                    priorityText,
+                    UUID.randomUUID(),//typeText,
+                            UUID.randomUUID(),//originText,
+                    UUID.randomUUID(), //priorityText,
                     titleText,
                     userStoryText,
                     notesText,
                     projectId,
                     createdAt,
                     Calendar.getInstance().time,
-                    null
                 )
 
                 try {
@@ -196,5 +201,16 @@ class UpdateRequirement : BaseActivity() {
         }
 
         return true
+    }
+
+    private fun getResource() {
+        val resourceRepository = ResourceRepository()
+        resourceRepository.getResources { resource ->
+            if (resource != null) {
+                types = fromResponse(resource).types
+                origins = fromResponse(resource).origins
+                priorities = fromResponse(resource).priorities
+            }
+        }
     }
 }

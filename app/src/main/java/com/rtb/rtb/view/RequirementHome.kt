@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.annotation.RequiresApi
 import com.rtb.rtb.R
 import com.rtb.rtb.adapters.RequirementResumeCardAdapter
@@ -31,13 +32,14 @@ class RequirementHome : AppCompatActivity() {
 
     private val projectId by lazy {
         UUID.fromString(intent.getStringExtra("projectId"))
+
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
+        Log.d("salve", "Home ID ${intent.getStringExtra("projectId")}")
         setupAppBar()
     }
 

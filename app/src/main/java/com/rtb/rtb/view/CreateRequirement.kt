@@ -3,13 +3,21 @@ package com.rtb.rtb.view
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.annotation.RequiresApi
 import com.rtb.rtb.R
 import com.rtb.rtb.database.DatabaseHelper
 import com.rtb.rtb.databinding.ActivityCreateRequirementBinding
+import com.rtb.rtb.model.Origin
+import com.rtb.rtb.model.Priority
 import com.rtb.rtb.model.Requirement
+import com.rtb.rtb.model.Type
+import com.rtb.rtb.model.fromResponse
+import com.rtb.rtb.model.toRequest
+import com.rtb.rtb.networks.RequirementRepository
+import com.rtb.rtb.networks.ResourceRepository
 import com.rtb.rtb.view.components.AppBarFragment
 import com.rtb.rtb.view.components.ButtonFragment
 import com.rtb.rtb.view.components.InputFragment
@@ -24,65 +32,18 @@ class CreateRequirement : BaseActivity() {
     private val dao by lazy {
         DatabaseHelper.getInstance(this).requirementDao()
     }
+    private lateinit var types: List<Type>
+    private lateinit var priorities: List<Priority>
+    private lateinit var origins: List<Origin>
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val projectId = UUID.fromString(intent.getStringExtra("projectId"))
+        getResource()
 
-        val appBar = supportFragmentManager.findFragmentById(R.id.app_bar) as AppBarFragment
-        appBar.setupAppBar(this)
-        appBar.setModule(getString(R.string.rms))
 
-        val type = findViewById<Spinner>(R.id.create_requirement_type)
-        var options = listOf(
-            getString(R.string.requirement_select_type),
-            getString(R.string.requirement_select_type_functional),
-            getString(R.string.requirement_select_type_non_functional),
-            getString(R.string.requirement_select_type_inverse),
-            getString(R.string.requirement_select_type_business_rule)
-        )
-        var adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        type.adapter = adapter
-
-        val origin = findViewById<Spinner>(R.id.create_requirement_origin)
-        options = listOf(
-            getString(R.string.requirement_select_origin),
-            getString(R.string.requirement_select_origin_product),
-            getString(R.string.requirement_select_origin_organization),
-            getString(R.string.requirement_select_origin_external),
-        )
-        adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        origin.adapter = adapter
-
-        val priority = findViewById<Spinner>(R.id.create_requirement_priority)
-        options = listOf(
-            getString(R.string.requirement_select_priority),
-            getString(R.string.requirement_select_priority_urgent),
-            getString(R.string.requirement_select_priority_high),
-            getString(R.string.requirement_select_priority_normal),
-            getString(R.string.requirement_select_priority_low),
-        )
-        adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        priority.adapter = adapter
-
-        val title = supportFragmentManager.findFragmentById(R.id.create_requirement_title) as InputFragment
-
-        val userStory = supportFragmentManager.findFragmentById(R.id.create_requirement_user_story) as InputFragment
-        userStory.setLines(5)
-
-        val notes = supportFragmentManager.findFragmentById(R.id.create_requirement_notes) as InputFragment
-        notes.setLines(5)
-
-        val buttonFragment = supportFragmentManager.findFragmentById(R.id.create_requirement_button) as ButtonFragment
-
-        configInputFields(title, userStory, notes)
-        configCreateRequirementButton(buttonFragment, type, origin, priority, title, userStory, notes, projectId)
     }
 
     private fun configInputFields(
@@ -105,34 +66,47 @@ class CreateRequirement : BaseActivity() {
         notes: InputFragment,
         projectId: UUID
     ) {
-        val button = buttonFragment.setupButton(getString(R.string.create), getColor(R.color.rms_purple))
+        val button =
+            buttonFragment.setupButton(getString(R.string.create), getColor(R.color.rms_purple))
         button.setOnClickListener {
             val typeText = type.selectedItem.toString()
+            val typePosition = type.selectedItemPosition
+
             val originText = origin.selectedItem.toString()
+            val originPosition = origin.selectedItemPosition
+
             val priorityText = priority.selectedItem.toString()
+            val priorityPosition = priority.selectedItemPosition
+
             val titleText = title.getText()
             val userStoryText = userStory.getText()
             val notesText = notes.getText()
 
-            val isRequirementValid = validateRequirement(typeText, originText, priorityText,
-                titleText, userStoryText, projectId)
+            val isRequirementValid = validateRequirement(
+                typeText, originText, priorityText,
+                titleText, userStoryText, projectId
+            )
             if (isRequirementValid) {
                 val requirement = Requirement(
                     UUID.randomUUID(),
                     dao.getLastRequirementCodeByProjectId(projectId) + 1,
-                    typeText,
-                    originText,
-                    priorityText,
+                    types[typePosition].id,
+                    origins[originPosition].id,
+                    priorities[priorityPosition].id,
                     titleText,
                     userStoryText,
                     notesText,
                     projectId,
                     Date(),
                     Date(),
-                    null
                 )
 
+                Log.d("salve", "id $projectId")
+                Log.d("salve", "${requirement.toRequest()}")
+
                 try {
+                    val requirementRepository = RequirementRepository()
+                    requirementRepository.createRequirement(this, requirement.toRequest())
                     dao.createRequirement(requirement)
                     showMessage(getString(R.string.requirement_registered_successfully))
 
@@ -152,7 +126,7 @@ class CreateRequirement : BaseActivity() {
         userStory: String?,
         projectId: UUID?
     ): Boolean {
-        if (projectId == null){
+        if (projectId == null) {
             showMessage(getString(R.string.requirement_project_id_validation))
             return false
         } else if (type.equals(getString(R.string.requirement_select_type))) {
@@ -167,11 +141,80 @@ class CreateRequirement : BaseActivity() {
         } else if (title.isNullOrEmpty()) {
             showMessage(getString(R.string.requirement_title_field_validation))
             return false
-        } else if(userStory.isNullOrEmpty()) {
+        } else if (userStory.isNullOrEmpty()) {
             showMessage(getString(R.string.requirement_user_story_field_validation))
             return false
         }
 
         return true
     }
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun getResource() {
+        val resourceRepository = ResourceRepository()
+        resourceRepository.getResources { resource ->
+            if (resource != null) {
+                types = fromResponse(resource).types
+                origins = fromResponse(resource).origins
+                priorities = fromResponse(resource).priorities
+
+
+                val projectId = UUID.fromString(intent.getStringExtra("projectId"))
+                Log.d("salve", "ID BOLADO ${intent.getStringExtra("projectId")}")
+
+                val appBar = supportFragmentManager.findFragmentById(R.id.app_bar) as AppBarFragment
+                appBar.setupAppBar(this)
+                appBar.setModule(getString(R.string.rms))
+
+                val type = findViewById<Spinner>(R.id.create_requirement_type)
+                var options = types.map { it.name }
+                var adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                type.adapter = adapter
+
+                val origin = findViewById<Spinner>(R.id.create_requirement_origin)
+                options = origins.map { it.name }
+                adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                origin.adapter = adapter
+
+                val priority = findViewById<Spinner>(R.id.create_requirement_priority)
+                options = priorities.map { it.level }
+                adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                priority.adapter = adapter
+
+                val title =
+                    supportFragmentManager.findFragmentById(R.id.create_requirement_title) as InputFragment
+
+                val userStory =
+                    supportFragmentManager.findFragmentById(R.id.create_requirement_user_story) as InputFragment
+                userStory.setLines(5)
+
+                val notes =
+                    supportFragmentManager.findFragmentById(R.id.create_requirement_notes) as InputFragment
+                notes.setLines(5)
+
+                val buttonFragment =
+                    supportFragmentManager.findFragmentById(R.id.create_requirement_button) as ButtonFragment
+
+                configInputFields(title, userStory, notes)
+                configCreateRequirementButton(
+                    buttonFragment,
+                    type,
+                    origin,
+                    priority,
+                    title,
+                    userStory,
+                    notes,
+                    projectId
+                )
+            }
+        }
+    }
+//        val todoRepository = ProjectRepository()
+//        todoRepository.getProjects {
+//            it?.map { project -> }
+//        }
 }
