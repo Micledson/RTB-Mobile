@@ -66,7 +66,7 @@ class ProjectRepository {
                 response: Response<ProjectResponse>
             ) {
                 if (response.isSuccessful) {
-                    Toast.makeText(context, "Projeto criado ${response.body()?.id}", Toast.LENGTH_SHORT)
+                    Toast.makeText(context, "Projeto criado", Toast.LENGTH_SHORT)
                         .show()
                     response.body()?.let { callback.invoke(it) }
                 } else {

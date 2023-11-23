@@ -12,6 +12,7 @@ import com.rtb.rtb.database.DatabaseHelper
 import com.rtb.rtb.databinding.ComponentRequirementCardBinding
 import com.rtb.rtb.model.Project
 import com.rtb.rtb.model.Requirement
+import com.rtb.rtb.networks.RequirementRepository
 import com.rtb.rtb.view.UpdateRequirement
 import com.rtb.rtb.view.ViewRequirement
 import java.util.UUID
@@ -99,6 +100,7 @@ class RequirementResumeCardAdapter(
         alertDialogBuilder.setMessage("This action cannot be undone!")
 
         alertDialogBuilder.setPositiveButton("Delete") { dialog, _ ->
+            RequirementRepository().deleteRequirement(context, requirement.id)
             dao.deleteRequirement(requirement)
             requirements.removeAt(i)
             notifyDataSetChanged()
