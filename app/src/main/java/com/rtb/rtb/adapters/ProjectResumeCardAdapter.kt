@@ -87,7 +87,7 @@ class ProjectResumeCardAdapter(val context: Context, val projects: MutableList<P
 
         alertDialogBuilder.setPositiveButton("Delete") { dialog, _ ->
             val projectRepository = ProjectRepository()
-            projectRepository.deleteProject(context, myProject.id)
+            projectRepository.deleteProject(context, myProject.id!!)
             dao.deleteProject(myProject)
             projects.removeAt(i)
             notifyDataSetChanged()

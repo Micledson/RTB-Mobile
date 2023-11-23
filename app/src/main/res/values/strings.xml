@@ -65,6 +65,9 @@
     <string name="new_user">User created successfully!</string>
     <string name="new_user_error">Unable to register user, please try again!</string>
 
+
+    <string name="error_getting_requirement_toast">Error getting requirement!</string>
+
     <string name="requirement_registered_successfully">Requirement successfully registered!</string>
     <string name="requirement_not_registered">The requirement could not be registered, please try again!</string>
 

@@ -1,11 +1,11 @@
 package com.rtb.rtb.view
 
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.rtb.rtb.R
 import com.rtb.rtb.database.DatabaseHelper
@@ -15,10 +15,17 @@ import com.rtb.rtb.model.Priority
 import com.rtb.rtb.model.Requirement
 import com.rtb.rtb.model.Type
 import com.rtb.rtb.model.fromResponse
+import com.rtb.rtb.model.toRequest
+import com.rtb.rtb.networks.ProjectRepository
+import com.rtb.rtb.networks.RequirementRepository
 import com.rtb.rtb.networks.ResourceRepository
 import com.rtb.rtb.view.components.AppBarFragment
 import com.rtb.rtb.view.components.ButtonFragment
 import com.rtb.rtb.view.components.InputFragment
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Calendar
 import java.util.Date
 import java.util.UUID
@@ -45,18 +52,68 @@ class UpdateRequirement : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        getResource()
-
         val requirementId = UUID.fromString(intent.getStringExtra("requirementId"))
-        val requirement = dao.getRequirementById(requirementId)
 
+        CoroutineScope(Dispatchers.Main).launch {
+            withContext(Dispatchers.IO) {
+                getResource()
+            }
+
+            val requirementRepository = RequirementRepository()
+            try {
+                requirementRepository.getRequirementById(requirementId) { requirementResponse ->
+                    if (requirementResponse != null) {
+                        val requirement = fromResponse(requirementResponse)
+                        setupRequirementCode(requirement)
+                        setupRequirementUI(requirement)
+
+                    } else {
+                        Toast.makeText(
+                            this@UpdateRequirement,
+                            getString(R.string.error_getting_requirement_toast),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        finish()
+                    }
+                }
+            } catch (e: Exception) {
+                Toast.makeText(
+                    this@UpdateRequirement,
+                    "An unexpected error appeared",
+                    Toast.LENGTH_SHORT
+                ).show()
+                finish()
+            }
+        }
+    }
+
+    private fun setupRequirementCode(requirement: Requirement) {
+        val projectRepository = ProjectRepository()
+        projectRepository.getProjectByID(requirement.projectId) { projectResponse ->
+            if (projectResponse != null) {
+                val project = fromResponse(projectResponse)
+                val requirementCodeTextView =
+                    findViewById<TextView>(R.id.update_requirement_requirement_code)
+                requirementCodeTextView.text = getString(
+                    R.string.requirement_code_value,
+                    project.alias, requirement.code
+                )
+            } else {
+                Toast.makeText(
+                    this@UpdateRequirement,
+                    getString(R.string.error_getting_requirement_toast),
+                    Toast.LENGTH_SHORT
+                ).show()
+                finish()
+            }
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun setupRequirementUI(requirement: Requirement) {
         val appBar = supportFragmentManager.findFragmentById(R.id.app_bar) as AppBarFragment
         appBar.setupAppBar(this)
         appBar.setModule(getString(R.string.rms))
-
-        val requirementCodeTextView = findViewById<TextView>(R.id.update_requirement_requirement_code)
-        requirementCodeTextView.text = getString(R.string.requirement_code_value,
-            projectDao.getProjectAliasByProjectId(requirement.projectId), requirement.code)
 
         val type = findViewById<Spinner>(R.id.update_requirement_type)
         var options = types.map { it.name }
@@ -64,52 +121,41 @@ class UpdateRequirement : BaseActivity() {
         var adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         type.adapter = adapter
-//        var position = options.indexOf(requirement.type)
-//        type.setSelection(position)
 
         val origin = findViewById<Spinner>(R.id.update_requirement_origin)
-        options = listOf(
-            getString(R.string.requirement_select_origin),
-            getString(R.string.requirement_select_origin_product),
-            getString(R.string.requirement_select_origin_organization),
-            getString(R.string.requirement_select_origin_external),
-        )
+        options = origins.map { it.name }
         adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         origin.adapter = adapter
-//        position = options.indexOf(requirement.origin)
-//        origin.setSelection(position)
 
         val priority = findViewById<Spinner>(R.id.update_requirement_priority)
-        options = listOf(
-            getString(R.string.requirement_select_priority),
-            getString(R.string.requirement_select_priority_urgent),
-            getString(R.string.requirement_select_priority_high),
-            getString(R.string.requirement_select_priority_normal),
-            getString(R.string.requirement_select_priority_low),
-        )
+        options = priorities.map { it.level }
         adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         priority.adapter = adapter
-//        position = options.indexOf(requirement.priority)
-//        priority.setSelection(position)
 
-        val title = supportFragmentManager.findFragmentById(R.id.update_requirement_title) as InputFragment
+        val title =
+            supportFragmentManager.findFragmentById(R.id.update_requirement_title) as InputFragment
         title.setText(requirement.title)
 
-        val userStory = supportFragmentManager.findFragmentById(R.id.update_requirement_user_story) as InputFragment
+        val userStory =
+            supportFragmentManager.findFragmentById(R.id.update_requirement_user_story) as InputFragment
         userStory.setLines(5)
         userStory.setText(requirement.userStory)
 
-        val notes = supportFragmentManager.findFragmentById(R.id.update_requirement_notes) as InputFragment
+        val notes =
+            supportFragmentManager.findFragmentById(R.id.update_requirement_notes) as InputFragment
         notes.setLines(5)
-//        notes.setText(requirement.notes)
+        notes.setText(requirement.description)
 
-        val buttonFragment = supportFragmentManager.findFragmentById(R.id.update_requirement_button) as ButtonFragment
+        val buttonFragment =
+            supportFragmentManager.findFragmentById(R.id.update_requirement_button) as ButtonFragment
 
         configInputFields(title, userStory, notes)
-        configUpdateRequirementButton(buttonFragment, requirement.id, requirement.code, type,
-            origin, priority, title, userStory, notes, requirement.projectId, requirement.createdAt)
+        configUpdateRequirementButton(
+            buttonFragment, requirement.id, requirement.code, type,
+            origin, priority, title, userStory, notes, requirement.projectId, requirement.createdAt
+        )
     }
 
     private fun configInputFields(
@@ -150,7 +196,7 @@ class UpdateRequirement : BaseActivity() {
                     id,
                     code,
                     UUID.randomUUID(),//typeText,
-                            UUID.randomUUID(),//originText,
+                    UUID.randomUUID(),//originText,
                     UUID.randomUUID(), //priorityText,
                     titleText,
                     userStoryText,
@@ -161,7 +207,8 @@ class UpdateRequirement : BaseActivity() {
                 )
 
                 try {
-                    dao.updateRequirement(requirement)
+                    val requirementRepository = RequirementRepository()
+                    requirementRepository.updateRequirement(this, requirement.id, requirement.toRequest())
                     showMessage(getString(R.string.requirement_updated_successfully))
 
                     finish()
@@ -203,7 +250,7 @@ class UpdateRequirement : BaseActivity() {
         return true
     }
 
-    private fun getResource() {
+    private suspend fun getResource() {
         val resourceRepository = ResourceRepository()
         resourceRepository.getResources { resource ->
             if (resource != null) {
