@@ -1,8 +1,6 @@
 package com.rtb.rtb.networks
 
-import com.rtb.rtb.networks.dto.response.RequirementResponse
 import com.rtb.rtb.networks.dto.response.ResourceResponse
-import com.rtb.rtb.networks.interfaces.RequirementInterface
 import com.rtb.rtb.networks.interfaces.ResourceInterface
 import retrofit2.Call
 import retrofit2.Callback
