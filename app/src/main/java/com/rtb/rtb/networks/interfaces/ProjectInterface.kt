@@ -15,6 +15,9 @@ interface ProjectInterface {
     fun getProjects(
     ): Call<List<ProjectResponse>>
 
+    @GET("/api/projects/{id}")
+    fun getProjectByID(@Path("id") id: UUID): Call<ProjectResponse>
+
     @POST("/api/projects")
     fun createProject(@Body body: ProjectRequest): Call<ProjectResponse>
 
