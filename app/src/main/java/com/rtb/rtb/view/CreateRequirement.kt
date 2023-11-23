@@ -42,8 +42,6 @@ class CreateRequirement : BaseActivity() {
         setContentView(binding.root)
 
         getResource()
-
-
     }
 
     private fun configInputFields(
@@ -101,12 +99,9 @@ class CreateRequirement : BaseActivity() {
                     Date(),
                 )
 
-                Log.d("salve", "id $projectId")
-                Log.d("salve", "${requirement.toRequest()}")
-
                 try {
-                    val requirementRepository = RequirementRepository()
-                    requirementRepository.createRequirement(this, requirement.toRequest())
+                    //val requirementRepository = RequirementRepository()
+                    //requirementRepository.createRequirement(this, requirement.toRequest())
                     dao.createRequirement(requirement)
                     showMessage(getString(R.string.requirement_registered_successfully))
 
@@ -159,59 +154,65 @@ class CreateRequirement : BaseActivity() {
                 origins = fromResponse(resource).origins
                 priorities = fromResponse(resource).priorities
 
-
-                val projectId = UUID.fromString(intent.getStringExtra("projectId"))
-                Log.d("salve", "ID BOLADO ${intent.getStringExtra("projectId")}")
-
-                val appBar = supportFragmentManager.findFragmentById(R.id.app_bar) as AppBarFragment
-                appBar.setupAppBar(this)
-                appBar.setModule(getString(R.string.rms))
-
-                val type = findViewById<Spinner>(R.id.create_requirement_type)
-                var options = types.map { it.name }
-                var adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                type.adapter = adapter
-
-                val origin = findViewById<Spinner>(R.id.create_requirement_origin)
-                options = origins.map { it.name }
-                adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                origin.adapter = adapter
-
-                val priority = findViewById<Spinner>(R.id.create_requirement_priority)
-                options = priorities.map { it.level }
-                adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                priority.adapter = adapter
-
-                val title =
-                    supportFragmentManager.findFragmentById(R.id.create_requirement_title) as InputFragment
-
-                val userStory =
-                    supportFragmentManager.findFragmentById(R.id.create_requirement_user_story) as InputFragment
-                userStory.setLines(5)
-
-                val notes =
-                    supportFragmentManager.findFragmentById(R.id.create_requirement_notes) as InputFragment
-                notes.setLines(5)
-
-                val buttonFragment =
-                    supportFragmentManager.findFragmentById(R.id.create_requirement_button) as ButtonFragment
-
-                configInputFields(title, userStory, notes)
-                configCreateRequirementButton(
-                    buttonFragment,
-                    type,
-                    origin,
-                    priority,
-                    title,
-                    userStory,
-                    notes,
-                    projectId
-                )
+                setupActivity()
             }
         }
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun setupActivity() {
+
+        val projectId = UUID.fromString(intent.getStringExtra("projectId"))
+        Log.d("salve", "ID BOLADO ${intent.getStringExtra("projectId")}")
+
+        val appBar = supportFragmentManager.findFragmentById(R.id.app_bar) as AppBarFragment
+        appBar.setupAppBar(this)
+        appBar.setModule(getString(R.string.rms))
+
+        val type = findViewById<Spinner>(R.id.create_requirement_type)
+        var options = types.map { it.name }
+        var adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        type.adapter = adapter
+
+        val origin = findViewById<Spinner>(R.id.create_requirement_origin)
+        options = origins.map { it.name }
+        adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        origin.adapter = adapter
+
+        val priority = findViewById<Spinner>(R.id.create_requirement_priority)
+        options = priorities.map { it.level }
+        adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        priority.adapter = adapter
+
+        val title =
+            supportFragmentManager.findFragmentById(R.id.create_requirement_title) as InputFragment
+
+        val userStory =
+            supportFragmentManager.findFragmentById(R.id.create_requirement_user_story) as InputFragment
+        userStory.setLines(5)
+
+        val notes =
+            supportFragmentManager.findFragmentById(R.id.create_requirement_notes) as InputFragment
+        notes.setLines(5)
+
+        val buttonFragment =
+            supportFragmentManager.findFragmentById(R.id.create_requirement_button) as ButtonFragment
+
+        configInputFields(title, userStory, notes)
+        configCreateRequirementButton(
+            buttonFragment,
+            type,
+            origin,
+            priority,
+            title,
+            userStory,
+            notes,
+            projectId
+        )
     }
 //        val todoRepository = ProjectRepository()
 //        todoRepository.getProjects {

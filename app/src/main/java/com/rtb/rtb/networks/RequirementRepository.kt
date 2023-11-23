@@ -71,14 +71,13 @@ class RequirementRepository {
                     Toast.makeText(context, "Requisito criado", Toast.LENGTH_SHORT)
                         .show()
                 } else {
-                    Toast.makeText(context, "Erro 2x ${response.errorBody()}", Toast.LENGTH_SHORT)
+                    Toast.makeText(context, "Erro ${response.errorBody()}", Toast.LENGTH_SHORT)
                         .show()
-                    Log.d("salve", response.errorBody().toString())
                 }
             }
 
             override fun onFailure(call: Call<Void>, t: Throwable) {
-                Toast.makeText(context, "Erro 3x ${t.message}", Toast.LENGTH_SHORT)
+                Toast.makeText(context, "Erro ${t.message}", Toast.LENGTH_SHORT)
                     .show()
             }
 

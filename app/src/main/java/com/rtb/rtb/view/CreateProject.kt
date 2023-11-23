@@ -54,25 +54,19 @@ class CreateProject : BaseActivity() {
 
             if (projectName.hasText() && description.hasText() && alias.hasText()) {
                 val project = Project(
-                    UUID.randomUUID(),
-                    projectName.getText(),
-                    alias.getText(),
-                    description.getText(),
-                    isActive,
-                    Date(),
-                    Date(),
-                    null,
-                    SharedPrefs(this).getUserEmail()
+                    name = projectName.getText(),
+                    alias = alias.getText(),
+                    description = description.getText(),
+                    isActive = isActive,
+                    createdAt = Date(),
+                    updatedAt = Date(),
+                    deletedAt = null,
+                    owner = SharedPrefs(this).getUserEmail()
                 )
 
                 createProject(project)
 
-                dao.createProject(project)
 
-                Toast.makeText(this, getString(R.string.new_project_toast), Toast.LENGTH_SHORT)
-                    .show()
-
-                finish()
             } else {
                 Toast.makeText(this, getString(R.string.required_field), Toast.LENGTH_SHORT).show()
             }
@@ -91,7 +85,11 @@ class CreateProject : BaseActivity() {
 
     private fun createProject(project: Project) {
         val projectRepository = ProjectRepository()
-        projectRepository.createProject(this, project.toRequest())
+        projectRepository.createProject(this, project.toRequest()) {
+            project.id = it.id
+            dao.createProject(project)
+            finish()
+        }
     }
 
 }
