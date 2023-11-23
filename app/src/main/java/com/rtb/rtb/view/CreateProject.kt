@@ -66,8 +66,6 @@ class CreateProject : BaseActivity() {
 
                 createProject(project)
 
-                dao.createProject(project)
-
                 Toast.makeText(this, getString(R.string.new_project_toast), Toast.LENGTH_SHORT)
                     .show()
 
@@ -75,15 +73,20 @@ class CreateProject : BaseActivity() {
             } else {
                 Toast.makeText(this, getString(R.string.required_field), Toast.LENGTH_SHORT).show()
             }
-
-
         }
 
     }
 
     private fun createProject(project: Project) {
         val projectRepository = ProjectRepository()
-        projectRepository.createProject(this, project.toRequest())
+        try {
+            projectRepository.createProject(this, project.toRequest())
+        } catch (e: Exception) {
+            Toast.makeText(
+                this,
+                "An unexpected error appeared",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
-
 }
