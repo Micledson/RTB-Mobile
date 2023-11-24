@@ -29,6 +29,7 @@
     <string name="requirement_notes">Notes</string>
     <string name="requirement_user_story">User Story</string>
     <string name="requirement_type">Type</string>
+    <string name="requirement_origin">Origin</string>
     <string name="requirement_priority">Priority</string>
     <string name="requirement_project">Project</string>
     <string name="requirement_created_at">Created at</string>
@@ -57,19 +58,31 @@
     <string name="previous">Previous</string>
 
     <string name="new_project_toast">Project created successfully!</string>
+    <string name="error_creating_project_toast">Error creating project!</string>
     <string name="update_project_toast">Project updated successfully!</string>
     <string name="error_getting_project_toast">Error getting project!</string>
+    <string name="error_getting_projects_toast">Error getting projects!</string>
+    <string name="error_updating_project_toast">Error updating project!</string>
+    <string name="delete_project_toast">Project deleted successfully!</string>
+    <string name="error_deleting_project_toast">Error deleting project!</string>
 
     <string name="required_field">The field must be filled!</string>
 
     <string name="new_user">User created successfully!</string>
     <string name="new_user_error">Unable to register user, please try again!</string>
 
+
+    <string name="error_getting_requirement_toast">Error getting requirement!</string>
+    <string name="error_getting_requirements_toast">Error getting requirements!</string>
+
     <string name="requirement_registered_successfully">Requirement successfully registered!</string>
     <string name="requirement_not_registered">The requirement could not be registered, please try again!</string>
 
     <string name="requirement_updated_successfully">Requirement successfully updated!</string>
     <string name="requirement_not_updated">The requirement could not be updated, please try again!</string>
+
+    <string name="delete_requirement_toast">Requirement deleted successfully!</string>
+    <string name="error_deleting_requirement_toast">Error deleting requirement!</string>
 
     <string name="requirement_select_type">Select type…</string>
     <string name="requirement_select_type_functional">Functional Requirement</string>

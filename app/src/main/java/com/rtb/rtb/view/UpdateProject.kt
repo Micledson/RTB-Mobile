@@ -12,6 +12,7 @@ import com.rtb.rtb.databinding.ActivityUpdateProjectBinding
 import com.rtb.rtb.model.Project
 import com.rtb.rtb.model.fromResponse
 import com.rtb.rtb.model.toRequest
+import com.rtb.rtb.networks.BaseRepository
 import com.rtb.rtb.networks.ProjectRepository
 import com.rtb.rtb.view.components.AppBarFragment
 import com.rtb.rtb.view.components.ButtonFragment
@@ -47,29 +48,30 @@ class UpdateProject : BaseActivity() {
 
         runBlocking {
             withContext(Dispatchers.IO) {
-                val projectRepository = ProjectRepository()
                 try {
-                    projectRepository.getProjectByID(uuid) { projectResponse ->
-                        if (projectResponse != null) {
-                            project = fromResponse(projectResponse)
-                            progressBar.visibility = View.GONE
-                            bodyLayout.visibility = View.VISIBLE
-                            setupProjectUI(uuid)
-                        } else {
-                            Toast.makeText(
-                                this@UpdateProject,
-                                getString(R.string.error_getting_project_toast),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            finish()
+                    val projectRepository = ProjectRepository()
+                    projectRepository.getProjectByID(uuid) { result ->
+                        when (result) {
+                            is BaseRepository.Result.Success -> {
+                                if (result.data != null) {
+                                    project = fromResponse(result.data)
+                                    progressBar.visibility = View.GONE
+                                    bodyLayout.visibility = View.VISIBLE
+                                    setupProjectUI(uuid)
+                                } else {
+                                    showMessage(getString(R.string.error_getting_project_toast))
+                                    finish()
+                                }
+                            }
+
+                            is BaseRepository.Result.Error -> {
+                                showMessage(getString(R.string.error_getting_project_toast))
+                                finish()
+                            }
                         }
                     }
                 } catch (e: Exception) {
-                    Toast.makeText(
-                        this@UpdateProject,
-                        "An unexpected error appeared",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    showMessage("An unexpected error appeared")
                     finish()
                 }
             }
@@ -119,12 +121,6 @@ class UpdateProject : BaseActivity() {
                     SharedPrefs(this).getUserEmail()
                 )
                 updateProject(uuid, project)
-                dao.updateProject(project)
-
-                Toast.makeText(this, getString(R.string.update_project_toast), Toast.LENGTH_SHORT)
-                    .show()
-
-                finish()
             } else {
                 Toast.makeText(this, getString(R.string.required_field), Toast.LENGTH_SHORT).show()
             }
@@ -135,13 +131,23 @@ class UpdateProject : BaseActivity() {
     private fun updateProject(id: UUID, project: Project) {
         val projectRepository = ProjectRepository()
         try {
-            projectRepository.updateProject(this, id, project.toRequest())
+
+            projectRepository.updateProject(this, id, project.toRequest()) { result ->
+                when (result) {
+                    is BaseRepository.Result.Success -> {
+                        getString(R.string.update_project_toast)
+                        finish()
+                    }
+
+                    is BaseRepository.Result.Error -> {
+                        showMessage(getString(R.string.error_updating_project_toast))
+                        finish()
+                    }
+                }
+            }
         } catch (e: Exception) {
-            Toast.makeText(
-                this,
-                "An unexpected error appeared",
-                Toast.LENGTH_SHORT
-            ).show()
+            showMessage("An unexpected error appeared")
+            finish()
         }
     }
 

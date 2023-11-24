@@ -20,12 +20,12 @@ import java.util.UUID
 )
 @Parcelize
 data class Project(
-    @PrimaryKey
-    val id: UUID,
+    var id: UUID? = null,
     val name: String,
     val alias: String,
     val description: String,
     val isActive: Boolean,
+    @PrimaryKey
     val createdAt: Date,
     val updatedAt: Date,
     val deletedAt: Date?,

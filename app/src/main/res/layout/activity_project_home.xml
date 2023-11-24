@@ -137,7 +137,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:visibility="visible"
-                android:theme="@style/ProgressBarStyle"
+                android:theme="@style/RTBProgressBarStyle"
                 style="?android:attr/progressBarStyleLarge"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

@@ -36,14 +36,16 @@ class ViewRequirement : AppCompatActivity() {
         val requirement = getRequirementAccordingVersion()
         val project = getProjectAccordingVersion()
 
+        var resources = ResourcesManager.getResources(this)
+
         binding.vrRequirementCodeValue.text = "${project?.alias}-${requirement?.code}"
         binding.vrRequirementTitleValue.text = requirement?.title
-        binding.vrRequirementTypeValue.text = requirement?.type
-        binding.vrRequirementOriginValue.text = requirement?.origin
-        binding.vrRequirementPriorityValue.text = requirement?.priority
+        binding.vrRequirementTypeValue.text = resources?.types?.find { it.id == requirement?.typeId }?.name ?: ""
+        binding.vrRequirementOriginValue.text = resources?.origins?.find { it.id == requirement?.originId }?.name ?: ""
+        binding.vrRequirementPriorityValue.text = resources?.priorities?.find { it.id == requirement?.priorityId }?.level ?: ""
         binding.vrRequirementProjectValue.text = project?.name
         binding.vrRequirementUserStoryValue.text = requirement?.userStory
-        binding.vrRequirementNotesValue.text = requirement?.notes
+        binding.vrRequirementNotesValue.text = requirement?.description
 
         val dateConverter = SimpleDateFormat("MM/dd/yyyy", Locale.US)
         val createdAt = dateConverter.format(requirement?.createdAt!!)

@@ -12,6 +12,7 @@ import com.rtb.rtb.adapters.ProjectResumeCardAdapter
 import com.rtb.rtb.databinding.ActivityProjectHomeBinding
 import com.rtb.rtb.model.Project
 import com.rtb.rtb.model.fromResponse
+import com.rtb.rtb.networks.BaseRepository
 import com.rtb.rtb.networks.ProjectRepository
 import com.rtb.rtb.view.components.AppBarFragment
 import com.rtb.rtb.view.components.ButtonFragment
@@ -56,9 +57,17 @@ class ProjectHome : BaseActivity() {
             withContext(Dispatchers.IO){
                 try {
                     val projectRepository = ProjectRepository()
-                    projectRepository.getProjects {
-                        it?.map { project ->
-                            projectList.add(fromResponse(project))
+                    projectRepository.getProjects { result ->
+                        when (result) {
+                            is BaseRepository.Result.Success -> {
+                                result.data?.map { project ->
+                                    projectList.add(fromResponse(project))
+                                }
+                            }
+
+                            is BaseRepository.Result.Error -> {
+                                showMessage(getString(R.string.error_getting_projects_toast))
+                            }
                         }
 
                         val projectsCardAdapter =  ProjectResumeCardAdapter(this@ProjectHome, projectList)
@@ -76,12 +85,7 @@ class ProjectHome : BaseActivity() {
                         binding.phListViewOfProjects.visibility = View.VISIBLE
                     }
                 } catch (e: Exception) {
-                    Toast.makeText(
-                        this@ProjectHome,
-                        "An unexpected error appeared",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    finish()
+                    showMessage("An unexpected error appeared")
                 }
             }
 
@@ -115,10 +119,18 @@ class ProjectHome : BaseActivity() {
                 withContext(Dispatchers.IO){
                     try {
                         val projectRepository = ProjectRepository()
-                        projectRepository.getProjects {
-                            it?.map { project ->
-                                if (project.isActive == false) {
-                                    inactiveProjectList.add(fromResponse(project))
+                        projectRepository.getProjects { result ->
+                            when (result) {
+                                is BaseRepository.Result.Success -> {
+                                    result.data?.map { project ->
+                                        if (project.isActive == false) {
+                                            inactiveProjectList.add(fromResponse(project))
+                                        }
+                                    }
+                                }
+
+                                is BaseRepository.Result.Error -> {
+                                    showMessage(getString(R.string.error_getting_projects_toast))
                                 }
                             }
 
@@ -129,12 +141,7 @@ class ProjectHome : BaseActivity() {
                             binding.phListViewOfProjects.visibility = View.VISIBLE
                         }
                     } catch (e: Exception) {
-                        Toast.makeText(
-                            this@ProjectHome,
-                            "An unexpected error appeared",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        finish()
+                        showMessage("An unexpected error appeared")
                     }
                 }
             }
@@ -161,10 +168,18 @@ class ProjectHome : BaseActivity() {
                 withContext(Dispatchers.IO){
                     try {
                         val projectRepository = ProjectRepository()
-                        projectRepository.getProjects {
-                            it?.map { project ->
-                                if (project.isActive == true) {
-                                    activeProjectList.add(fromResponse(project))
+                        projectRepository.getProjects { result ->
+                            when (result) {
+                                is BaseRepository.Result.Success -> {
+                                    result.data?.map { project ->
+                                        if (project.isActive == true) {
+                                            activeProjectList.add(fromResponse(project))
+                                        }
+                                    }
+                                }
+
+                                is BaseRepository.Result.Error -> {
+                                    showMessage(getString(R.string.error_getting_projects_toast))
                                 }
                             }
 
@@ -175,12 +190,7 @@ class ProjectHome : BaseActivity() {
                             binding.phListViewOfProjects.visibility = View.VISIBLE
                         }
                     } catch (e: Exception) {
-                        Toast.makeText(
-                            this@ProjectHome,
-                            "An unexpected error appeared",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        finish()
+                        showMessage("An unexpected error appeared")
                     }
                 }
             }
@@ -207,9 +217,17 @@ class ProjectHome : BaseActivity() {
                 withContext(Dispatchers.IO){
                     try {
                         val projectRepository = ProjectRepository()
-                        projectRepository.getProjects {
-                            it?.map { project ->
-                                projectList.add(fromResponse(project))
+                        projectRepository.getProjects { result ->
+                            when (result) {
+                                is BaseRepository.Result.Success -> {
+                                    result.data?.map { project ->
+                                        projectList.add(fromResponse(project))
+                                    }
+                                }
+
+                                is BaseRepository.Result.Error -> {
+                                    showMessage(getString(R.string.error_getting_projects_toast))
+                                }
                             }
 
                             val projectCardAdapter =  ProjectResumeCardAdapter(this@ProjectHome, projectList)
@@ -219,12 +237,7 @@ class ProjectHome : BaseActivity() {
                             binding.phListViewOfProjects.visibility = View.VISIBLE
                         }
                     } catch (e: Exception) {
-                        Toast.makeText(
-                            this@ProjectHome,
-                            "An unexpected error appeared",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        finish()
+                        showMessage("An unexpected error appeared")
                     }
                 }
             }
@@ -252,16 +265,25 @@ class ProjectHome : BaseActivity() {
                 withContext(Dispatchers.IO){
                     try {
                         val projectRepository = ProjectRepository()
-                        projectRepository.getProjects { projectsResponse ->
-                            projectsResponse?.let {
-                                val filteredProjects = it.filter { project ->
-                                    project.name!!.contains(newText, ignoreCase = true)
+                        projectRepository.getProjects { result ->
+                            when (result) {
+                                is BaseRepository.Result.Success -> {
+                                    val filteredProjects = result.data?.filter { project ->
+                                        project.name!!.contains(newText, ignoreCase = true)
+                                    }
+
+                                    if (filteredProjects != null) {
+                                        searchedProjectList.addAll(filteredProjects.map { filteredProject ->
+                                            fromResponse(filteredProject)
+                                        })
+                                    }
                                 }
 
-                                searchedProjectList.addAll(filteredProjects.map { filteredProject ->
-                                    fromResponse(filteredProject)
-                                })
+                                is BaseRepository.Result.Error -> {
+                                    showMessage(getString(R.string.error_getting_projects_toast))
+                                }
                             }
+
 
                             val searchedProjectsCardAdapter =  ProjectResumeCardAdapter(this@ProjectHome, searchedProjectList)
                             projectListView.adapter = searchedProjectsCardAdapter
@@ -270,12 +292,7 @@ class ProjectHome : BaseActivity() {
                             binding.phListViewOfProjects.visibility = View.VISIBLE
                         }
                     } catch (e: Exception) {
-                        Toast.makeText(
-                            this@ProjectHome,
-                            "An unexpected error appeared",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        finish()
+                        showMessage("An unexpected error appeared")
                     }
                 }
             }

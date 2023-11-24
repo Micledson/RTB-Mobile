@@ -1,26 +1,25 @@
 package com.rtb.rtb.networks
 
 import android.content.Context
-import com.rtb.rtb.networks.dto.request.ProjectRequest
-import com.rtb.rtb.networks.dto.response.ProjectResponse
-import com.rtb.rtb.networks.interfaces.ProjectInterface
-
+import com.rtb.rtb.networks.dto.request.RequirementRequest
+import com.rtb.rtb.networks.dto.response.RequirementResponse
+import com.rtb.rtb.networks.interfaces.RequirementInterface
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.UUID
 
-class ProjectRepository : BaseRepository() {
-    val retrofit = ApiService.instance
-    val service = retrofit.create(ProjectInterface::class.java)
+class RequirementRepository : BaseRepository() {
+    private val retrofit = ApiService.instance
+    private val service = retrofit.create(RequirementInterface::class.java)
 
-    fun getProjects(callback: (Result<List<ProjectResponse>?>) -> Unit) {
-        val request = service.getProjects()
+    fun getRequirements(projectId: UUID? = null, callback: (Result<List<RequirementResponse>?>) -> Unit) {
+        val request = service.getRequirements(projectId)
 
-        request.enqueue(object : Callback<List<ProjectResponse>> {
+        request.enqueue(object : Callback<List<RequirementResponse>> {
             override fun onResponse(
-                call: Call<List<ProjectResponse>>,
-                response: Response<List<ProjectResponse>>
+                call: Call<List<RequirementResponse>>,
+                response: Response<List<RequirementResponse>>
             ) {
                 if (response.isSuccessful) {
                     callback.invoke(Result.Success(response.body()))
@@ -29,19 +28,19 @@ class ProjectRepository : BaseRepository() {
                 }
             }
 
-            override fun onFailure(call: Call<List<ProjectResponse>>, t: Throwable) {
+            override fun onFailure(call: Call<List<RequirementResponse>>, t: Throwable) {
                 callback.invoke(Result.Error("Error: ${t.message}"))
             }
         })
     }
 
-    fun getProjectByID(id: UUID, callback: (Result<ProjectResponse?>) -> Unit) {
-        val request = service.getProjectByID(id)
+    fun getRequirementById(id: UUID, callback: (Result<RequirementResponse?>) -> Unit) {
+        val request = service.getRequirementById(id)
 
-        request.enqueue(object : Callback<ProjectResponse> {
+        request.enqueue(object : Callback<RequirementResponse> {
             override fun onResponse(
-                call: Call<ProjectResponse>,
-                response: Response<ProjectResponse>
+                call: Call<RequirementResponse>,
+                response: Response<RequirementResponse>
             ) {
                 if (response.isSuccessful) {
                     callback.invoke(Result.Success(response.body()))
@@ -50,58 +49,14 @@ class ProjectRepository : BaseRepository() {
                 }
             }
 
-            override fun onFailure(call: Call<ProjectResponse>, t: Throwable) {
+            override fun onFailure(call: Call<RequirementResponse>, t: Throwable) {
                 callback.invoke(Result.Error("Error: ${t.message}"))
             }
         })
     }
 
-    fun createProject(context: Context, body: ProjectRequest, callback: (Result<ProjectResponse>) -> Unit) {
-        val request = service.createProject(body)
-
-        request.enqueue(object : Callback<ProjectResponse> {
-            override fun onResponse(
-                call: Call<ProjectResponse>,
-                response: Response<ProjectResponse>
-            ) {
-                if (response.isSuccessful) {
-                    response.body()?.let { callback.invoke(Result.Success(it)) }
-                } else {
-                    callback.invoke(Result.Error("Error: ${response.errorBody()}"))
-                }
-            }
-
-            override fun onFailure(call: Call<ProjectResponse>, t: Throwable) {
-                callback.invoke(Result.Error("Error: ${t.message}"))
-            }
-
-        })
-    }
-
-    fun updateProject(context: Context, id: UUID, body: ProjectRequest, callback: (Result<Unit>) -> Unit) {
-        val request = service.updateProject(id, body)
-
-        request.enqueue(object : Callback<ProjectResponse> {
-            override fun onResponse(
-                call: Call<ProjectResponse>,
-                response: Response<ProjectResponse>
-            ) {
-                if (response.isSuccessful) {
-                    callback.invoke(Result.Success(Unit))
-                } else {
-                    callback.invoke(Result.Error("Error: ${response.errorBody()}"))
-                }
-            }
-
-            override fun onFailure(call: Call<ProjectResponse>, t: Throwable) {
-                callback.invoke(Result.Error("Error: ${t.message}"))
-            }
-
-        })
-    }
-
-    fun deleteProject(context: Context, id: UUID, callback: (Result<Unit>) -> Unit) {
-        val request = service.deleteProject(id)
+    fun createRequirement(context: Context, body: RequirementRequest, callback: (Result<Unit>) -> Unit) {
+        val request = service.createRequirement(body)
 
         request.enqueue(object : Callback<Void> {
             override fun onResponse(
@@ -118,6 +73,51 @@ class ProjectRepository : BaseRepository() {
             override fun onFailure(call: Call<Void>, t: Throwable) {
                 callback.invoke(Result.Error("Error: ${t.message}"))
             }
+
+        })
+    }
+
+    fun updateRequirement(context: Context, id: UUID, body: RequirementRequest, callback: (Result<Unit>) -> Unit) {
+        val request = service.updateRequirement(id, body)
+
+        request.enqueue(object : Callback<Void> {
+            override fun onResponse(
+                call: Call<Void>,
+                response: Response<Void>
+            ) {
+                if (response.isSuccessful) {
+                    callback.invoke(Result.Success(Unit))
+                } else {
+                    callback.invoke(Result.Error("Error: ${response.errorBody()}"))
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                callback.invoke(Result.Error("Error: ${t.message}"))
+            }
+
+        })
+    }
+
+    fun deleteRequirement(context: Context, id: UUID, callback: (Result<Unit>) -> Unit) {
+        val request = service.deleteRequirement(id)
+
+        request.enqueue(object : Callback<Void> {
+            override fun onResponse(
+                call: Call<Void>,
+                response: Response<Void>
+            ) {
+                if (response.isSuccessful) {
+                    callback.invoke(Result.Success(Unit))
+                } else {
+                    callback.invoke(Result.Error("Error: ${response.errorBody()}"))
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                callback.invoke(Result.Error("Error: ${t.message}"))
+            }
+
         })
     }
 }

@@ -8,6 +8,7 @@ import com.rtb.rtb.database.preferences.SharedPrefs
 import com.rtb.rtb.databinding.ActivityCreateProjectBinding
 import com.rtb.rtb.model.Project
 import com.rtb.rtb.model.toRequest
+import com.rtb.rtb.networks.BaseRepository
 import com.rtb.rtb.networks.ProjectRepository
 import com.rtb.rtb.view.components.AppBarFragment
 import com.rtb.rtb.view.components.ButtonFragment
@@ -53,26 +54,23 @@ class CreateProject : BaseActivity() {
 
             if (projectName.hasText() && description.hasText() && alias.hasText()) {
                 val project = Project(
-                    UUID.randomUUID(),
-                    projectName.getText(),
-                    alias.getText(),
-                    description.getText(),
-                    isActive,
-                    Date(),
-                    Date(),
-                    null,
-                    SharedPrefs(this).getUserEmail()
+                    name = projectName.getText(),
+                    alias = alias.getText(),
+                    description = description.getText(),
+                    isActive = isActive,
+                    createdAt = Date(),
+                    updatedAt = Date(),
+                    deletedAt = null,
+                    owner = SharedPrefs(this).getUserEmail()
                 )
 
                 createProject(project)
 
-                Toast.makeText(this, getString(R.string.new_project_toast), Toast.LENGTH_SHORT)
-                    .show()
-
-                finish()
             } else {
                 Toast.makeText(this, getString(R.string.required_field), Toast.LENGTH_SHORT).show()
             }
+
+
         }
 
     }
@@ -80,13 +78,23 @@ class CreateProject : BaseActivity() {
     private fun createProject(project: Project) {
         val projectRepository = ProjectRepository()
         try {
-            projectRepository.createProject(this, project.toRequest())
+            projectRepository.createProject(this, project.toRequest()) { result ->
+                when (result) {
+                    is BaseRepository.Result.Success -> {
+                        showMessage(getString(R.string.new_project_toast))
+                        finish()
+                    }
+
+                    is BaseRepository.Result.Error -> {
+                        showMessage(getString(R.string.error_creating_project_toast))
+                        finish()
+                    }
+                }
+            }
         } catch (e: Exception) {
-            Toast.makeText(
-                this,
-                "An unexpected error appeared",
-                Toast.LENGTH_SHORT
-            ).show()
+            showMessage("An unexpected error appeared")
+            finish()
         }
     }
+
 }
