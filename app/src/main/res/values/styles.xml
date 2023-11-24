@@ -15,7 +15,10 @@
         <item name="android:textColor">@color/gray_900</item>
         <item name="android:fontFamily">@font/intersemibold</item>
     </style>
-    <style name="ProgressBarStyle">
+    <style name="RTBProgressBarStyle">
         <item name="colorAccent">@color/amber_500</item>
+    </style>
+    <style name="RMSProgressBarStyle">
+        <item name="colorAccent">@color/rms_purple</item>
     </style>
 </resources>

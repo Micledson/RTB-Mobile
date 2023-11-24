@@ -6,11 +6,11 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ResourceRepository {
+class ResourceRepository : BaseRepository() {
     val retrofit = ApiService.instance
     val service = retrofit.create(ResourceInterface::class.java)
 
-    fun getResources(callback: (ResourceResponse?) -> Unit) {
+    fun getResources(callback: (Result<ResourceResponse?>) -> Unit) {
         val request = service.getResources()
 
         request.enqueue(object : Callback<ResourceResponse> {
@@ -19,14 +19,14 @@ class ResourceRepository {
                 response: Response<ResourceResponse>
             ) {
                 if (response.isSuccessful) {
-                    callback.invoke(response.body())
+                    callback.invoke(Result.Success(response.body()))
                 } else {
-                    callback.invoke(null)
+                    callback.invoke(Result.Error("Error: ${response.errorBody()}"))
                 }
             }
 
             override fun onFailure(call: Call<ResourceResponse>, t: Throwable) {
-                callback.invoke(null)
+                callback.invoke(Result.Error("Error: ${t.message}"))
             }
         })
     }

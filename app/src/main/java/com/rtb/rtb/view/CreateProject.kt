@@ -8,6 +8,7 @@ import com.rtb.rtb.database.preferences.SharedPrefs
 import com.rtb.rtb.databinding.ActivityCreateProjectBinding
 import com.rtb.rtb.model.Project
 import com.rtb.rtb.model.toRequest
+import com.rtb.rtb.networks.BaseRepository
 import com.rtb.rtb.networks.ProjectRepository
 import com.rtb.rtb.view.components.AppBarFragment
 import com.rtb.rtb.view.components.ButtonFragment
@@ -65,7 +66,6 @@ class CreateProject : BaseActivity() {
 
                 createProject(project)
 
-
             } else {
                 Toast.makeText(this, getString(R.string.required_field), Toast.LENGTH_SHORT).show()
             }
@@ -78,16 +78,22 @@ class CreateProject : BaseActivity() {
     private fun createProject(project: Project) {
         val projectRepository = ProjectRepository()
         try {
-            projectRepository.createProject(this, project.toRequest()) {
-                project.id = it.id
-                finish()
+            projectRepository.createProject(this, project.toRequest()) { result ->
+                when (result) {
+                    is BaseRepository.Result.Success -> {
+                        showMessage(getString(R.string.new_project_toast))
+                        finish()
+                    }
+
+                    is BaseRepository.Result.Error -> {
+                        showMessage(getString(R.string.error_creating_project_toast))
+                        finish()
+                    }
+                }
             }
         } catch (e: Exception) {
-            Toast.makeText(
-                this,
-                "An unexpected error appeared",
-                Toast.LENGTH_SHORT
-            ).show()
+            showMessage("An unexpected error appeared")
+            finish()
         }
     }
 

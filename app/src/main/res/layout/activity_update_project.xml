@@ -18,7 +18,7 @@
        android:layout_height="wrap_content"
        android:layout_centerInParent="true"
        android:visibility="visible"
-       android:theme="@style/ProgressBarStyle"
+       android:theme="@style/RTBProgressBarStyle"
        style="?android:attr/progressBarStyleLarge" />
 
    <androidx.constraintlayout.widget.ConstraintLayout

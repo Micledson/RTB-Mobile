@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.rtb.rtb.R
@@ -14,6 +15,7 @@ import com.rtb.rtb.databinding.ActivityRequirementHomeBinding
 import com.rtb.rtb.model.Project
 import com.rtb.rtb.model.Requirement
 import com.rtb.rtb.model.fromResponse
+import com.rtb.rtb.networks.BaseRepository
 import com.rtb.rtb.networks.ProjectRepository
 import com.rtb.rtb.networks.RequirementRepository
 import com.rtb.rtb.view.components.AppBarFragment
@@ -21,7 +23,7 @@ import com.rtb.rtb.view.components.ButtonFragment
 import com.rtb.rtb.view.components.InputFragment
 import java.util.UUID
 
-class RequirementHome : AppCompatActivity() {
+class RequirementHome : BaseActivity() {
     private val binding by lazy {
         ActivityRequirementHomeBinding.inflate(layoutInflater)
     }
@@ -46,7 +48,6 @@ class RequirementHome : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        setupRepository()
         setupAppBar()
     }
 
@@ -65,33 +66,59 @@ class RequirementHome : AppCompatActivity() {
 
     private fun setupBody() {
         binding.rhTextViewTitle.text = project.name
-
     }
 
     private fun setupListView() {
         val requirementListView = binding.rhListViewOfRequirements
         val requirementsCardAdapter = RequirementResumeCardAdapter(this, requirements, project)
         requirementListView.adapter = requirementsCardAdapter
-
     }
 
     private fun setupRepository() {
+        binding.requirementHomeProgressBar.visibility = View.VISIBLE
+        binding.requirementHomeConstraintLayout.visibility = View.GONE
         requirements.clear()
-        RequirementRepository().getRequirements(projectId) { response ->
-            response?.map {
-                requirements.add(fromResponse(it))
+        try {
+            RequirementRepository().getRequirements(projectId) { requirementResult ->
+                when(requirementResult) {
+                    is BaseRepository.Result.Success -> {
+                        if (requirementResult.data != null) {
+                            requirementResult.data.map {
+                                requirements.add(fromResponse(it))
+                            }
+
+                            ProjectRepository().getProjectByID(projectId) { projectResult ->
+                                when(projectResult) {
+                                    is BaseRepository.Result.Success -> {
+                                        if (projectResult.data != null) {
+                                            project = fromResponse(projectResult.data)
+
+                                            setupBody()
+                                            setupListView()
+                                            setupSearchInput()
+                                            setupCreateButton()
+                                        }
+                                    }
+
+                                    is BaseRepository.Result.Error -> {
+                                        showMessage(getString(R.string.error_getting_requirements_toast))
+                                    }
+                                }
+
+                                binding.requirementHomeProgressBar.visibility = View.GONE
+                                binding.requirementHomeConstraintLayout.visibility = View.VISIBLE
+                            }
+                        }
+                    }
+
+                    is BaseRepository.Result.Error -> {
+                        showMessage(getString(R.string.error_getting_requirements_toast))
+                    }
+                }
             }
-
-
-
-            ProjectRepository().getProjectByID(projectId) {
-                project = fromResponse(it!!)
-
-                setupBody()
-                setupListView()
-                setupSearchInput()
-                setupCreateButton()
-            }
+        } catch (e: Exception) {
+            showMessage("An unexpected error appeared")
+            finish()
         }
     }
 

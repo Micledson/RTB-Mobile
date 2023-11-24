@@ -61,10 +61,12 @@ class SignIn : BaseActivity() {
                 SharedPrefs(this).setUserValue(true)
                 SharedPrefs(this).setUserEmail(emailAddress.getText().lowercase())
 
+                ResourcesManager.initialize(this)
+
                 val intent = Intent(this, ProjectHome::class.java)
                 startActivity(intent)
                 finish()
-            } ?: showMessage("Usuário/Senha Incorreto(s)")
+            } ?: showMessage("Incorrect(s) User/Password")
         }
     }
 }

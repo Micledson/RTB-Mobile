@@ -16,6 +16,7 @@ import com.rtb.rtb.model.Requirement
 import com.rtb.rtb.model.Type
 import com.rtb.rtb.model.fromResponse
 import com.rtb.rtb.model.toRequest
+import com.rtb.rtb.networks.BaseRepository
 import com.rtb.rtb.networks.RequirementRepository
 import com.rtb.rtb.networks.ResourceRepository
 import com.rtb.rtb.view.components.AppBarFragment
@@ -32,16 +33,21 @@ class CreateRequirement : BaseActivity() {
     private val dao by lazy {
         DatabaseHelper.getInstance(this).requirementDao()
     }
-    private lateinit var types: List<Type>
-    private lateinit var priorities: List<Priority>
-    private lateinit var origins: List<Origin>
+
+    private var types: List<Type>? = null
+    private var priorities: List<Priority>? = null
+    private var origins: List<Origin>? = null
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+    }
 
-        getResource()
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onResume() {
+        super.onResume()
+        setupActivity()
     }
 
     private fun configInputFields(
@@ -87,10 +93,10 @@ class CreateRequirement : BaseActivity() {
             if (isRequirementValid) {
                 val requirement = Requirement(
                     UUID.randomUUID(),
-                    dao.getLastRequirementCodeByProjectId(projectId) + 1,
-                    types[typePosition].id,
-                    origins[originPosition].id,
-                    priorities[priorityPosition].id,
+                    0,
+                    types!![typePosition].id,
+                    origins!![originPosition].id,
+                    priorities!![priorityPosition].id,
                     titleText,
                     userStoryText,
                     notesText,
@@ -101,11 +107,19 @@ class CreateRequirement : BaseActivity() {
 
                 try {
                     val requirementRepository = RequirementRepository()
-                    requirementRepository.createRequirement(this, requirement.toRequest())
-                    dao.createRequirement(requirement)
-                    showMessage(getString(R.string.requirement_registered_successfully))
+                    requirementRepository.createRequirement(this, requirement.toRequest()) { result ->
+                        when(result) {
+                            is BaseRepository.Result.Success -> {
+                                showMessage(getString(R.string.requirement_registered_successfully))
+                                finish()
+                            }
 
-                    finish()
+                            is BaseRepository.Result.Error -> {
+                                showMessage(getString(R.string.requirement_not_registered))
+                            }
+                        }
+
+                    }
                 } catch (e: Exception) {
                     showMessage(getString(R.string.requirement_not_registered))
                 }
@@ -144,24 +158,9 @@ class CreateRequirement : BaseActivity() {
         return true
     }
 
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun getResource() {
-        val resourceRepository = ResourceRepository()
-        resourceRepository.getResources { resource ->
-            if (resource != null) {
-                types = fromResponse(resource).types
-                origins = fromResponse(resource).origins
-                priorities = fromResponse(resource).priorities
-
-                setupActivity()
-            }
-        }
-    }
-
-
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setupActivity() {
+        setupResources()
 
         val projectId = UUID.fromString(intent.getStringExtra("projectId"))
         Log.d("salve", "ID BOLADO ${intent.getStringExtra("projectId")}")
@@ -171,20 +170,20 @@ class CreateRequirement : BaseActivity() {
         appBar.setModule(getString(R.string.rms))
 
         val type = findViewById<Spinner>(R.id.create_requirement_type)
-        var options = types.map { it.name }
-        var adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
+        var options = types?.map { it.name }
+        var adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options ?: emptyList())
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         type.adapter = adapter
 
         val origin = findViewById<Spinner>(R.id.create_requirement_origin)
-        options = origins.map { it.name }
-        adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
+        options = origins?.map { it.name }
+        adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options ?: emptyList())
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         origin.adapter = adapter
 
         val priority = findViewById<Spinner>(R.id.create_requirement_priority)
-        options = priorities.map { it.level }
-        adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
+        options = priorities?.map { it.level }
+        adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options ?: emptyList())
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         priority.adapter = adapter
 
@@ -214,8 +213,11 @@ class CreateRequirement : BaseActivity() {
             projectId
         )
     }
-//        val todoRepository = ProjectRepository()
-//        todoRepository.getProjects {
-//            it?.map { project -> }
-//        }
+
+    private fun setupResources() {
+        var resources = ResourcesManager.getResources(this)
+        types = resources?.types
+        origins = resources?.origins
+        priorities = resources?.priorities
+    }
 }

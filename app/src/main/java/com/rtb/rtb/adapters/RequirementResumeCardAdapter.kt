@@ -8,10 +8,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.Toast
+import com.rtb.rtb.R
 import com.rtb.rtb.database.DatabaseHelper
 import com.rtb.rtb.databinding.ComponentRequirementCardBinding
 import com.rtb.rtb.model.Project
 import com.rtb.rtb.model.Requirement
+import com.rtb.rtb.networks.BaseRepository
 import com.rtb.rtb.networks.RequirementRepository
 import com.rtb.rtb.view.UpdateRequirement
 import com.rtb.rtb.view.ViewRequirement
@@ -100,11 +103,26 @@ class RequirementResumeCardAdapter(
         alertDialogBuilder.setMessage("This action cannot be undone!")
 
         alertDialogBuilder.setPositiveButton("Delete") { dialog, _ ->
-            RequirementRepository().deleteRequirement(context, requirement.id)
-            dao.deleteRequirement(requirement)
-            requirements.removeAt(i)
-            notifyDataSetChanged()
-            dialog.dismiss()
+            try {
+                RequirementRepository().deleteRequirement(context, requirement.id) { result ->
+                    when(result) {
+                        is BaseRepository.Result.Success -> {
+                            Toast.makeText(context, context.getString(R.string.delete_requirement_toast), Toast.LENGTH_SHORT).show()
+                            requirements.removeAt(i)
+                            notifyDataSetChanged()
+                            dialog.dismiss()
+                        }
+
+                        is BaseRepository.Result.Error -> {
+                            Toast.makeText(context, context.getString(R.string.error_deleting_requirement_toast), Toast.LENGTH_SHORT).show()
+                            dialog.dismiss()
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                Toast.makeText(context, context.getString(R.string.error_deleting_requirement_toast), Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+            }
         }
         alertDialogBuilder.setNegativeButton("Cancel") { dialog, _ ->
             dialog.dismiss()
