@@ -2,6 +2,7 @@ package com.rtb.rtb.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.ListView
 import android.widget.Toast
@@ -35,6 +36,9 @@ class ProjectHome : BaseActivity() {
     override fun onResume() {
         super.onResume()
 
+        binding.projectHomeProgressBar.visibility = View.VISIBLE
+        binding.phListViewOfProjects.visibility = View.GONE
+
         val searchedProjects = supportFragmentManager.findFragmentById(R.id.ph_text_input_search_project) as InputFragment
         searchedProjects.setHint(getString(R.string.search_project))
         searchedProjects.configSearchInputType()
@@ -67,6 +71,9 @@ class ProjectHome : BaseActivity() {
                         callActiveProjects(readActiveProjects, readAllProjects, readInactiveProjects, projectListView)
 
                         callInactiveProjects(readInactiveProjects, readAllProjects, readActiveProjects, projectListView)
+
+                        binding.projectHomeProgressBar.visibility = View.GONE
+                        binding.phListViewOfProjects.visibility = View.VISIBLE
                     }
                 } catch (e: Exception) {
                     Toast.makeText(
@@ -77,6 +84,7 @@ class ProjectHome : BaseActivity() {
                     finish()
                 }
             }
+
         }
 
         val createProject = supportFragmentManager.findFragmentById(R.id.ph_button_new_project) as ButtonFragment
@@ -100,6 +108,9 @@ class ProjectHome : BaseActivity() {
 
             val inactiveProjectList = mutableListOf<Project>()
 
+            binding.projectHomeProgressBar.visibility = View.VISIBLE
+            binding.phListViewOfProjects.visibility = View.GONE
+
             runBlocking {
                 withContext(Dispatchers.IO){
                     try {
@@ -113,6 +124,9 @@ class ProjectHome : BaseActivity() {
 
                             val inactiveProjectCardAdapter =  ProjectResumeCardAdapter(this@ProjectHome, inactiveProjectList)
                             projectListView.adapter = inactiveProjectCardAdapter
+
+                            binding.projectHomeProgressBar.visibility = View.GONE
+                            binding.phListViewOfProjects.visibility = View.VISIBLE
                         }
                     } catch (e: Exception) {
                         Toast.makeText(
@@ -140,6 +154,9 @@ class ProjectHome : BaseActivity() {
 
             val activeProjectList = mutableListOf<Project>()
 
+            binding.projectHomeProgressBar.visibility = View.VISIBLE
+            binding.phListViewOfProjects.visibility = View.GONE
+
             runBlocking {
                 withContext(Dispatchers.IO){
                     try {
@@ -153,6 +170,9 @@ class ProjectHome : BaseActivity() {
 
                             val activeProjectCardAdapter =  ProjectResumeCardAdapter(this@ProjectHome, activeProjectList)
                             projectListView.adapter = activeProjectCardAdapter
+
+                            binding.projectHomeProgressBar.visibility = View.GONE
+                            binding.phListViewOfProjects.visibility = View.VISIBLE
                         }
                     } catch (e: Exception) {
                         Toast.makeText(
@@ -180,6 +200,9 @@ class ProjectHome : BaseActivity() {
 
             val projectList = mutableListOf<Project>()
 
+            binding.projectHomeProgressBar.visibility = View.VISIBLE
+            binding.phListViewOfProjects.visibility = View.GONE
+
             runBlocking {
                 withContext(Dispatchers.IO){
                     try {
@@ -191,6 +214,9 @@ class ProjectHome : BaseActivity() {
 
                             val projectCardAdapter =  ProjectResumeCardAdapter(this@ProjectHome, projectList)
                             projectListView.adapter = projectCardAdapter
+
+                            binding.projectHomeProgressBar.visibility = View.GONE
+                            binding.phListViewOfProjects.visibility = View.VISIBLE
                         }
                     } catch (e: Exception) {
                         Toast.makeText(
@@ -219,6 +245,9 @@ class ProjectHome : BaseActivity() {
 
             val searchedProjectList = mutableListOf<Project>()
 
+            binding.projectHomeProgressBar.visibility = View.VISIBLE
+            binding.phListViewOfProjects.visibility = View.GONE
+
             runBlocking {
                 withContext(Dispatchers.IO){
                     try {
@@ -236,6 +265,9 @@ class ProjectHome : BaseActivity() {
 
                             val searchedProjectsCardAdapter =  ProjectResumeCardAdapter(this@ProjectHome, searchedProjectList)
                             projectListView.adapter = searchedProjectsCardAdapter
+
+                            binding.projectHomeProgressBar.visibility = View.GONE
+                            binding.phListViewOfProjects.visibility = View.VISIBLE
                         }
                     } catch (e: Exception) {
                         Toast.makeText(

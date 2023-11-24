@@ -77,10 +77,17 @@ class CreateProject : BaseActivity() {
 
     private fun createProject(project: Project) {
         val projectRepository = ProjectRepository()
-        projectRepository.createProject(this, project.toRequest()) {
-            project.id = it.id
-            dao.createProject(project)
-            finish()
+        try {
+            projectRepository.createProject(this, project.toRequest()) {
+                project.id = it.id
+                finish()
+            }
+        } catch (e: Exception) {
+            Toast.makeText(
+                this,
+                "An unexpected error appeared",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 

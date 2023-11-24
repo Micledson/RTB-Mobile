@@ -48,20 +48,29 @@ class UpdateProject : BaseActivity() {
         runBlocking {
             withContext(Dispatchers.IO) {
                 val projectRepository = ProjectRepository()
-                projectRepository.getProjectByID(uuid) { projectResponse ->
-                    if (projectResponse != null) {
-                        project = fromResponse(projectResponse)
-                        progressBar.visibility = View.GONE
-                        bodyLayout.visibility = View.VISIBLE
-                        setupProjectUI(uuid)
-                    } else {
-                        Toast.makeText(
-                            this@UpdateProject,
-                            getString(R.string.error_getting_project_toast),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        finish()
+                try {
+                    projectRepository.getProjectByID(uuid) { projectResponse ->
+                        if (projectResponse != null) {
+                            project = fromResponse(projectResponse)
+                            progressBar.visibility = View.GONE
+                            bodyLayout.visibility = View.VISIBLE
+                            setupProjectUI(uuid)
+                        } else {
+                            Toast.makeText(
+                                this@UpdateProject,
+                                getString(R.string.error_getting_project_toast),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            finish()
+                        }
                     }
+                } catch (e: Exception) {
+                    Toast.makeText(
+                        this@UpdateProject,
+                        "An unexpected error appeared",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    finish()
                 }
             }
         }
@@ -125,7 +134,15 @@ class UpdateProject : BaseActivity() {
 
     private fun updateProject(id: UUID, project: Project) {
         val projectRepository = ProjectRepository()
-        projectRepository.updateProject(this, id, project.toRequest())
+        try {
+            projectRepository.updateProject(this, id, project.toRequest())
+        } catch (e: Exception) {
+            Toast.makeText(
+                this,
+                "An unexpected error appeared",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
 
