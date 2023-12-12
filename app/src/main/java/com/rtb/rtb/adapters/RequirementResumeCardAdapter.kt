@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
 import com.rtb.rtb.R
 import com.rtb.rtb.database.DatabaseHelper
 import com.rtb.rtb.databinding.ComponentRequirementCardBinding
@@ -18,6 +20,7 @@ import com.rtb.rtb.networks.BaseRepository
 import com.rtb.rtb.networks.RequirementRepository
 import com.rtb.rtb.view.UpdateRequirement
 import com.rtb.rtb.view.ViewRequirement
+import com.rtb.rtb.view.requirementComponents.RequirementCardOptionsModal
 import java.util.UUID
 
 class RequirementResumeCardAdapter(
@@ -53,19 +56,23 @@ class RequirementResumeCardAdapter(
             openRequirementDetailsView(requirements[i])
         }
 
-        val readRequirement = requirementCardBinding.rcImageViewRead
-        readRequirement.setOnClickListener {
-            openRequirementDetailsView(requirements[i])
-        }
+        val menuButton = requirementCardBinding.rcConstraintLayoutButton
+        menuButton.setOnClickListener {
+            val requirementCardOptionsModal = RequirementCardOptionsModal(this, i)
 
-        val updateRequirement = requirementCardBinding.rcImageViewEdit
-        updateRequirement.setOnClickListener {
-            openRequirementEditView(requirements[i].id)
-        }
+            val location = IntArray(2)
+            menuButton.getLocationInWindow(location)
 
-        val deleteRequirement = requirementCardBinding.pcImageViewDelete
-        deleteRequirement.setOnClickListener {
-            deleteRequirement(requirements[i], i)
+            val x = location[0]
+            val y = location[1]
+
+            val bundle = Bundle()
+            bundle.putInt("x", x)
+            bundle.putInt("y", y)
+            requirementCardOptionsModal.arguments = bundle
+
+            val fragmentManager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
+            requirementCardOptionsModal.show(fragmentManager , requirementCardOptionsModal.tag)
         }
 
         return requirementCardBinding.root
@@ -76,7 +83,7 @@ class RequirementResumeCardAdapter(
         requirementCardBinding.rcRequirementTitle.text = requirements[i].title
     }
 
-    private fun openRequirementDetailsView(requirement: Requirement) {
+    fun openRequirementDetailsView(requirement: Requirement) {
         val requirementCardIntent = Intent(context, ViewRequirement::class.java)
 
         val bundle = Bundle()
@@ -87,7 +94,7 @@ class RequirementResumeCardAdapter(
         context.startActivity(requirementCardIntent)
     }
 
-    private fun openRequirementEditView(requirementId: UUID) {
+    fun openRequirementEditView(requirementId: UUID) {
         val requirementCardIntent = Intent(context, UpdateRequirement::class.java)
 
         val bundle = Bundle()
@@ -97,7 +104,7 @@ class RequirementResumeCardAdapter(
         context.startActivity(requirementCardIntent)
     }
 
-    private fun deleteRequirement(requirement: Requirement, i: Int) {
+    fun deleteRequirement(requirement: Requirement, i: Int) {
         val alertDialogBuilder = AlertDialog.Builder(context)
         alertDialogBuilder.setTitle("Delete this?")
         alertDialogBuilder.setMessage("This action cannot be undone!")

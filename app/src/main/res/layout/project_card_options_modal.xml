@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".view.projectComponents.ProjectCardOptionsModal">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/modal_constraint_layout_buttons"
+        android:layout_width="160dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintEnd_toEndOf="parent" >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/modal_image_view_read_block"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/modal_item_selector"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/modal_image_view_edit_block">
+
+            <ImageView
+                android:id="@+id/modal_image_view_read"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/baseline_eye_24"
+                app:tint="@color/blue"
+                app:layout_constraintEnd_toStartOf="@id/modal_text_view_read"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/modal_text_view_read"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="View"
+                android:paddingStart="8dp"
+                android:textColor="@color/blue"
+                tools:ignore="MissingConstraints"
+                app:layout_constraintStart_toEndOf="@id/modal_image_view_read"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/modal_image_view_edit_block"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/modal_item_selector"
+            app:layout_constraintTop_toBottomOf="@id/modal_image_view_read_block"
+            app:layout_constraintBottom_toTopOf="@id/modal_image_view_delete_block">
+
+            <ImageView
+                android:id="@+id/modal_image_view_edit"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/baseline_edit_24"
+                app:tint="@color/amber_500"
+                app:layout_constraintEnd_toStartOf="@id/modal_text_view_edit"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/modal_text_view_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Update"
+                android:paddingStart="8dp"
+                android:textColor="@color/amber_500"
+                app:layout_constraintStart_toEndOf="@id/modal_image_view_edit"
+                tools:ignore="MissingConstraints" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/modal_image_view_delete_block"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:background="@drawable/modal_item_selector"
+            app:layout_constraintTop_toBottomOf="@id/modal_image_view_edit_block"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <ImageView
+                android:id="@+id/modal_image_view_delete"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/baseline_delete_24"
+                app:tint="@color/red"
+                app:layout_constraintEnd_toStartOf="@id/modal_text_view_delete"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/modal_text_view_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Delete"
+                android:paddingStart="8dp"
+                android:textColor="@color/red"
+                app:layout_constraintStart_toEndOf="@id/modal_image_view_delete"
+                tools:ignore="MissingConstraints" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

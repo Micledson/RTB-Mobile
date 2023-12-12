@@ -9,7 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentManager
 import com.rtb.rtb.R
 import com.rtb.rtb.database.DatabaseHelper
 import com.rtb.rtb.databinding.ComponentProjectCardBinding
@@ -17,10 +19,7 @@ import com.rtb.rtb.model.Project
 import com.rtb.rtb.networks.BaseRepository
 import com.rtb.rtb.networks.ProjectRepository
 import com.rtb.rtb.view.RequirementHome
-import com.rtb.rtb.view.UpdateProject
-import com.rtb.rtb.view.ViewProject
-import java.text.SimpleDateFormat
-import java.util.Locale
+import com.rtb.rtb.view.projectComponents.ProjectCardOptionsModal
 
 class ProjectResumeCardAdapter(val context: Context, val projects: MutableList<Project>): BaseAdapter() {
     private val dao by lazy {
@@ -54,35 +53,29 @@ class ProjectResumeCardAdapter(val context: Context, val projects: MutableList<P
             context.startActivity(selectProjectIntent)
         }
 
-        val readProject = projectCardBinding.pcImageViewRead
-        readProject.setOnClickListener {
-            val readProjectIntent = Intent(context, ViewProject::class.java)
+        val menuButton = projectCardBinding.pcConstraintLayoutButton
+        menuButton.setOnClickListener {
+            val projectCardOptionsModal = ProjectCardOptionsModal(this, i)
+
+            val location = IntArray(2)
+            menuButton.getLocationInWindow(location)
+
+            val x = location[0]
+            val y = location[1]
 
             val bundle = Bundle()
-            bundle.putParcelable("readProject", projects[i])
+            bundle.putInt("x", x)
+            bundle.putInt("y", y)
+            projectCardOptionsModal.arguments = bundle
 
-            readProjectIntent.putExtras(bundle)
-            context.startActivity(readProjectIntent)
-        }
-
-        val updateProject = projectCardBinding.pcImageViewEdit
-        updateProject.setOnClickListener {
-            val updateProjectIntent = Intent(context, UpdateProject::class.java)
-
-            val project = getItem(i) as Project
-            updateProjectIntent.putExtra("uuid", project.id.toString())
-            context.startActivity(updateProjectIntent)
-        }
-
-        val deleteProject = projectCardBinding.pcImageViewDelete
-        deleteProject.setOnClickListener {
-            deleteProjectMethod(projects[i], i)
+            val fragmentManager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
+            projectCardOptionsModal.show(fragmentManager , projectCardOptionsModal.tag)
         }
 
         return projectCardBinding.root
     }
 
-    private fun deleteProjectMethod(myProject: Project, i : Int) {
+    fun deleteProjectMethod(myProject: Project, i : Int) {
         val alertDialogBuilder = AlertDialog.Builder(context)
         alertDialogBuilder.setTitle("Delete this?")
         alertDialogBuilder.setMessage("This action cannot be undone!")
@@ -124,12 +117,6 @@ class ProjectResumeCardAdapter(val context: Context, val projects: MutableList<P
     ) {
         projectCardBinding.pcTextViewProjectName.text = projects[i].name
         projectCardBinding.pcTextViewProjectAlias.text = projects[i].alias
-
-        val dateParam = projects[i].createdAt
-        val dateConverter = SimpleDateFormat("MM/dd/yyyy", Locale.US)
-        val date = dateConverter.format(dateParam)
-
-        projectCardBinding.pcTextViewProjectCreatedAt.text = date
 
         if (!projects[i].isActive) {
             projectCardBinding.pcOverlayViewIsActive.setBackgroundColor(ContextCompat.getColor(context, R.color.red))

@@ -43,40 +43,37 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/rc_constraint_layout_button"
+            android:layout_width="60dp"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="end">
+            app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/rc_image_view_read"
-                android:layout_width="35dp"
+            <View
+                android:id="@+id/greyLine"
+                android:layout_width="2dp"
                 android:layout_height="0dp"
-                android:layout_weight="1"
-                android:padding="6dp"
-                android:background="@color/blue"
-                android:src="@drawable/baseline_eye_24" />
+                android:background="@color/gray_100"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
 
-            <ImageView
-                android:id="@+id/rc_image_view_edit"
-                android:layout_width="35dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:padding="6dp"
-                android:src="@drawable/baseline_edit_24"
-                android:background="@color/yellow" />
+            <TextView
+                android:id="@+id/btnOne"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:rotation="90"
+                android:text="@string/menu_option"
+                android:textAllCaps="false"
+                android:textAlignment="center"
+                android:textColor="@color/gray"
+                android:textSize="40sp"
+                android:fontFamily="@font/inter"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/pc_image_view_delete"
-                android:layout_width="35dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:padding="6dp"
-                android:background="@color/red"
-                android:src="@drawable/baseline_delete_24" />
-
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>
