@@ -17,6 +17,38 @@
         app:layout_constraintEnd_toEndOf="parent" >
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/modal_image_view_collaborators_block"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:layout_marginBottom="4dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/modal_image_view_read_block">
+
+            <ImageView
+                android:id="@+id/modal_image_view_collaborators"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/baseline_collaborators_24"
+                app:tint="@color/black"
+                app:layout_constraintEnd_toStartOf="@id/modal_text_view_collaborators"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/modal_text_view_collaborators"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Collaborators"
+                android:paddingStart="8dp"
+                android:textColor="@color/black"
+                tools:ignore="MissingConstraints"
+                app:layout_constraintStart_toEndOf="@id/modal_image_view_collaborators"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/modal_image_view_read_block"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -24,8 +56,7 @@
             android:gravity="center_vertical"
             android:padding="8dp"
             android:layout_marginBottom="4dp"
-            android:background="@drawable/modal_item_selector"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/modal_image_view_collaborators_block"
             app:layout_constraintBottom_toTopOf="@id/modal_image_view_edit_block">
 
             <ImageView
@@ -33,7 +64,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/baseline_eye_24"
-                app:tint="@color/blue"
+                app:tint="@color/black"
                 app:layout_constraintEnd_toStartOf="@id/modal_text_view_read"
                 tools:ignore="MissingConstraints" />
 
@@ -43,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:text="View"
                 android:paddingStart="8dp"
-                android:textColor="@color/blue"
+                android:textColor="@color/black"
                 tools:ignore="MissingConstraints"
                 app:layout_constraintStart_toEndOf="@id/modal_image_view_read"
                 />
@@ -57,7 +88,6 @@
             android:gravity="center_vertical"
             android:padding="8dp"
             android:layout_marginBottom="4dp"
-            android:background="@drawable/modal_item_selector"
             app:layout_constraintTop_toBottomOf="@id/modal_image_view_read_block"
             app:layout_constraintBottom_toTopOf="@id/modal_image_view_delete_block">
 
@@ -66,7 +96,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/baseline_edit_24"
-                app:tint="@color/amber_500"
+                app:tint="@color/black"
                 app:layout_constraintEnd_toStartOf="@id/modal_text_view_edit"
                 tools:ignore="MissingConstraints" />
 
@@ -76,7 +106,7 @@
                 android:layout_height="wrap_content"
                 android:text="Update"
                 android:paddingStart="8dp"
-                android:textColor="@color/amber_500"
+                android:textColor="@color/black"
                 app:layout_constraintStart_toEndOf="@id/modal_image_view_edit"
                 tools:ignore="MissingConstraints" />
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -88,7 +118,6 @@
             android:orientation="horizontal"
             android:gravity="center_vertical"
             android:padding="8dp"
-            android:background="@drawable/modal_item_selector"
             app:layout_constraintTop_toBottomOf="@id/modal_image_view_edit_block"
             app:layout_constraintBottom_toBottomOf="parent">
 
