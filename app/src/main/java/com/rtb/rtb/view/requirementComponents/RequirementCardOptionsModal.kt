@@ -8,17 +8,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.rtb.rtb.adapters.RequirementResumeCardAdapter
-import com.rtb.rtb.databinding.ProjectCardOptionsModalBinding
+import com.rtb.rtb.databinding.RequirementCardOptionsModalBinding
 
 class RequirementCardOptionsModal(private val adapter: RequirementResumeCardAdapter, private val index: Int) : DialogFragment() {
-    lateinit var binding: ProjectCardOptionsModalBinding
+    lateinit var binding: RequirementCardOptionsModalBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = ProjectCardOptionsModalBinding.inflate(inflater, container, false)
+        binding = RequirementCardOptionsModalBinding.inflate(inflater, container, false)
 
         val x = arguments?.getInt("x") ?: 0
         val y = arguments?.getInt("y") ?: 0
