@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -12,256 +11,242 @@
         android:name="com.rtb.rtb.view.components.AppBarFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Scroll View for Content -->
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:paddingBottom="48dp"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/appBar">
 
-        <!-- Constraint Layout for Requirement Details -->
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="24dp"
-            android:paddingHorizontal="24dp">
+            android:layout_marginTop="25dp">
 
-            <!-- Requirement code field -->
+
             <TextView
-                android:id="@+id/vr_requirement_code_field"
+                android:id="@+id/txtTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Code"
-                android:textSize="16sp"
-                android:textStyle="bold"
+
+                android:text="MyBackendProject"
+                android:textSize="20sp"
+
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <!-- Requirement code value -->
             <TextView
-                android:id="@+id/vr_requirement_code_value"
+                android:id="@+id/txtAlias"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                tools:text="NOTIFICA-123"
-                android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/vr_requirement_code_field" />
 
-            <!-- Requirement title field -->
-            <TextView
-                android:id="@+id/vr_requirement_title_field"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:text="@string/requirement_title"
-                android:textSize="16sp"
+                android:text="MBP-01"
+                android:textSize="30sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/vr_requirement_code_value" />
 
-            <!-- Requirement title value -->
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtTitle" />
+
             <TextView
-                android:id="@+id/vr_requirement_title_value"
+                android:id="@+id/txtText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                tools:text="The system must allow the user to log in to the system."
-                android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/vr_requirement_title_field" />
 
-            <!-- Requirement type field -->
+                android:text="Sign up route"
+
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtAlias" />
+
+
             <TextView
-                android:id="@+id/vr_requirement_type_field"
+                android:id="@+id/txtTypeTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="6dp"
-                android:text="@string/requirement_type"
-                android:textSize="16sp"
+
+                android:layout_marginTop="20dp"
+
+                android:text="Type"
+                android:textSize="20sp"
                 android:textStyle="bold"
+
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/vr_requirement_title_value" />
+                app:layout_constraintTop_toBottomOf="@id/txtText" />
 
-            <!-- Requirement type value -->
             <TextView
-                android:id="@+id/vr_requirement_type_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="6dp"
-                tools:text="Functional requirement"
-                android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/vr_requirement_type_field" />
-
-            <!-- Requirement origin field -->
-            <TextView
-                android:id="@+id/vr_requirement_origin_field"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="6dp"
-                android:text="@string/requirement_origin"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/vr_requirement_type_value" />
-
-            <!-- Requirement origin value -->
-            <TextView
-                android:id="@+id/vr_requirement_origin_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="6dp"
-                tools:text="Functional requirement"
-                android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/vr_requirement_origin_field" />
-
-            <!-- Requirement priority field -->
-            <TextView
-                android:id="@+id/vr_requirement_priority_field"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="6dp"
-                android:text="@string/requirement_priority"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/vr_requirement_origin_value" />
-
-            <!-- Requirement priority value -->
-            <TextView
-                android:id="@+id/vr_requirement_priority_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="6dp"
-                tools:text="High"
-                android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/vr_requirement_priority_field" />
-
-            <!-- Requirement project field -->
-            <TextView
-                android:id="@+id/vr_requirement_project_field"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="6dp"
-                android:text="@string/requirement_project"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/vr_requirement_priority_value" />
-
-            <!-- Requirement project value -->
-            <TextView
-                android:id="@+id/vr_requirement_project_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="6dp"
-                tools:text="Notifica"
-                android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/vr_requirement_project_field" />
-
-            <!-- Requirement user story field -->
-            <TextView
-                android:id="@+id/vr_requirement_user_story_field"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="6dp"
-                android:text="@string/requirement_user_story"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/vr_requirement_project_value" />
-
-            <!-- Requirement user story value -->
-            <TextView
-                android:id="@+id/vr_requirement_user_story_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="6dp"
-                tools:text="As a registered user...\nI want to log in to the system...\nSo that I can access my account and use the system's features."
-                android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/vr_requirement_user_story_field" />
-
-
-
-            <!-- Requirement notes field -->
-            <TextView
-                android:id="@+id/vr_requirement_notes_field"
+                android:id="@+id/txtTypeField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="6dp"
-                android:text="@string/requirement_notes"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/vr_requirement_user_story_value" />
 
-            <!-- Requirement notes value -->
+                android:gravity="center"
+
+                android:text="Type Field"
+                android:textSize="20sp"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtTypeTitle" />
+
             <TextView
-                android:id="@+id/vr_requirement_notes_value"
+                android:id="@+id/txtOriginTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="20dp"
+
+                android:text="Origin"
+                android:textSize="20sp"
+                android:textStyle="bold"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtTypeField" />
+
+            <TextView
+                android:id="@+id/txtOriginField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="6dp"
-                tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus ut odio cursus tristique. Vivamus et vulputate libero. Proin auctor neque eu lacinia feugiat. Cras euismod ex eget ante convallis, sed scelerisque quam aliquam. Vestibulum tristique justo non erat mattis, vel pharetra ante auctor. Aenean id purus ac urna blandit varius. Suspendisse sit amet sagittis nunc, a vehicula purus. Sed et eleifend metus. Proin convallis elit eget felis scelerisque congue. Fusce tristique, velit et vehicula tristique, dui massa hendrerit lectus, non facilisis eros tortor sit amet nulla. Vestibulum varius enim ut elit sodales, ac facilisis purus condimentum. Nullam semper tortor vel eros tincidunt, non volutpat ipsum tristique. Suspendisse potenti. Nunc feugiat libero a urna elementum, vel facilisis mi tristique. Sed accumsan arcu ac nisl fermentum vestibulum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eu faucibus nibh, ut porttitor sem. Donec placerat ultricies rutrum. Aliquam et ipsum neque. Sed pharetra accumsan nisl, at commodo nunc dignissim quis. Proin finibus magna felis, facilisis cursus lacus congue eget. Cras a ante ullamcorper, mollis nibh vitae, pharetra nulla. Nullam placerat, eros ac tempus egestas, urna orci posuere leo, vel consectetur ante velit nec dolor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at nisi odio. Fusce ultrices, erat a maximus ultrices, sem elit maximus felis, id porta leo massa vitae magna. Vivamus hendrerit finibus purus, id pellentesque tellus vestibulum pellentesque. Quisque dolor quam, gravida sed nisl a, aliquet convallis metus. Nam rutrum posuere neque, sit amet rhoncus sem varius finibus. Sed vestibulum nibh quis euismod sollicitudin. Vestibulum id ipsum purus. Phasellus et rhoncus quam. Nunc porttitor at massa eget iaculis. In rutrum pharetra lectus sit amet scelerisque. Fusce euismod a urna in facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel venenatis leo. Morbi dignissim ornare tellus non laoreet. Vestibulum tortor purus, auctor in fermentum quis, rhoncus sed ipsum. Nulla placerat diam non est interdum, sit amet laoreet eros bibendum. Suspendisse suscipit pellentesque finibus. In sapien urna, auctor vitae rutrum ut, rutrum non est. Sed vulputate dui sed felis ornare tincidunt. Aliquam eget nibh vitae enim viverra finibus. Maecenas ultricies mauris in consequat venenatis. Sed venenatis porttitor ligula, sed vestibulum purus blandit imperdiet. Aliquam accumsan odio non lorem luctus suscipit. Pellentesque tristique massa et dui sollicitudin ornare. Mauris consequat feugiat purus, vitae dictum mi fringilla eget. Nulla facilisi. Curabitur tincidunt enim in tempus facilisis. Ut vitae malesuada ligula. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vestibulum est at nunc bibendum, quis bibendum mi fermentum. Nunc ultrices turpis sapien, non posuere ligula tempor in. Ut imperdiet laoreet felis, non auctor est dapibus id. Aliquam dictum, ex ultrices cursus pellentesque, quam turpis semper nunc, eget vehicula libero lectus vel erat. Nullam aliquam dignissim est vitae euismod. Interdum et malesuada fames ac ante ipsum primis in faucibus. Fusce rutrum metus felis, quis congue neque egestas vel. Aliquam efficitur augue eget accumsan convallis. Nam gravida porttitor tincidunt. Sed viverra augue eros, sit amet lobortis nisi pretium sed."
-                android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/vr_requirement_notes_field" />
 
-            <!-- Requirement created at field -->
+                android:gravity="center"
+
+                android:text="Origin Field"
+                android:textSize="20sp"
+
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtOriginTitle" />
+
             <TextView
-                android:id="@+id/vr_requirement_created_at_field"
+                android:id="@+id/txtUserStoryTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="6dp"
-                android:text="@string/requirement_created_at"
-                android:textSize="16sp"
+
+                android:layout_marginTop="20dp"
+
+                android:text="User Story"
+                android:textSize="20sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/vr_requirement_notes_value" />
 
-            <!-- Requirement created at value -->
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtOriginField" />
+
             <TextView
-                android:id="@+id/vr_requirement_created_at_value"
+                android:id="@+id/txtUserStoryField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:gravity="center"
+                android:text="salve"
+                android:textSize="20sp"
+
+                app:layout_constraintTop_toBottomOf="@id/txtUserStoryTitle" />
+
+
+            <TextView
+                android:id="@+id/txtDescriptionTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="6dp"
-                tools:text="2023-11-06T14:30:00Z"
-                android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/vr_requirement_created_at_field" />
 
-            <!-- Requirement updated at field -->
-            <TextView
-                android:id="@+id/vr_requirement_updated_at_field"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="6dp"
-                android:text="@string/requirement_updated_at"
-                android:textSize="16sp"
+                android:layout_marginTop="20dp"
+
+                android:text="Description"
+                android:textSize="20sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/vr_requirement_created_at_value" />
 
-            <!-- Requirement updated at value -->
-            <TextView
-                android:id="@+id/vr_requirement_updated_at_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                tools:text="2023-11-06T14:30:00Z"
-                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/vr_requirement_updated_at_field" />
+                app:layout_constraintTop_toBottomOf="@id/txtUserStoryField" />
+
+
+            <TextView
+                android:id="@+id/txtDescriptionField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:gravity="center"
+
+                android:text="salve"
+                android:textSize="20sp"
+                app:layout_constraintTop_toBottomOf="@id/txtDescriptionTitle" />
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/vp_linear_layout_dates_block"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginBottom="16dp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/vp_text_view_created_at"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="50dp"
+            android:text="@string/created_at"
+
+            android:textSize="16sp"
+
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/txtCreatedAt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:textSize="16sp"
+
+            app:layout_constraintStart_toStartOf="@id/vp_text_view_created_at"
+            app:layout_constraintTop_toBottomOf="@id/vp_text_view_created_at" />
+
+        <TextView
+            android:id="@+id/vp_text_view_updated_at"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginEnd="50dp"
+            android:text="@string/updated_at"
+
+            android:textSize="16sp"
+
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/txtUpdatedAt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:textSize="16sp"
+
+            app:layout_constraintStart_toStartOf="@id/vp_text_view_updated_at"
+            app:layout_constraintTop_toBottomOf="@id/vp_text_view_updated_at" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
