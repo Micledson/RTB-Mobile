@@ -4,6 +4,7 @@ import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.rtb.rtb.R
 import com.rtb.rtb.databinding.ActivityViewRequirementBinding
 import com.rtb.rtb.model.Project
@@ -38,6 +39,22 @@ class ViewRequirement : AppCompatActivity() {
         val project = getProjectAccordingVersion()
 
         var resources = ResourcesManager.getResources(this)
+
+        binding.txtPriority.text = resources?.priorities?.find { it.id == requirement?.priorityId }?.level ?: ""
+        val priorityComponent = binding.txtPriority
+        val priorityName = binding.txtPriority.text
+
+        val highColor = ContextCompat.getColorStateList(this, R.color.orange)
+        val lowColor = ContextCompat.getColorStateList(this, R.color.yellow)
+        val minimumColor = ContextCompat.getColorStateList(this, R.color.blue)
+
+        if (priorityName.equals("high")) {
+            priorityComponent.compoundDrawableTintList = highColor
+        } else if (priorityName.equals("minimum")) {
+            priorityComponent.compoundDrawableTintList = minimumColor
+        } else if (priorityName.equals("low")) {
+            priorityComponent.compoundDrawableTintList = lowColor
+        }
 
         binding.txtTitle.text = requirement?.title
         binding.txtText.text = "${project?.alias}-${requirement?.code}"
