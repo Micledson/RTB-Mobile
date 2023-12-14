@@ -6,7 +6,6 @@ import androidx.room.PrimaryKey
 import com.rtb.rtb.networks.dto.request.CollaboratorRequest
 import com.rtb.rtb.networks.dto.response.CollaboratorResponse
 import kotlinx.parcelize.Parcelize
-import java.util.Date
 import java.util.UUID
 
 @Entity
@@ -17,8 +16,6 @@ data class Collaborator (
     val userEmail: String,
     val userFirstName: String,
     val userLastName: String,
-    val createdAt: Date,
-    val updatedAt: Date?,
 ): Parcelable
 
 
@@ -27,9 +24,7 @@ fun fromResponse(response: CollaboratorResponse): Collaborator {
         response.userId!!,
         response.userEmail,
         response.userFirstName!!,
-        response.userLastName!!,
-        response.createdAt!!,
-        response.updatedAt
+        response.userLastName!!
     )
 }
 

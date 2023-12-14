@@ -12,14 +12,14 @@ import java.util.UUID
 
 interface CollaboratorInterface {
     @GET("/api/collaborators/{projectId}")
-    fun getCollaborators(@Path("projectID") projectId: UUID): Call<List<CollaboratorResponse>>
+    fun getCollaborators(@Path("projectId") projectId: UUID): Call<List<CollaboratorResponse>>
 
     @GET("/api/collaborators/possible-collaborators/{projectId}")
-    fun getPossibleCollaborators(@Path("projectID") projectId: UUID): Call<List<CollaboratorResponse>>
+    fun getPossibleCollaborators(@Path("projectId") projectId: UUID): Call<List<CollaboratorResponse>>
 
     @POST("/api/collaborators/{projectId}")
-    fun createCollaborator(@Path("projectID") projectId: UUID, @Body body: CollaboratorRequest): Call<Void>
+    fun createCollaborator(@Path("projectId") projectId: UUID, @Body body: CollaboratorRequest): Call<Void>
 
     @DELETE("/api/collaborators/{projectId}/{userId}")
-    fun deleteCollaborator(@Path("projectID") projectId: UUID, @Path("userID") userId: UUID): Call<Void>
+    fun deleteCollaborator(@Path("projectId") projectId: UUID, @Path("userId") userId: UUID): Call<Void>
 }

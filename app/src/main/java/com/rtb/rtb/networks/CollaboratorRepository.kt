@@ -1,6 +1,7 @@
 package com.rtb.rtb.networks
 
 import android.content.Context
+import android.util.Log
 import com.rtb.rtb.networks.dto.request.CollaboratorRequest
 import com.rtb.rtb.networks.dto.response.CollaboratorResponse
 import com.rtb.rtb.networks.interfaces.CollaboratorInterface
@@ -36,15 +37,17 @@ class CollaboratorRepository : BaseRepository() {
 
     fun getPossibleCollaborators(projectId: UUID, callback: (Result<List<CollaboratorResponse>?>) -> Unit) {
         val request = service.getPossibleCollaborators(projectId)
-
+        Log.d("salve", projectId.toString())
         request.enqueue(object : Callback<List<CollaboratorResponse>> {
             override fun onResponse(
                 call: Call<List<CollaboratorResponse>>,
                 response: Response<List<CollaboratorResponse>>
             ) {
                 if (response.isSuccessful) {
+                    Log.d("salve", response.body().toString())
                     callback.invoke(Result.Success(response.body()))
                 } else {
+                    Log.d("salve", response.errorBody().toString())
                     callback.invoke(Result.Error("Error: ${response.errorBody()}"))
                 }
             }

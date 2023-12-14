@@ -77,7 +77,6 @@ class CollaboratorsHome : BaseActivity() {
                                 possibleCollaborators.add(fromResponse(it))
                             }
 
-
                             ProjectRepository().getProjectByID(projectId) { projectResult ->
                                 when (projectResult) {
                                     is BaseRepository.Result.Success -> {
