@@ -16,6 +16,7 @@ import com.rtb.rtb.R
 import com.rtb.rtb.database.DatabaseHelper
 import com.rtb.rtb.databinding.ComponentProjectCardBinding
 import com.rtb.rtb.model.Project
+import com.rtb.rtb.networks.ApiService
 import com.rtb.rtb.networks.BaseRepository
 import com.rtb.rtb.networks.ProjectRepository
 import com.rtb.rtb.view.RequirementHome
@@ -85,7 +86,8 @@ class ProjectResumeCardAdapter(val context: Context, val projects: MutableList<P
 
         alertDialogBuilder.setPositiveButton("Delete") { dialog, _ ->
             try {
-                val projectRepository = ProjectRepository()
+                val apiService = ApiService(context)
+                val projectRepository = ProjectRepository(apiService)
                 projectRepository.deleteProject(context, myProject.id!!) { result ->
                     when(result) {
                         is BaseRepository.Result.Success -> {

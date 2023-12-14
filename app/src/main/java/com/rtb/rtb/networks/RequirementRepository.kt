@@ -9,8 +9,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.UUID
 
-class RequirementRepository : BaseRepository() {
-    private val retrofit = ApiService.instance
+class RequirementRepository(apiService: ApiService) : BaseRepository() {
+    private val retrofit = apiService.instance
     private val service = retrofit.create(RequirementInterface::class.java)
 
     fun getRequirements(projectId: UUID? = null, callback: (Result<List<RequirementResponse>?>) -> Unit) {

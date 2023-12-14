@@ -1,6 +1,7 @@
 package com.rtb.rtb.view
 
 import ResourcesManager
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -18,6 +19,7 @@ import com.rtb.rtb.model.Requirement
 import com.rtb.rtb.model.Type
 import com.rtb.rtb.model.fromResponse
 import com.rtb.rtb.model.toRequest
+import com.rtb.rtb.networks.ApiService
 import com.rtb.rtb.networks.BaseRepository
 import com.rtb.rtb.networks.ProjectRepository
 import com.rtb.rtb.networks.RequirementRepository
@@ -61,11 +63,11 @@ class UpdateRequirement : BaseActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onResume() {
         super.onResume()
-        setupActivity()
+        setupActivity(this)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun setupActivity() {
+    private fun setupActivity(context: Context) {
         val requirementId = UUID.fromString(intent.getStringExtra("requirementId"))
 
         setupResources()
@@ -75,7 +77,8 @@ class UpdateRequirement : BaseActivity() {
 
         runBlocking {
             withContext(Dispatchers.IO) {
-                val requirementRepository = RequirementRepository()
+                val apiService = ApiService(context)
+                val requirementRepository = RequirementRepository(apiService)
                 try {
                     requirementRepository.getRequirementById(requirementId) { result ->
                         when(result) {
@@ -105,7 +108,8 @@ class UpdateRequirement : BaseActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setupRequirementActivity(requirement: Requirement) {
-        val projectRepository = ProjectRepository()
+        val apiService = ApiService(this)
+        val projectRepository = ProjectRepository(apiService)
         projectRepository.getProjectByID(requirement.projectId) { result ->
             when (result) {
                 is BaseRepository.Result.Success -> {
@@ -260,7 +264,8 @@ class UpdateRequirement : BaseActivity() {
                 )
 
                 try {
-                    val requirementRepository = RequirementRepository()
+                    val apiService = ApiService(this)
+                    val requirementRepository = RequirementRepository(apiService)
                     requirementRepository.updateRequirement(this, requirement.id, requirement.toRequest()) { result ->
                         when(result) {
                             is BaseRepository.Result.Success -> {
