@@ -8,6 +8,7 @@ class SharedPrefs (context: Context) {
 
     private val userKey : String = "USER"
     private val emailKey : String = "EMAIL"
+    private val accessTokenKey : String = "ACCESS_TOKEN"
     private val resourcesKey: String = "RESOURCES"
     private val sharedPrefs =
         context.getSharedPreferences("user_session", Context.MODE_PRIVATE)
@@ -37,6 +38,14 @@ class SharedPrefs (context: Context) {
     fun getResources(): Resource? {
         val resourcesJson = sharedPrefs.getString(resourcesKey, null)
         return gson.fromJson(resourcesJson, Resource::class.java)
+    }
+
+    fun setAccessToken(value : String?) {
+        sharedPrefs.edit().putString(accessTokenKey, value).apply()
+    }
+
+    fun getAccessToken() : String? {
+        return sharedPrefs.getString(accessTokenKey, null)
     }
 
 }

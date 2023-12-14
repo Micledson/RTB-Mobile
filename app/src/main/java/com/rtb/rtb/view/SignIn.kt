@@ -6,6 +6,11 @@ import android.os.Bundle
 import com.rtb.rtb.R
 import com.rtb.rtb.database.preferences.SharedPrefs
 import com.rtb.rtb.databinding.ActivitySignInBinding
+import com.rtb.rtb.model.User
+import com.rtb.rtb.model.toRequest
+import com.rtb.rtb.networks.ApiService
+import com.rtb.rtb.networks.BaseRepository
+import com.rtb.rtb.networks.UserRepository
 import com.rtb.rtb.view.components.ButtonFragment
 import com.rtb.rtb.view.components.InputFragment
 
@@ -52,21 +57,39 @@ class SignIn : BaseActivity() {
 
     private fun configSignInButton(
         buttonFragment: ButtonFragment,
-        emailAddress: InputFragment,
-        password: InputFragment
+        emailAddressInput: InputFragment,
+        passwordInput: InputFragment
     ) {
         val button = buttonFragment.setupButton(getString(R.string.sign_in))
         button.setOnClickListener {
-            dao.authenticate(emailAddress.getText().lowercase(), password.getText())?.let {
-                SharedPrefs(this).setUserValue(true)
-                SharedPrefs(this).setUserEmail(emailAddress.getText().lowercase())
+            val apiService = ApiService(this)
+            val userRepository = UserRepository(apiService)
+            try {
+                val email = emailAddressInput.getText().lowercase()
+                val password = passwordInput.getText()
+                val user = User(email, "", "", password)
+                userRepository.login(user.toRequest()) { result ->
+                    when (result) {
+                        is BaseRepository.Result.Success -> {
+                            SharedPrefs(this).setUserValue(true)
+                            SharedPrefs(this).setUserEmail(email)
+                            SharedPrefs(this).setAccessToken(result.data?.accessToken)
 
-                ResourcesManager.initialize(this)
+                            ResourcesManager.initialize(this)
 
-                val intent = Intent(this, ProjectHome::class.java)
-                startActivity(intent)
-                finish()
-            } ?: showMessage("Incorrect(s) User/Password")
+                            val intent = Intent(this, ProjectHome::class.java)
+                            startActivity(intent)
+                            finish()
+                        }
+
+                        is BaseRepository.Result.Error -> {
+                            showMessage("Incorrect(s) User/Password")
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                showMessage("An unexpected error appeared")
+            }
         }
     }
 }

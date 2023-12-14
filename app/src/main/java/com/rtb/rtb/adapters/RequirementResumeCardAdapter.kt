@@ -16,6 +16,7 @@ import com.rtb.rtb.database.DatabaseHelper
 import com.rtb.rtb.databinding.ComponentRequirementCardBinding
 import com.rtb.rtb.model.Project
 import com.rtb.rtb.model.Requirement
+import com.rtb.rtb.networks.ApiService
 import com.rtb.rtb.networks.BaseRepository
 import com.rtb.rtb.networks.RequirementRepository
 import com.rtb.rtb.view.UpdateRequirement
@@ -111,7 +112,8 @@ class RequirementResumeCardAdapter(
 
         alertDialogBuilder.setPositiveButton("Delete") { dialog, _ ->
             try {
-                RequirementRepository().deleteRequirement(context, requirement.id) { result ->
+                val apiService = ApiService(context)
+                RequirementRepository(apiService).deleteRequirement(context, requirement.id) { result ->
                     when(result) {
                         is BaseRepository.Result.Success -> {
                             Toast.makeText(context, context.getString(R.string.delete_requirement_toast), Toast.LENGTH_SHORT).show()

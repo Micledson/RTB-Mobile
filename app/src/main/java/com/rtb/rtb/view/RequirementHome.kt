@@ -15,6 +15,7 @@ import com.rtb.rtb.databinding.ActivityRequirementHomeBinding
 import com.rtb.rtb.model.Project
 import com.rtb.rtb.model.Requirement
 import com.rtb.rtb.model.fromResponse
+import com.rtb.rtb.networks.ApiService
 import com.rtb.rtb.networks.BaseRepository
 import com.rtb.rtb.networks.ProjectRepository
 import com.rtb.rtb.networks.RequirementRepository
@@ -80,7 +81,8 @@ class RequirementHome : BaseActivity() {
         binding.requirementsNotFound.visibility = View.GONE
         requirements.clear()
         try {
-            RequirementRepository().getRequirements(projectId) { requirementResult ->
+            val apiService = ApiService(this)
+            RequirementRepository(apiService).getRequirements(projectId) { requirementResult ->
                 when(requirementResult) {
                     is BaseRepository.Result.Success -> {
                         if (requirementResult.data != null) {
@@ -88,7 +90,8 @@ class RequirementHome : BaseActivity() {
                                 requirements.add(fromResponse(it))
                             }
 
-                            ProjectRepository().getProjectByID(projectId) { projectResult ->
+                            val apiService = ApiService(this)
+                            ProjectRepository(apiService).getProjectByID(projectId) { projectResult ->
                                 when(projectResult) {
                                     is BaseRepository.Result.Success -> {
                                         if (projectResult.data != null) {

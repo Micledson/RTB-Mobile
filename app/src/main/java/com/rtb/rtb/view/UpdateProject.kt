@@ -12,6 +12,7 @@ import com.rtb.rtb.databinding.ActivityUpdateProjectBinding
 import com.rtb.rtb.model.Project
 import com.rtb.rtb.model.fromResponse
 import com.rtb.rtb.model.toRequest
+import com.rtb.rtb.networks.ApiService
 import com.rtb.rtb.networks.BaseRepository
 import com.rtb.rtb.networks.ProjectRepository
 import com.rtb.rtb.view.components.AppBarFragment
@@ -46,10 +47,12 @@ class UpdateProject : BaseActivity() {
 
         val uuid = UUID.fromString(intent.getStringExtra(ID))
 
+        val context = this
         runBlocking {
             withContext(Dispatchers.IO) {
                 try {
-                    val projectRepository = ProjectRepository()
+                    val apiService = ApiService(context)
+                    val projectRepository = ProjectRepository(apiService)
                     projectRepository.getProjectByID(uuid) { result ->
                         when (result) {
                             is BaseRepository.Result.Success -> {
@@ -129,7 +132,8 @@ class UpdateProject : BaseActivity() {
     }
 
     private fun updateProject(id: UUID, project: Project) {
-        val projectRepository = ProjectRepository()
+        val apiService = ApiService(this)
+        val projectRepository = ProjectRepository(apiService)
         try {
 
             projectRepository.updateProject(this, id, project.toRequest()) { result ->

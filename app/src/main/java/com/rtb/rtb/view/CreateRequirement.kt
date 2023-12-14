@@ -16,6 +16,7 @@ import com.rtb.rtb.model.Requirement
 import com.rtb.rtb.model.Type
 import com.rtb.rtb.model.fromResponse
 import com.rtb.rtb.model.toRequest
+import com.rtb.rtb.networks.ApiService
 import com.rtb.rtb.networks.BaseRepository
 import com.rtb.rtb.networks.RequirementRepository
 import com.rtb.rtb.networks.ResourceRepository
@@ -106,7 +107,8 @@ class CreateRequirement : BaseActivity() {
                 )
 
                 try {
-                    val requirementRepository = RequirementRepository()
+                    val apiService = ApiService(this)
+                    val requirementRepository = RequirementRepository(apiService)
                     requirementRepository.createRequirement(this, requirement.toRequest()) { result ->
                         when(result) {
                             is BaseRepository.Result.Success -> {

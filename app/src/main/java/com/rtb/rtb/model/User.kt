@@ -2,6 +2,7 @@ package com.rtb.rtb.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.rtb.rtb.networks.dto.request.UserRequest
 
 @Entity
 class User(
@@ -11,3 +12,12 @@ class User(
     val lastName: String,
     val password: String,
 )
+
+fun User.toRequest(): UserRequest {
+    return UserRequest(
+        this.email,
+        this.password,
+        this.firstName,
+        this.lastName,
+    )
+}
