@@ -77,6 +77,7 @@ class RequirementHome : BaseActivity() {
     private fun setupRepository() {
         binding.requirementHomeProgressBar.visibility = View.VISIBLE
         binding.requirementHomeConstraintLayout.visibility = View.GONE
+        binding.requirementsNotFound.visibility = View.GONE
         requirements.clear()
         try {
             RequirementRepository().getRequirements(projectId) { requirementResult ->
@@ -106,7 +107,13 @@ class RequirementHome : BaseActivity() {
                                 }
 
                                 binding.requirementHomeProgressBar.visibility = View.GONE
-                                binding.requirementHomeConstraintLayout.visibility = View.VISIBLE
+                                if (requirements.size > 0) {
+                                    binding.requirementsNotFound.visibility = View.GONE
+                                    binding.requirementHomeConstraintLayout.visibility = View.VISIBLE
+                                } else {
+                                    binding.requirementHomeConstraintLayout.visibility = View.VISIBLE
+                                    binding.requirementsNotFound.visibility = View.VISIBLE
+                                }
                             }
                         }
                     }

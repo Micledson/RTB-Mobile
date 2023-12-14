@@ -65,12 +65,14 @@
     <string name="error_updating_project_toast">Error updating project!</string>
     <string name="delete_project_toast">Project deleted successfully!</string>
     <string name="error_deleting_project_toast">Error deleting project!</string>
+    <string name="projects_not_found_title">No Projects Found</string>
+
+    <string name="not_found_subtitle">We guess this is your first time! Create a now to get started!</string>
 
     <string name="required_field">The field must be filled!</string>
 
     <string name="new_user">User created successfully!</string>
     <string name="new_user_error">Unable to register user, please try again!</string>
-
 
     <string name="error_getting_requirement_toast">Error getting requirement!</string>
     <string name="error_getting_requirements_toast">Error getting requirements!</string>
@@ -84,6 +86,7 @@
     <string name="delete_requirement_toast">Requirement deleted successfully!</string>
     <string name="error_deleting_requirement_toast">Error deleting requirement!</string>
 
+    <string name="requirements_not_found_title">No Requirements Found</string>
     <string name="requirement_select_type">Select type…</string>
     <string name="requirement_select_type_functional">Functional Requirement</string>
     <string name="requirement_select_type_non_functional">Non-Functional Requirement</string>
