@@ -1,6 +1,5 @@
 package com.rtb.rtb.view.projectComponents
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.Gravity
@@ -10,9 +9,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.rtb.rtb.adapters.ProjectResumeCardAdapter
 import com.rtb.rtb.databinding.ProjectCardOptionsModalBinding
-import com.rtb.rtb.model.Project
-import com.rtb.rtb.view.UpdateProject
-import com.rtb.rtb.view.ViewProject
 
 class ProjectCardOptionsModal(private val adapter: ProjectResumeCardAdapter, private val index: Int) : DialogFragment() {
     lateinit var binding: ProjectCardOptionsModalBinding
@@ -41,27 +37,22 @@ class ProjectCardOptionsModal(private val adapter: ProjectResumeCardAdapter, pri
     }
 
     private fun setupModalOptions() {
-        binding.modalTextViewRead.setOnClickListener {
-            val readProjectIntent = Intent(adapter.context, ViewProject::class.java)
-
-            val bundle = Bundle()
-            bundle.putParcelable("readProject", adapter.projects[index])
-
-            readProjectIntent.putExtras(bundle)
-            adapter.context.startActivity(readProjectIntent)
+        binding.modalImageViewCollaboratorsBlock.setOnClickListener {
+            adapter.openProjectCollaboratorsView(adapter.projects[index].id!!)
             dismiss()
         }
 
-        binding.modalTextViewEdit.setOnClickListener {
-            val updateProjectIntent = Intent(context, UpdateProject::class.java)
-
-            val project = adapter.getItem(index) as Project
-            updateProjectIntent.putExtra("uuid", project.id.toString())
-            adapter.context.startActivity(updateProjectIntent)
+        binding.modalImageViewReadBlock.setOnClickListener {
+            adapter.openProjectReadView(adapter.projects[index])
             dismiss()
         }
 
-        binding.modalTextViewDelete.setOnClickListener {
+        binding.modalImageViewEditBlock.setOnClickListener {
+            adapter.openProjectEditView(adapter.projects[index].id!!)
+            dismiss()
+        }
+
+        binding.modalImageViewDeleteBlock.setOnClickListener {
             adapter.deleteProjectMethod(adapter.projects[index], index)
             dismiss()
         }

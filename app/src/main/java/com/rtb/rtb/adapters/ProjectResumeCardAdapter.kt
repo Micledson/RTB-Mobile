@@ -19,7 +19,10 @@ import com.rtb.rtb.model.Project
 import com.rtb.rtb.networks.BaseRepository
 import com.rtb.rtb.networks.ProjectRepository
 import com.rtb.rtb.view.RequirementHome
+import com.rtb.rtb.view.UpdateProject
+import com.rtb.rtb.view.ViewProject
 import com.rtb.rtb.view.projectComponents.ProjectCardOptionsModal
+import java.util.UUID
 
 class ProjectResumeCardAdapter(val context: Context, val projects: MutableList<Project>): BaseAdapter() {
     private val dao by lazy {
@@ -121,5 +124,29 @@ class ProjectResumeCardAdapter(val context: Context, val projects: MutableList<P
         if (!projects[i].isActive) {
             projectCardBinding.pcOverlayViewIsActive.setBackgroundColor(ContextCompat.getColor(context, R.color.red))
         }
+    }
+
+    fun openProjectReadView(project: Project) {
+        val readProjectIntent = Intent(context, ViewProject::class.java)
+
+        val bundle = Bundle()
+        bundle.putParcelable("readProject", project)
+
+        readProjectIntent.putExtras(bundle)
+        context.startActivity(readProjectIntent)
+    }
+
+    fun openProjectEditView(projectId: UUID) {
+        val updateProjectIntent = Intent(context, UpdateProject::class.java)
+
+        updateProjectIntent.putExtra("uuid", projectId.toString())
+        context.startActivity(updateProjectIntent)
+    }
+
+    fun openProjectCollaboratorsView(projectId: UUID) {
+        val projectCollaboratorsIntent = Intent(context, UpdateProject::class.java)
+
+        projectCollaboratorsIntent.putExtra("uuid", projectId.toString())
+        context.startActivity(projectCollaboratorsIntent)
     }
 }
