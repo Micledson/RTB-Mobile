@@ -10,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class ApiService (context: Context) {
 
-    private val BASE_URL: String = "https://12a7-2804-1dc-4085-0-417d-5464-b718-204c.ngrok-free.app"
+    private val BASE_URL: String = "https://106a-185-243-57-130.ngrok-free.app/api/docs/index.html'"
 
     private val sharedPrefs = SharedPrefs(context)
 

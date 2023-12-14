@@ -39,7 +39,6 @@ class ViewProject : BaseActivity() {
     private fun getProject(viewProject: Project?) {
         binding.vpTextViewProjectName.text = viewProject?.name
         binding.vpTextViewProjectAlias.text = viewProject?.alias
-        binding.vpTextViewProjectIdField.text = viewProject?.id.toString()
         binding.vpTextViewProjectDescription.text = viewProject?.description
 
         if (!viewProject?.isActive!!) {
