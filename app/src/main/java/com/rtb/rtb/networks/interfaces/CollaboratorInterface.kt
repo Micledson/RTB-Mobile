@@ -14,6 +14,9 @@ interface CollaboratorInterface {
     @GET("/api/collaborators/{projectId}")
     fun getCollaborators(@Path("projectID") projectId: UUID): Call<List<CollaboratorResponse>>
 
+    @GET("/api/collaborators/possible-collaborators/{projectId}")
+    fun getPossibleCollaborators(@Path("projectID") projectId: UUID): Call<List<CollaboratorResponse>>
+
     @POST("/api/collaborators/{projectId}")
     fun createCollaborator(@Path("projectID") projectId: UUID, @Body body: CollaboratorRequest): Call<Void>
 

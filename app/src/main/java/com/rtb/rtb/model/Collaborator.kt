@@ -15,8 +15,8 @@ data class Collaborator (
     @PrimaryKey
     val userId: UUID,
     val userEmail: String,
-    val userFirstName: String?,
-    val userLastName: String?,
+    val userFirstName: String,
+    val userLastName: String,
     val createdAt: Date,
     val updatedAt: Date?,
 ): Parcelable

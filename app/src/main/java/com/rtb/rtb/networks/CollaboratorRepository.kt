@@ -34,6 +34,27 @@ class CollaboratorRepository : BaseRepository() {
         })
     }
 
+    fun getPossibleCollaborators(projectId: UUID, callback: (Result<List<CollaboratorResponse>?>) -> Unit) {
+        val request = service.getPossibleCollaborators(projectId)
+
+        request.enqueue(object : Callback<List<CollaboratorResponse>> {
+            override fun onResponse(
+                call: Call<List<CollaboratorResponse>>,
+                response: Response<List<CollaboratorResponse>>
+            ) {
+                if (response.isSuccessful) {
+                    callback.invoke(Result.Success(response.body()))
+                } else {
+                    callback.invoke(Result.Error("Error: ${response.errorBody()}"))
+                }
+            }
+
+            override fun onFailure(call: Call<List<CollaboratorResponse>>, t: Throwable) {
+                callback.invoke(Result.Error("Error: ${t.message}"))
+            }
+        })
+    }
+
     fun createCollaborator(context: Context, projectId: UUID, body: CollaboratorRequest, callback: (Result<Unit>) -> Unit) {
         val request = service.createCollaborator(projectId, body)
 
