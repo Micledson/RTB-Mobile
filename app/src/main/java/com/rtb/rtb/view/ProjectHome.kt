@@ -12,6 +12,7 @@ import com.rtb.rtb.adapters.ProjectResumeCardAdapter
 import com.rtb.rtb.databinding.ActivityProjectHomeBinding
 import com.rtb.rtb.model.Project
 import com.rtb.rtb.model.fromResponse
+import com.rtb.rtb.networks.ApiService
 import com.rtb.rtb.networks.BaseRepository
 import com.rtb.rtb.networks.ProjectRepository
 import com.rtb.rtb.view.components.AppBarFragment
@@ -54,10 +55,13 @@ class ProjectHome : BaseActivity() {
 
         val projectList = mutableListOf<Project>()
 
+        val context = this
+
         runBlocking {
             withContext(Dispatchers.IO){
                 try {
-                    val projectRepository = ProjectRepository()
+                    val apiService = ApiService(context)
+                    val projectRepository = ProjectRepository(apiService)
                     projectRepository.getProjects { result ->
                         when (result) {
                             is BaseRepository.Result.Success -> {
@@ -123,10 +127,13 @@ class ProjectHome : BaseActivity() {
             binding.phListViewOfProjects.visibility = View.GONE
             binding.projectsNotFound.visibility = View.GONE
 
+            val context = this
+
             runBlocking {
                 withContext(Dispatchers.IO){
                     try {
-                        val projectRepository = ProjectRepository()
+                        val apiService = ApiService(context)
+                        val projectRepository = ProjectRepository(apiService)
                         projectRepository.getProjects { result ->
                             when (result) {
                                 is BaseRepository.Result.Success -> {
@@ -179,10 +186,13 @@ class ProjectHome : BaseActivity() {
             binding.phListViewOfProjects.visibility = View.GONE
             binding.projectsNotFound.visibility = View.GONE
 
+            val context = this
+
             runBlocking {
                 withContext(Dispatchers.IO){
                     try {
-                        val projectRepository = ProjectRepository()
+                        val apiService = ApiService(context)
+                        val projectRepository = ProjectRepository(apiService)
                         projectRepository.getProjects { result ->
                             when (result) {
                                 is BaseRepository.Result.Success -> {
@@ -234,10 +244,13 @@ class ProjectHome : BaseActivity() {
             binding.phListViewOfProjects.visibility = View.GONE
             binding.projectsNotFound.visibility = View.GONE
 
+            val context = this
+
             runBlocking {
                 withContext(Dispatchers.IO){
                     try {
-                        val projectRepository = ProjectRepository()
+                        val apiService = ApiService(context)
+                        val projectRepository = ProjectRepository(apiService)
                         projectRepository.getProjects { result ->
                             when (result) {
                                 is BaseRepository.Result.Success -> {
@@ -288,10 +301,13 @@ class ProjectHome : BaseActivity() {
             binding.phListViewOfProjects.visibility = View.GONE
             binding.projectsNotFound.visibility = View.GONE
 
+            val context = this
+
             runBlocking {
                 withContext(Dispatchers.IO){
                     try {
-                        val projectRepository = ProjectRepository()
+                        val apiService = ApiService(context)
+                        val projectRepository = ProjectRepository(apiService)
                         projectRepository.getProjects { result ->
                             when (result) {
                                 is BaseRepository.Result.Success -> {

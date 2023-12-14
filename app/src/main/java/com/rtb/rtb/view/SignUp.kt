@@ -8,6 +8,10 @@ import com.rtb.rtb.database.DatabaseHelper
 import com.rtb.rtb.database.preferences.SharedPrefs
 import com.rtb.rtb.databinding.ActivitySignUpBinding
 import com.rtb.rtb.messages.SignUpMessages
+import com.rtb.rtb.model.toRequest
+import com.rtb.rtb.networks.ApiService
+import com.rtb.rtb.networks.BaseRepository
+import com.rtb.rtb.networks.UserRepository
 import com.rtb.rtb.util.ValidatorUtils
 import com.rtb.rtb.view.components.ButtonFragment
 import com.rtb.rtb.view.components.InputFragment
@@ -89,13 +93,29 @@ class SignUp : BaseActivity() {
                     passwordText
                 )
 
+                val apiService = ApiService(this)
+                val userRepository = UserRepository(apiService)
                 try {
-                    dao.save(user)
-                    SharedPrefs(this).setUserEmail(emailAddressText)
-                    showMessage(getString(R.string.new_user))
-                    val intent = Intent(this, ProjectHome::class.java)
-                    startActivity(intent)
-                    finish()
+                    userRepository.signUp(user.toRequest()) { result ->
+                        when (result) {
+                            is BaseRepository.Result.Success -> {
+                                SharedPrefs(this).setUserEmail(emailAddressText)
+                                SharedPrefs(this).setAccessToken(result.data?.accessToken)
+
+                                ResourcesManager.initialize(this)
+
+                                showMessage(getString(R.string.new_user))
+
+                                val intent = Intent(this, ProjectHome::class.java)
+                                startActivity(intent)
+                                finish()
+                            }
+
+                            is BaseRepository.Result.Error -> {
+                                showMessage(getString(R.string.new_user_error))
+                            }
+                        }
+                    }
                 } catch (e: Exception) {
                     showMessage(getString(R.string.new_user_error))
                 }
@@ -125,20 +145,14 @@ class SignUp : BaseActivity() {
         } else if(password.isNullOrEmpty()) {
             showMessage(signUpMessages.passwordIsNullErrorMessage)
             return false
-        } else if(password.length < 6) {
+        } else if(!ValidatorUtils.isPasswordValid(password)) {
             showMessage(signUpMessages.passwordIsInvalidErrorMessage)
             return false
         } else if(confirmPassword.isNullOrEmpty()) {
             showMessage(signUpMessages.passwordConfirmationIsNullErrorMessage)
             return false
-        } else if(confirmPassword.length < 6) {
-            showMessage(signUpMessages.passwordConfirmationIsInvalidErrorMessage)
-            return false
         } else if (password != confirmPassword) {
             showMessage(signUpMessages.passwordsIsNotEqualsErrorMessage)
-            return false
-        } else if (dao.getUserByEmail(emailAddress)) {
-            showMessage(signUpMessages.emailIsAlreadyRegisteredErrorMessage)
             return false
         }
 

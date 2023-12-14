@@ -8,6 +8,7 @@ import com.rtb.rtb.database.preferences.SharedPrefs
 import com.rtb.rtb.databinding.ActivityCreateProjectBinding
 import com.rtb.rtb.model.Project
 import com.rtb.rtb.model.toRequest
+import com.rtb.rtb.networks.ApiService
 import com.rtb.rtb.networks.BaseRepository
 import com.rtb.rtb.networks.ProjectRepository
 import com.rtb.rtb.view.components.AppBarFragment
@@ -76,7 +77,8 @@ class CreateProject : BaseActivity() {
     }
 
     private fun createProject(project: Project) {
-        val projectRepository = ProjectRepository()
+        val apiService = ApiService(this)
+        val projectRepository = ProjectRepository(apiService)
         try {
             projectRepository.createProject(this, project.toRequest()) { result ->
                 when (result) {
