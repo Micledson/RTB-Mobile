@@ -39,6 +39,7 @@ class ProjectHome : BaseActivity() {
 
         binding.projectHomeProgressBar.visibility = View.VISIBLE
         binding.phListViewOfProjects.visibility = View.GONE
+        binding.projectsNotFound.visibility = View.GONE
 
         val searchedProjects = supportFragmentManager.findFragmentById(R.id.ph_text_input_search_project) as InputFragment
         searchedProjects.setHint(getString(R.string.search_project))
@@ -82,7 +83,13 @@ class ProjectHome : BaseActivity() {
                         callInactiveProjects(readInactiveProjects, readAllProjects, readActiveProjects, projectListView)
 
                         binding.projectHomeProgressBar.visibility = View.GONE
-                        binding.phListViewOfProjects.visibility = View.VISIBLE
+
+                        if (projectList.size > 0) {
+                            binding.projectsNotFound.visibility = View.GONE
+                            binding.phListViewOfProjects.visibility = View.VISIBLE
+                        } else {
+                            binding.projectsNotFound.visibility = View.VISIBLE
+                        }
                     }
                 } catch (e: Exception) {
                     showMessage("An unexpected error appeared")
@@ -114,6 +121,7 @@ class ProjectHome : BaseActivity() {
 
             binding.projectHomeProgressBar.visibility = View.VISIBLE
             binding.phListViewOfProjects.visibility = View.GONE
+            binding.projectsNotFound.visibility = View.GONE
 
             runBlocking {
                 withContext(Dispatchers.IO){
@@ -138,7 +146,13 @@ class ProjectHome : BaseActivity() {
                             projectListView.adapter = inactiveProjectCardAdapter
 
                             binding.projectHomeProgressBar.visibility = View.GONE
-                            binding.phListViewOfProjects.visibility = View.VISIBLE
+
+                            if (inactiveProjectList.size > 0) {
+                                binding.projectsNotFound.visibility = View.GONE
+                                binding.phListViewOfProjects.visibility = View.VISIBLE
+                            } else {
+                                binding.projectsNotFound.visibility = View.VISIBLE
+                            }
                         }
                     } catch (e: Exception) {
                         showMessage("An unexpected error appeared")
@@ -163,6 +177,7 @@ class ProjectHome : BaseActivity() {
 
             binding.projectHomeProgressBar.visibility = View.VISIBLE
             binding.phListViewOfProjects.visibility = View.GONE
+            binding.projectsNotFound.visibility = View.GONE
 
             runBlocking {
                 withContext(Dispatchers.IO){
@@ -187,7 +202,12 @@ class ProjectHome : BaseActivity() {
                             projectListView.adapter = activeProjectCardAdapter
 
                             binding.projectHomeProgressBar.visibility = View.GONE
-                            binding.phListViewOfProjects.visibility = View.VISIBLE
+                            if (activeProjectList.size > 0) {
+                                binding.projectsNotFound.visibility = View.GONE
+                                binding.phListViewOfProjects.visibility = View.VISIBLE
+                            } else {
+                                binding.projectsNotFound.visibility = View.VISIBLE
+                            }
                         }
                     } catch (e: Exception) {
                         showMessage("An unexpected error appeared")
@@ -212,6 +232,7 @@ class ProjectHome : BaseActivity() {
 
             binding.projectHomeProgressBar.visibility = View.VISIBLE
             binding.phListViewOfProjects.visibility = View.GONE
+            binding.projectsNotFound.visibility = View.GONE
 
             runBlocking {
                 withContext(Dispatchers.IO){
@@ -234,7 +255,12 @@ class ProjectHome : BaseActivity() {
                             projectListView.adapter = projectCardAdapter
 
                             binding.projectHomeProgressBar.visibility = View.GONE
-                            binding.phListViewOfProjects.visibility = View.VISIBLE
+                            if (projectList.size > 0) {
+                                binding.projectsNotFound.visibility = View.GONE
+                                binding.phListViewOfProjects.visibility = View.VISIBLE
+                            } else {
+                                binding.projectsNotFound.visibility = View.VISIBLE
+                            }
                         }
                     } catch (e: Exception) {
                         showMessage("An unexpected error appeared")
@@ -260,6 +286,7 @@ class ProjectHome : BaseActivity() {
 
             binding.projectHomeProgressBar.visibility = View.VISIBLE
             binding.phListViewOfProjects.visibility = View.GONE
+            binding.projectsNotFound.visibility = View.GONE
 
             runBlocking {
                 withContext(Dispatchers.IO){
@@ -289,7 +316,12 @@ class ProjectHome : BaseActivity() {
                             projectListView.adapter = searchedProjectsCardAdapter
 
                             binding.projectHomeProgressBar.visibility = View.GONE
-                            binding.phListViewOfProjects.visibility = View.VISIBLE
+                            if (searchedProjectList.size > 0) {
+                                binding.projectsNotFound.visibility = View.GONE
+                                binding.phListViewOfProjects.visibility = View.VISIBLE
+                            } else {
+                                binding.projectsNotFound.visibility = View.VISIBLE
+                            }
                         }
                     } catch (e: Exception) {
                         showMessage("An unexpected error appeared")
