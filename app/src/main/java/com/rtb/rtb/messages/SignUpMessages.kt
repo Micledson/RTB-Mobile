@@ -9,10 +9,9 @@ class SignUpMessages {
     var lastNameIsNullErrorMessage = "The last name field cannot be empty!"
 
     var passwordIsNullErrorMessage = "The password field cannot be empty!"
-    var passwordIsInvalidErrorMessage = "The password field must be at least 6 characters long!"
+    var passwordIsInvalidErrorMessage = "The password must have at least 6 characters with letters and numbers!"
 
     var passwordConfirmationIsNullErrorMessage = "The password confirmation field cannot be empty!"
-    var passwordConfirmationIsInvalidErrorMessage = "The password confirmation field must be at least 6 characters long!"
 
     var passwordsIsNotEqualsErrorMessage = "Password and Password confirmation must be the same!"
 }

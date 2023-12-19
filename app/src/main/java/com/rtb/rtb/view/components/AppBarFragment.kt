@@ -64,6 +64,7 @@ class AppBarFragment : Fragment() {
             dialog.dismiss()
             SharedPrefs(context).setUserValue(false)
             SharedPrefs(context).setUserEmail(null)
+            SharedPrefs(context).setAccessToken(null)
 
             val intent = Intent(context, SignIn::class.java)
             startActivity(intent)

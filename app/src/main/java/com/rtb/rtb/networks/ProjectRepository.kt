@@ -10,8 +10,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.UUID
 
-class ProjectRepository : BaseRepository() {
-    val retrofit = ApiService.instance
+class ProjectRepository(apiService: ApiService) : BaseRepository() {
+    val retrofit = apiService.instance
     val service = retrofit.create(ProjectInterface::class.java)
 
     fun getProjects(callback: (Result<List<ProjectResponse>?>) -> Unit) {

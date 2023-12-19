@@ -2,7 +2,9 @@ package com.rtb.rtb.view
 
 import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.rtb.rtb.R
 import com.rtb.rtb.databinding.ActivityViewRequirementBinding
 import com.rtb.rtb.model.Project
@@ -38,21 +40,35 @@ class ViewRequirement : AppCompatActivity() {
 
         var resources = ResourcesManager.getResources(this)
 
-        binding.vrRequirementCodeValue.text = "${project?.alias}-${requirement?.code}"
-        binding.vrRequirementTitleValue.text = requirement?.title
-        binding.vrRequirementTypeValue.text = resources?.types?.find { it.id == requirement?.typeId }?.name ?: ""
-        binding.vrRequirementOriginValue.text = resources?.origins?.find { it.id == requirement?.originId }?.name ?: ""
-        binding.vrRequirementPriorityValue.text = resources?.priorities?.find { it.id == requirement?.priorityId }?.level ?: ""
-        binding.vrRequirementProjectValue.text = project?.name
-        binding.vrRequirementUserStoryValue.text = requirement?.userStory
-        binding.vrRequirementNotesValue.text = requirement?.description
+        binding.txtPriority.text = resources?.priorities?.find { it.id == requirement?.priorityId }?.level ?: ""
+        val priorityComponent = binding.txtPriority
+        val priorityName = binding.txtPriority.text
+
+        val highColor = ContextCompat.getColorStateList(this, R.color.orange)
+        val mediumColor = ContextCompat.getColorStateList(this, R.color.yellow)
+        val lowColor = ContextCompat.getColorStateList(this, R.color.blue)
+
+        if (priorityName.toString().equals("high", ignoreCase = true)) {
+            priorityComponent.compoundDrawableTintList = highColor
+        } else if (priorityName.toString().equals("medium", ignoreCase = true)) {
+            priorityComponent.compoundDrawableTintList = mediumColor
+        } else if (priorityName.toString().equals("low", ignoreCase = true)) {
+            priorityComponent.compoundDrawableTintList = lowColor
+        }
+
+        binding.txtTitle.text = requirement?.title
+        binding.txtText.text = "${project?.alias}-${requirement?.code}"
+        binding.txtTypeField.text = resources?.types?.find { it.id == requirement?.typeId }?.name ?: ""
+        binding.txtOriginField.text = resources?.origins?.find { it.id == requirement?.originId }?.name ?: ""
+        binding.txtUserStoryField.text = requirement?.userStory
+        binding.txtDescriptionField.text = requirement?.description
 
         val dateConverter = SimpleDateFormat("MM/dd/yyyy", Locale.US)
         val createdAt = dateConverter.format(requirement?.createdAt!!)
         val updatedAt = dateConverter.format(requirement.updatedAt!!)
 
-        binding.vrRequirementCreatedAtValue.text = createdAt
-        binding.vrRequirementUpdatedAtValue.text = updatedAt
+        binding.txtCreatedAt.text = createdAt
+        binding.txtUpdatedAt.text = updatedAt
     }
 
     private fun getRequirementAccordingVersion(): Requirement? {

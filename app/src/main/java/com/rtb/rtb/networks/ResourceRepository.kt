@@ -6,8 +6,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ResourceRepository : BaseRepository() {
-    val retrofit = ApiService.instance
+class ResourceRepository(apiService: ApiService) : BaseRepository() {
+    val retrofit = apiService.instance
     val service = retrofit.create(ResourceInterface::class.java)
 
     fun getResources(callback: (Result<ResourceResponse?>) -> Unit) {
