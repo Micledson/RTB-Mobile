@@ -9,9 +9,7 @@ import com.rtb.rtb.networks.dto.request.UserRequest
 class User(
     @PrimaryKey
     val email: String,
-    @SerializedName("first_name")
     val firstName: String,
-    @SerializedName("last_name")
     val lastName: String,
     val password: String,
 )
