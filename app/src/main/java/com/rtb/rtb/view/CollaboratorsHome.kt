@@ -11,6 +11,7 @@ import com.rtb.rtb.databinding.ActivityCollaboratorsHomeBinding
 import com.rtb.rtb.model.Collaborator
 import com.rtb.rtb.model.Project
 import com.rtb.rtb.model.fromResponse
+import com.rtb.rtb.networks.ApiService
 import com.rtb.rtb.networks.BaseRepository
 import com.rtb.rtb.networks.CollaboratorRepository
 import com.rtb.rtb.networks.ProjectRepository
@@ -62,6 +63,7 @@ class CollaboratorsHome : BaseActivity() {
     private fun setupRepository() {
         binding.chProgressBarNewCollaborators.visibility = View.VISIBLE
         binding.chConstraintLayoutNewCollaborator.visibility = View.GONE
+        binding.collaboratorsNotFound.visibility = View.GONE
         possibleCollaborators.clear()
 
         binding.chProgressBarAlreadyInProject.visibility = View.VISIBLE
@@ -69,7 +71,8 @@ class CollaboratorsHome : BaseActivity() {
         alreadyCollaborators.clear()
 
         try {
-            CollaboratorRepository().getPossibleCollaborators(projectId) { possibleCollaboratorsResult ->
+            val apiService = ApiService(this)
+            CollaboratorRepository(apiService).getPossibleCollaborators(projectId) { possibleCollaboratorsResult ->
                 when(possibleCollaboratorsResult) {
                     is BaseRepository.Result.Success -> {
                         if (possibleCollaboratorsResult.data != null) {
@@ -77,7 +80,7 @@ class CollaboratorsHome : BaseActivity() {
                                 possibleCollaborators.add(fromResponse(it))
                             }
 
-                            ProjectRepository().getProjectByID(projectId) { projectResult ->
+                            ProjectRepository(apiService).getProjectByID(projectId) { projectResult ->
                                 when (projectResult) {
                                     is BaseRepository.Result.Success -> {
                                         if (projectResult.data != null) {
@@ -96,11 +99,11 @@ class CollaboratorsHome : BaseActivity() {
 
                                 binding.chProgressBarNewCollaborators.visibility = View.GONE
                                 if (possibleCollaborators.size > 0) {
+                                    binding.collaboratorsNotFound.visibility = View.GONE
                                     binding.chConstraintLayoutNewCollaborator.visibility =
                                         View.VISIBLE
                                 } else {
-                                    binding.chConstraintLayoutNewCollaborator.visibility =
-                                        View.VISIBLE
+                                    binding.collaboratorsNotFound.visibility = View.VISIBLE
                                 }
                             }
                         }
@@ -117,7 +120,8 @@ class CollaboratorsHome : BaseActivity() {
         }
 
         try {
-            CollaboratorRepository().getCollaborators(projectId) { collaboratorsResult ->
+            val apiService = ApiService(this)
+            CollaboratorRepository(apiService).getCollaborators(projectId) { collaboratorsResult ->
                 when(collaboratorsResult) {
                     is BaseRepository.Result.Success -> {
                         if (collaboratorsResult.data != null) {
@@ -125,8 +129,7 @@ class CollaboratorsHome : BaseActivity() {
                                 alreadyCollaborators.add(fromResponse(it))
                             }
 
-
-                            ProjectRepository().getProjectByID(projectId) { projectResult ->
+                            ProjectRepository(apiService).getProjectByID(projectId) { projectResult ->
                                 when (projectResult) {
                                     is BaseRepository.Result.Success -> {
                                         if (projectResult.data != null) {
@@ -141,12 +144,12 @@ class CollaboratorsHome : BaseActivity() {
                                     }
                                 }
 
-                                binding.chProgressBarNewCollaborators.visibility = View.GONE
+                                binding.chProgressBarAlreadyInProject.visibility = View.GONE
                                 if (possibleCollaborators.size > 0) {
-                                    binding.chConstraintLayoutNewCollaborator.visibility =
+                                    binding.chConstraintLayoutAlreadyInProject.visibility =
                                         View.VISIBLE
                                 } else {
-                                    binding.chConstraintLayoutNewCollaborator.visibility =
+                                    binding.chConstraintLayoutAlreadyInProject.visibility =
                                         View.VISIBLE
                                 }
                             }

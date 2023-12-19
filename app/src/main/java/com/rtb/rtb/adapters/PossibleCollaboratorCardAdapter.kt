@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import com.rtb.rtb.R
 import com.rtb.rtb.databinding.ComponentCollaboratorCardBinding
 import com.rtb.rtb.model.Collaborator
+import com.rtb.rtb.networks.ApiService
 import com.rtb.rtb.networks.BaseRepository
 import com.rtb.rtb.networks.CollaboratorRepository
 import com.rtb.rtb.networks.dto.request.CollaboratorRequest
@@ -67,8 +68,9 @@ class PossibleCollaboratorCardAdapter(
 
         alertDialogBuilder.setPositiveButton("Add") { dialog, _ ->
             try {
+                val apiService = ApiService(context)
                 val newCollaboratorRequest = CollaboratorRequest(newCollaborator.userEmail)
-                CollaboratorRepository().createCollaborator(context, this.projectId, newCollaboratorRequest) { result ->
+                CollaboratorRepository(apiService).createCollaborator(context, this.projectId, newCollaboratorRequest) { result ->
                     when(result) {
                         is BaseRepository.Result.Success -> {
                             Toast.makeText(context, context.getString(R.string.add_collaborator_toast), Toast.LENGTH_SHORT).show()

@@ -10,8 +10,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.UUID
 
-class CollaboratorRepository : BaseRepository() {
-    private val retrofit = ApiService.instance
+class CollaboratorRepository(apiService: ApiService) : BaseRepository() {
+    private val retrofit = apiService.instance
     private val service = retrofit.create(CollaboratorInterface::class.java)
 
     fun getCollaborators(projectId: UUID, callback: (Result<List<CollaboratorResponse>?>) -> Unit) {

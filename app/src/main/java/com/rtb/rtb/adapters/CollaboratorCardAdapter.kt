@@ -10,6 +10,7 @@ import android.widget.Toast
 import com.rtb.rtb.R
 import com.rtb.rtb.databinding.ComponentCollaboratorCardBinding
 import com.rtb.rtb.model.Collaborator
+import com.rtb.rtb.networks.ApiService
 import com.rtb.rtb.networks.BaseRepository
 import com.rtb.rtb.networks.CollaboratorRepository
 import java.util.UUID
@@ -59,7 +60,8 @@ class CollaboratorCardAdapter(
 
         alertDialogBuilder.setPositiveButton("Delete") { dialog, _ ->
             try {
-                CollaboratorRepository().deleteCollaborator(context, this.projectId, collaborator.userId) { result ->
+                val apiService = ApiService(context)
+                CollaboratorRepository(apiService).deleteCollaborator(context, this.projectId, collaborator.userId) { result ->
                     when(result) {
                         is BaseRepository.Result.Success -> {
                             Toast.makeText(context, context.getString(R.string.delete_collaborator_toast), Toast.LENGTH_SHORT).show()

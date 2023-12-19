@@ -69,6 +69,8 @@
 
     <string name="not_found_subtitle">We guess this is your first time! Create a now to get started!</string>
 
+    <string name="collaborators_not_found_title">No New Collaborators Found</string>
+    <string name="no_collaborators_already_in_project_title">No Collaborators Are Already On The Project</string>
     <string name="collaborator_home">Collaborators</string>
     <string name="new_collaborator">New collaborator</string>
     <string name="already_in_project">Already in project</string>
