@@ -43,7 +43,7 @@ fun fromResponse(response: ProjectResponse): Project {
         response.createdAt!!,
         response.updatedAt!!,
         response.deletedAt,
-        null
+        response.createdByUserEmail
     )
 }
 

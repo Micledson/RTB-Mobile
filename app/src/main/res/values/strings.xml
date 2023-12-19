@@ -69,6 +69,18 @@
 
     <string name="not_found_subtitle">We guess this is your first time! Create a now to get started!</string>
 
+    <string name="collaborators_not_found_title">No Collaborators Found</string>
+    <string name="collaborator_home">Collaborators</string>
+    <string name="new_collaborator">New collaborator</string>
+    <string name="already_in_project">Already in project</string>
+    <string name="search_collaborator">Search for Collaborator</string>
+    <string name="add_collaborator_toast">Collaborator added successfully!</string>
+    <string name="error_adding_collaborator_toast">Error adding collaborator!</string>
+    <string name="delete_collaborator_toast">Collaborator deleted successfully!</string>
+    <string name="error_deleting_collaborator_toast">Error deleting collaborator!</string>
+    <string name="error_getting_new_collaborators_toast">Error getting new collaborators!</string>
+    <string name="error_getting_collaborators_toast">Error getting collaborators!</string>
+
     <string name="required_field">The field must be filled!</string>
 
     <string name="new_user">User created successfully!</string>

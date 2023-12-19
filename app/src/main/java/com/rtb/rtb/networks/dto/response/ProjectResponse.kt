@@ -17,4 +17,6 @@ class ProjectResponse {
     var updatedAt: Timestamp? = null
     @SerializedName("deleted_at")
     var deletedAt: Timestamp? = null
+    @SerializedName("created_by_user_email")
+    var createdByUserEmail: String? = null
 }

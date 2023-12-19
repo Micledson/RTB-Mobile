@@ -19,6 +19,7 @@ import com.rtb.rtb.model.Project
 import com.rtb.rtb.networks.ApiService
 import com.rtb.rtb.networks.BaseRepository
 import com.rtb.rtb.networks.ProjectRepository
+import com.rtb.rtb.view.CollaboratorsHome
 import com.rtb.rtb.view.RequirementHome
 import com.rtb.rtb.view.UpdateProject
 import com.rtb.rtb.view.ViewProject
@@ -26,9 +27,6 @@ import com.rtb.rtb.view.projectComponents.ProjectCardOptionsModal
 import java.util.UUID
 
 class ProjectResumeCardAdapter(val context: Context, val projects: MutableList<Project>): BaseAdapter() {
-    private val dao by lazy {
-        DatabaseHelper.getInstance(context).projectDao()
-    }
 
     override fun getCount(): Int {
         return projects.size
@@ -146,7 +144,7 @@ class ProjectResumeCardAdapter(val context: Context, val projects: MutableList<P
     }
 
     fun openProjectCollaboratorsView(projectId: UUID) {
-        val projectCollaboratorsIntent = Intent(context, UpdateProject::class.java)
+        val projectCollaboratorsIntent = Intent(context, CollaboratorsHome::class.java)
 
         projectCollaboratorsIntent.putExtra("uuid", projectId.toString())
         context.startActivity(projectCollaboratorsIntent)

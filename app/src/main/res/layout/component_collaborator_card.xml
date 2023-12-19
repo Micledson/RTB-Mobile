@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
-xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-app:cardCornerRadius="8dp"
-app:cardUseCompatPadding="true"
-tools:ignore="MissingConstraints">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="8dp"
+    app:cardUseCompatPadding="true"
+    tools:ignore="MissingConstraints">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,51 +20,52 @@ tools:ignore="MissingConstraints">
             android:layout_height="match_parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/pc_overlay_view_is_active"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-
-                android:background="@color/green"
-                android:paddingStart="4dp"
-                android:paddingEnd="4dp"
-
-                app:layout_constraintStart_toStartOf="parent"/>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/pc_constraint_layout_project_content"
+                android:id="@+id/cc_constraint_layout_new_collaborator_content"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
 
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
 
-                app:layout_constraintEnd_toStartOf="@id/pc_constraint_layout_button"
-                app:layout_constraintStart_toEndOf="@id/pc_overlay_view_is_active">
-
-                <TextView
-                    android:id="@+id/pc_text_view_project_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/gray"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="parent">
 
                 <TextView
-                    android:id="@+id/pc_text_view_project_alias"
+                    android:id="@+id/cc_text_view_collaborator_first_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/dark_gray"
+                    android:textSize="20sp"
+                    android:textStyle="normal"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/cc_text_view_collaborator_last_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/dark_gray"
+                    android:textSize="20sp"
+                    android:textStyle="normal"
+
+                    android:layout_marginStart="8dp"
+
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/cc_text_view_collaborator_first_name"/>
+
+                <TextView
+                    android:id="@+id/cc_text_view_collaborator_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/gray"
                     android:textSize="16sp"
                     android:layout_marginBottom="16dp"
-                    android:textStyle="bold"
-                    app:layout_constraintTop_toBottomOf="@id/pc_text_view_project_name" />
+                    android:textStyle="normal"
+                    app:layout_constraintTop_toBottomOf="@id/cc_text_view_collaborator_first_name" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/pc_constraint_layout_button"
+                android:id="@+id/cc_constraint_layout_button"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 app:layout_constraintEnd_toEndOf="parent">
@@ -83,20 +84,19 @@ tools:ignore="MissingConstraints">
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"/>
 
-                    <TextView
-                        android:id="@+id/btnOne"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:rotation="90"
-                        android:text="@string/menu_option"
-                        android:textAllCaps="false"
-                        android:textAlignment="center"
-                        android:textColor="@color/gray"
-                        android:textSize="40sp"
-                        android:fontFamily="@font/inter"
+                    <ImageView
+                        android:id="@+id/cc_image_view_action"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+
+                        android:src="@drawable/baseline_delete_24"
+                        app:tint="@color/red"
+
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:contentDescription="@string/delete_collaborator_toast" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -164,7 +164,6 @@ class CreateRequirement : BaseActivity() {
         setupResources()
 
         val projectId = UUID.fromString(intent.getStringExtra("projectId"))
-        Log.d("salve", "ID BOLADO ${intent.getStringExtra("projectId")}")
 
         val appBar = supportFragmentManager.findFragmentById(R.id.app_bar) as AppBarFragment
         appBar.setupAppBar(this)
