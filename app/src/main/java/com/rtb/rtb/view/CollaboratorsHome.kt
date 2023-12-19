@@ -15,11 +15,12 @@ import com.rtb.rtb.networks.ApiService
 import com.rtb.rtb.networks.BaseRepository
 import com.rtb.rtb.networks.CollaboratorRepository
 import com.rtb.rtb.networks.ProjectRepository
+import com.rtb.rtb.observer.CollaboratorsUpdateObserver
 import com.rtb.rtb.view.components.AppBarFragment
 import com.rtb.rtb.view.components.InputFragment
 import java.util.UUID
 
-class CollaboratorsHome : BaseActivity() {
+class CollaboratorsHome : BaseActivity(), CollaboratorsUpdateObserver {
     private val binding by lazy {
         ActivityCollaboratorsHomeBinding.inflate(layoutInflater)
     }
@@ -52,22 +53,23 @@ class CollaboratorsHome : BaseActivity() {
 
     private fun setupListView() {
         val possibleCollaboratorListView = binding.chListViewOfNewCollaborators
-        val possibleCollaboratorAdapter = PossibleCollaboratorCardAdapter(this, projectId, possibleCollaborators)
+        val possibleCollaboratorAdapter = PossibleCollaboratorCardAdapter(this, projectId, project.owner, possibleCollaborators, this)
         possibleCollaboratorListView.adapter = possibleCollaboratorAdapter
 
-        val collaboratorListView = binding.chListViewOfNewCollaborators
-        val collaboratorAdapter = CollaboratorCardAdapter(this, projectId, alreadyCollaborators)
+        val collaboratorListView = binding.chListViewOfAlreadyInProject
+        val collaboratorAdapter = CollaboratorCardAdapter(this, projectId, project.owner, alreadyCollaborators, this)
         collaboratorListView.adapter = collaboratorAdapter
     }
 
     private fun setupRepository() {
         binding.chProgressBarNewCollaborators.visibility = View.VISIBLE
-        binding.chConstraintLayoutNewCollaborator.visibility = View.GONE
-        binding.collaboratorsNotFound.visibility = View.GONE
+        binding.chListViewOfNewCollaborators.visibility = View.GONE
+        binding.newCollaboratorsNotFound.visibility = View.GONE
         possibleCollaborators.clear()
 
         binding.chProgressBarAlreadyInProject.visibility = View.VISIBLE
-        binding.chConstraintLayoutAlreadyInProject.visibility = View.GONE
+        binding.chListViewOfAlreadyInProject.visibility = View.GONE
+        binding.collaboratorsNotFound.visibility = View.GONE
         alreadyCollaborators.clear()
 
         try {
@@ -99,11 +101,11 @@ class CollaboratorsHome : BaseActivity() {
 
                                 binding.chProgressBarNewCollaborators.visibility = View.GONE
                                 if (possibleCollaborators.size > 0) {
-                                    binding.collaboratorsNotFound.visibility = View.GONE
-                                    binding.chConstraintLayoutNewCollaborator.visibility =
+                                    binding.newCollaboratorsNotFound.visibility = View.GONE
+                                    binding.chListViewOfNewCollaborators.visibility =
                                         View.VISIBLE
                                 } else {
-                                    binding.collaboratorsNotFound.visibility = View.VISIBLE
+                                    binding.newCollaboratorsNotFound.visibility = View.VISIBLE
                                 }
                             }
                         }
@@ -145,12 +147,12 @@ class CollaboratorsHome : BaseActivity() {
                                 }
 
                                 binding.chProgressBarAlreadyInProject.visibility = View.GONE
-                                if (possibleCollaborators.size > 0) {
-                                    binding.chConstraintLayoutAlreadyInProject.visibility =
+                                if (alreadyCollaborators.size > 0) {
+                                    binding.collaboratorsNotFound.visibility = View.GONE
+                                    binding.chListViewOfAlreadyInProject.visibility =
                                         View.VISIBLE
                                 } else {
-                                    binding.chConstraintLayoutAlreadyInProject.visibility =
-                                        View.VISIBLE
+                                    binding.collaboratorsNotFound.visibility = View.VISIBLE
                                 }
                             }
                         }
@@ -176,7 +178,7 @@ class CollaboratorsHome : BaseActivity() {
             val foundPossibleCollaborators = searchPossibleCollaborators(possibleCollaborators, text)
 
             val foundPossibleCollaboratorsCardAdapter =
-                PossibleCollaboratorCardAdapter(this, projectId, foundPossibleCollaborators)
+                PossibleCollaboratorCardAdapter(this, projectId, project.owner, foundPossibleCollaborators, this)
             binding.chListViewOfNewCollaborators.adapter = foundPossibleCollaboratorsCardAdapter
         }
     }
@@ -189,7 +191,7 @@ class CollaboratorsHome : BaseActivity() {
             val foundAlreadyCollaborators = searchAlreadyCollaborators(alreadyCollaborators, text)
 
             val foundAlreadyCollaboratorsCardAdapter =
-                CollaboratorCardAdapter(this, projectId, foundAlreadyCollaborators)
+                CollaboratorCardAdapter(this, projectId, project.owner, foundAlreadyCollaborators, this)
             binding.chListViewOfAlreadyInProject.adapter = foundAlreadyCollaboratorsCardAdapter
         }
     }
@@ -198,6 +200,10 @@ class CollaboratorsHome : BaseActivity() {
         possibleCollaborators: MutableList<Collaborator>,
         title: String
     ): MutableList<Collaborator> {
+        binding.chProgressBarNewCollaborators.visibility = View.VISIBLE
+        binding.chListViewOfNewCollaborators.visibility = View.GONE
+        binding.newCollaboratorsNotFound.visibility = View.GONE
+
         val foundPossibleCollaborators = mutableListOf<Collaborator>()
         for (possibleCollaborator in possibleCollaborators) {
 
@@ -209,6 +215,16 @@ class CollaboratorsHome : BaseActivity() {
                 foundPossibleCollaborators.add(possibleCollaborator)
             }
         }
+
+        binding.chProgressBarNewCollaborators.visibility = View.GONE
+        if (foundPossibleCollaborators.size > 0) {
+            binding.newCollaboratorsNotFound.visibility = View.GONE
+            binding.chListViewOfNewCollaborators.visibility =
+                View.VISIBLE
+        } else {
+            binding.newCollaboratorsNotFound.visibility = View.VISIBLE
+        }
+
         return foundPossibleCollaborators
     }
 
@@ -216,6 +232,10 @@ class CollaboratorsHome : BaseActivity() {
         collaborators: MutableList<Collaborator>,
         title: String
     ): MutableList<Collaborator> {
+        binding.chProgressBarAlreadyInProject.visibility = View.VISIBLE
+        binding.chListViewOfAlreadyInProject.visibility = View.GONE
+        binding.collaboratorsNotFound.visibility = View.GONE
+
         val foundCollaborators = mutableListOf<Collaborator>()
         for (collaborator in collaborators) {
 
@@ -227,6 +247,21 @@ class CollaboratorsHome : BaseActivity() {
                 foundCollaborators.add(collaborator)
             }
         }
+
+        binding.chProgressBarAlreadyInProject.visibility = View.GONE
+        if (foundCollaborators.size > 0) {
+            binding.collaboratorsNotFound.visibility = View.GONE
+            binding.chListViewOfAlreadyInProject.visibility =
+                View.VISIBLE
+        } else {
+            binding.collaboratorsNotFound.visibility = View.VISIBLE
+        }
+
+
         return foundCollaborators
+    }
+
+    override fun onCollaboratorsUpdated() {
+        setupRepository()
     }
 }

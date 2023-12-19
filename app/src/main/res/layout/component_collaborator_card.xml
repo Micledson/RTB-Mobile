@@ -26,8 +26,8 @@
 
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
 
                 app:layout_constraintStart_toStartOf="parent">
 
@@ -71,7 +71,7 @@
                 app:layout_constraintEnd_toEndOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="80dp"
+                    android:layout_width="60dp"
                     android:layout_height="match_parent"
                     app:layout_constraintTop_toTopOf="parent">
 
@@ -86,8 +86,8 @@
 
                     <ImageView
                         android:id="@+id/cc_image_view_action"
-                        android:layout_width="60dp"
-                        android:layout_height="match_parent"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
 
                         android:src="@drawable/baseline_delete_24"
                         app:tint="@color/red"

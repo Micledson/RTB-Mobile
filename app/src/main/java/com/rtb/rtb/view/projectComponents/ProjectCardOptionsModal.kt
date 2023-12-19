@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.rtb.rtb.adapters.ProjectResumeCardAdapter
+import com.rtb.rtb.database.preferences.SharedPrefs
 import com.rtb.rtb.databinding.ProjectCardOptionsModalBinding
 
 class ProjectCardOptionsModal(private val adapter: ProjectResumeCardAdapter, private val index: Int) : DialogFragment() {
@@ -52,9 +53,15 @@ class ProjectCardOptionsModal(private val adapter: ProjectResumeCardAdapter, pri
             dismiss()
         }
 
-        binding.modalImageViewDeleteBlock.setOnClickListener {
-            adapter.deleteProjectMethod(adapter.projects[index], index)
-            dismiss()
+        val sharedPrefs = SharedPrefs(adapter.context)
+        val loggedUser = sharedPrefs.getUserEmail()
+        if (adapter.projects[index].owner.toString().equals(loggedUser, true)) {
+            binding.modalImageViewDeleteBlock.setOnClickListener {
+                adapter.deleteProjectMethod(adapter.projects[index], index)
+                dismiss()
+            }
+        } else {
+            binding.modalImageViewDeleteBlock.visibility = View.GONE
         }
     }
 

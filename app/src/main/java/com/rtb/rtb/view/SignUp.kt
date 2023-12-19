@@ -99,7 +99,7 @@ class SignUp : BaseActivity() {
                     userRepository.signUp(user.toRequest()) { result ->
                         when (result) {
                             is BaseRepository.Result.Success -> {
-                                SharedPrefs(this).setUserEmail(emailAddressText)
+                                SharedPrefs(this).setUserEmail(emailAddressText.lowercase())
                                 SharedPrefs(this).setAccessToken(result.data?.accessToken)
 
                                 ResourcesManager.initialize(this)

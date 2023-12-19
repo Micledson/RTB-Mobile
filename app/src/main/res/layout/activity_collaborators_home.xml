@@ -124,7 +124,7 @@
                 app:layout_constraintBottom_toBottomOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/collaborators_not_found"
+                    android:id="@+id/new_collaborators_not_found"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -137,7 +137,7 @@
                     >
 
                     <ImageView
-                        android:id="@+id/collaborators_not_found_image_view"
+                        android:id="@+id/new_collaborators_not_found_image_view"
                         android:layout_width="120dp"
                         android:layout_height="120dp"
                         android:src="@drawable/baseline_search_off_24"
@@ -147,7 +147,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/collaborators_not_found_text_view_title"
+                        android:id="@+id/new_collaborators_not_found_text_view_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/collaborators_not_found_title"
@@ -156,7 +156,7 @@
                         android:textColor="@color/gray_600"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/collaborators_not_found_image_view"/>
+                        app:layout_constraintTop_toBottomOf="@id/new_collaborators_not_found_image_view"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -177,7 +177,7 @@
                 <ListView
                     android:id="@+id/ch_list_view_of_new_collaborators"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="true"
 
                     android:divider="@android:color/transparent"
@@ -191,7 +191,7 @@
             android:layout_height="0dp"
 
             android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginBottom="8dp"
             android:layout_marginEnd="16dp"
 
             app:layout_constraintBottom_toBottomOf="parent"
@@ -247,6 +247,43 @@
                 app:layout_constraintTop_toBottomOf="@id/ch_constraint_layout_already_in_project">
 
 
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/collaborators_not_found"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="visible"
+                    android:layout_marginBottom="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    >
+
+                    <ImageView
+                        android:id="@+id/collaborators_not_found_image_view"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:src="@drawable/baseline_search_off_24"
+                        app:tint="@color/gray_600"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/collaborators_not_found_text_view_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/collaborators_not_found_title"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/gray_600"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/collaborators_not_found_image_view"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <ProgressBar
                     android:id="@+id/ch_progress_bar_already_in_project"
                     style="?android:attr/progressBarStyleLarge"
@@ -263,7 +300,7 @@
                 <ListView
                     android:id="@+id/ch_list_view_of_already_in_project"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:divider="@android:color/transparent"
 
                     android:dividerHeight="0dp"

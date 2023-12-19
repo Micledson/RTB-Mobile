@@ -1,6 +1,5 @@
 package com.rtb.rtb.networks
 
-import android.content.Context
 import android.util.Log
 import com.rtb.rtb.networks.dto.request.CollaboratorRequest
 import com.rtb.rtb.networks.dto.response.CollaboratorResponse
@@ -37,17 +36,15 @@ class CollaboratorRepository(apiService: ApiService) : BaseRepository() {
 
     fun getPossibleCollaborators(projectId: UUID, callback: (Result<List<CollaboratorResponse>?>) -> Unit) {
         val request = service.getPossibleCollaborators(projectId)
-        Log.d("salve", projectId.toString())
+
         request.enqueue(object : Callback<List<CollaboratorResponse>> {
             override fun onResponse(
                 call: Call<List<CollaboratorResponse>>,
                 response: Response<List<CollaboratorResponse>>
             ) {
                 if (response.isSuccessful) {
-                    Log.d("salve", response.body().toString())
                     callback.invoke(Result.Success(response.body()))
                 } else {
-                    Log.d("salve", response.errorBody().toString())
                     callback.invoke(Result.Error("Error: ${response.errorBody()}"))
                 }
             }
@@ -58,7 +55,7 @@ class CollaboratorRepository(apiService: ApiService) : BaseRepository() {
         })
     }
 
-    fun createCollaborator(context: Context, projectId: UUID, body: CollaboratorRequest, callback: (Result<Unit>) -> Unit) {
+    fun createCollaborator(projectId: UUID, body: CollaboratorRequest, callback: (Result<Unit>) -> Unit) {
         val request = service.createCollaborator(projectId, body)
 
         request.enqueue(object : Callback<Void> {
@@ -80,7 +77,7 @@ class CollaboratorRepository(apiService: ApiService) : BaseRepository() {
         })
     }
 
-    fun deleteCollaborator(context: Context, projectId: UUID,  userId: UUID, callback: (Result<Unit>) -> Unit) {
+    fun deleteCollaborator(projectId: UUID,  userId: UUID, callback: (Result<Unit>) -> Unit) {
         val request = service.deleteCollaborator(projectId, userId)
 
         request.enqueue(object : Callback<Void> {

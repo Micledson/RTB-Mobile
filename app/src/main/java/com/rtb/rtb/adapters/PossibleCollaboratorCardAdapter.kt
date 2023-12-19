@@ -9,18 +9,22 @@ import android.widget.BaseAdapter
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.rtb.rtb.R
+import com.rtb.rtb.database.preferences.SharedPrefs
 import com.rtb.rtb.databinding.ComponentCollaboratorCardBinding
 import com.rtb.rtb.model.Collaborator
 import com.rtb.rtb.networks.ApiService
 import com.rtb.rtb.networks.BaseRepository
 import com.rtb.rtb.networks.CollaboratorRepository
 import com.rtb.rtb.networks.dto.request.CollaboratorRequest
+import com.rtb.rtb.observer.CollaboratorsUpdateObserver
 import java.util.UUID
 
 class PossibleCollaboratorCardAdapter(
     val context: Context,
     val projectId: UUID,
-    val users: MutableList<Collaborator>
+    val owner: String?,
+    val users: MutableList<Collaborator>,
+    val collaboratorsUpdateObserver: CollaboratorsUpdateObserver
 ) : BaseAdapter() {
 
     override fun getCount(): Int {
@@ -40,17 +44,27 @@ class PossibleCollaboratorCardAdapter(
         val possibleCollaboratorCardInflater = LayoutInflater.from(context)
         val possibleCollaboratorCardBinding = ComponentCollaboratorCardBinding.inflate(possibleCollaboratorCardInflater, viewGroup, false)
 
-        val newDrawable = ContextCompat.getDrawable(context, R.drawable.baseline_add_24)
-        possibleCollaboratorCardBinding.ccImageViewAction.setImageDrawable(newDrawable)
-
-        val newColorTint = ContextCompat.getColorStateList(context, R.color.green)
-        possibleCollaboratorCardBinding.ccImageViewAction.imageTintList = newColorTint
-
         possibleCollaboratorSetup(possibleCollaboratorCardBinding, i)
 
+        val sharedPrefs = SharedPrefs(context)
+        val loggedUser = sharedPrefs.getUserEmail()
         val menuButton = possibleCollaboratorCardBinding.ccConstraintLayoutButton
-        menuButton.setOnClickListener {
-            addNewCollaborator(users[i])
+        if (owner.toString().equals(loggedUser, true)) {
+            if (users[i].userEmail.equals(owner, true).not()) {
+                val newDrawable = ContextCompat.getDrawable(context, R.drawable.baseline_add_24)
+                possibleCollaboratorCardBinding.ccImageViewAction.setImageDrawable(newDrawable)
+
+                val newColorTint = ContextCompat.getColorStateList(context, R.color.green)
+                possibleCollaboratorCardBinding.ccImageViewAction.imageTintList = newColorTint
+
+                menuButton.setOnClickListener {
+                    addNewCollaborator(users[i])
+                }
+            } else {
+                menuButton.visibility = View.GONE
+            }
+        } else {
+            menuButton.visibility = View.GONE
         }
 
         return possibleCollaboratorCardBinding.root
@@ -70,12 +84,13 @@ class PossibleCollaboratorCardAdapter(
             try {
                 val apiService = ApiService(context)
                 val newCollaboratorRequest = CollaboratorRequest(newCollaborator.userEmail)
-                CollaboratorRepository(apiService).createCollaborator(context, this.projectId, newCollaboratorRequest) { result ->
+                CollaboratorRepository(apiService).createCollaborator(this.projectId, newCollaboratorRequest) { result ->
                     when(result) {
                         is BaseRepository.Result.Success -> {
                             Toast.makeText(context, context.getString(R.string.add_collaborator_toast), Toast.LENGTH_SHORT).show()
-                            users.add(newCollaborator)
+                            users.remove(newCollaborator)
                             notifyDataSetChanged()
+                            collaboratorsUpdateObserver.onCollaboratorsUpdated()
                             dialog.dismiss()
                         }
 

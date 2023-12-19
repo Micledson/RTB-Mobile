@@ -8,17 +8,21 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.Toast
 import com.rtb.rtb.R
+import com.rtb.rtb.database.preferences.SharedPrefs
 import com.rtb.rtb.databinding.ComponentCollaboratorCardBinding
 import com.rtb.rtb.model.Collaborator
 import com.rtb.rtb.networks.ApiService
 import com.rtb.rtb.networks.BaseRepository
 import com.rtb.rtb.networks.CollaboratorRepository
+import com.rtb.rtb.observer.CollaboratorsUpdateObserver
 import java.util.UUID
 
 class CollaboratorCardAdapter(
     val context: Context,
     val projectId: UUID,
-    val collaborators: MutableList<Collaborator>
+    val owner: String?,
+    val collaborators: MutableList<Collaborator>,
+    val collaboratorsUpdateObserver: CollaboratorsUpdateObserver
 ) : BaseAdapter() {
 
     override fun getCount(): Int {
@@ -41,8 +45,19 @@ class CollaboratorCardAdapter(
         collaboratorSetup(collaboratorCardBinding, i)
 
         val menuButton = collaboratorCardBinding.ccConstraintLayoutButton
-        menuButton.setOnClickListener {
-            deleteCollaborator(collaborators[i], i)
+        val sharedPrefs = SharedPrefs(context)
+        val loggedUser = sharedPrefs.getUserEmail()
+        if (owner.toString().equals(loggedUser, true)) {
+            if (collaborators[i].userEmail.equals(owner, true).not()) {
+                menuButton.setOnClickListener {
+                    deleteCollaborator(collaborators[i], i)
+                }
+            }
+            else {
+                menuButton.visibility = View.GONE
+            }
+        } else {
+            menuButton.visibility = View.GONE
         }
 
         return collaboratorCardBinding.root
@@ -56,17 +71,18 @@ class CollaboratorCardAdapter(
 
     fun deleteCollaborator(collaborator: Collaborator, i: Int) {
         val alertDialogBuilder = AlertDialog.Builder(context)
-        alertDialogBuilder.setTitle("Delete ${collaborator}?")
+        alertDialogBuilder.setTitle("Delete ${collaborator.userFirstName}?")
 
         alertDialogBuilder.setPositiveButton("Delete") { dialog, _ ->
             try {
                 val apiService = ApiService(context)
-                CollaboratorRepository(apiService).deleteCollaborator(context, this.projectId, collaborator.userId) { result ->
+                CollaboratorRepository(apiService).deleteCollaborator(this.projectId, collaborator.userId) { result ->
                     when(result) {
                         is BaseRepository.Result.Success -> {
                             Toast.makeText(context, context.getString(R.string.delete_collaborator_toast), Toast.LENGTH_SHORT).show()
                             collaborators.removeAt(i)
                             notifyDataSetChanged()
+                            collaboratorsUpdateObserver.onCollaboratorsUpdated()
                             dialog.dismiss()
                         }
 
