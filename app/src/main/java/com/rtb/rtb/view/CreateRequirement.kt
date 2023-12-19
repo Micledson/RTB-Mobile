@@ -109,7 +109,7 @@ class CreateRequirement : BaseActivity() {
                 try {
                     val apiService = ApiService(this)
                     val requirementRepository = RequirementRepository(apiService)
-                    requirementRepository.createRequirement(this, requirement.toRequest()) { result ->
+                    requirementRepository.createRequirement(requirement.toRequest()) { result ->
                         when(result) {
                             is BaseRepository.Result.Success -> {
                                 showMessage(getString(R.string.requirement_registered_successfully))
@@ -120,7 +120,6 @@ class CreateRequirement : BaseActivity() {
                                 showMessage(getString(R.string.requirement_not_registered))
                             }
                         }
-
                     }
                 } catch (e: Exception) {
                     showMessage(getString(R.string.requirement_not_registered))

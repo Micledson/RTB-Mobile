@@ -8,7 +8,6 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.rtb.rtb.R
 import com.rtb.rtb.database.DatabaseHelper
@@ -23,13 +22,10 @@ import com.rtb.rtb.networks.ApiService
 import com.rtb.rtb.networks.BaseRepository
 import com.rtb.rtb.networks.ProjectRepository
 import com.rtb.rtb.networks.RequirementRepository
-import com.rtb.rtb.networks.ResourceRepository
 import com.rtb.rtb.view.components.AppBarFragment
 import com.rtb.rtb.view.components.ButtonFragment
 import com.rtb.rtb.view.components.InputFragment
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.util.Calendar
@@ -266,7 +262,7 @@ class UpdateRequirement : BaseActivity() {
                 try {
                     val apiService = ApiService(this)
                     val requirementRepository = RequirementRepository(apiService)
-                    requirementRepository.updateRequirement(this, requirement.id, requirement.toRequest()) { result ->
+                    requirementRepository.updateRequirement(requirement.id, requirement.toRequest()) { result ->
                         when(result) {
                             is BaseRepository.Result.Success -> {
                                 showMessage(getString(R.string.requirement_updated_successfully))

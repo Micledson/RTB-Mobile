@@ -55,7 +55,7 @@ class RequirementRepository(apiService: ApiService) : BaseRepository() {
         })
     }
 
-    fun createRequirement(context: Context, body: RequirementRequest, callback: (Result<Unit>) -> Unit) {
+    fun createRequirement(body: RequirementRequest, callback: (Result<Unit>) -> Unit) {
         val request = service.createRequirement(body)
 
         request.enqueue(object : Callback<Void> {
@@ -73,11 +73,10 @@ class RequirementRepository(apiService: ApiService) : BaseRepository() {
             override fun onFailure(call: Call<Void>, t: Throwable) {
                 callback.invoke(Result.Error("Error: ${t.message}"))
             }
-
         })
     }
 
-    fun updateRequirement(context: Context, id: UUID, body: RequirementRequest, callback: (Result<Unit>) -> Unit) {
+    fun updateRequirement(id: UUID, body: RequirementRequest, callback: (Result<Unit>) -> Unit) {
         val request = service.updateRequirement(id, body)
 
         request.enqueue(object : Callback<Void> {
@@ -95,7 +94,6 @@ class RequirementRepository(apiService: ApiService) : BaseRepository() {
             override fun onFailure(call: Call<Void>, t: Throwable) {
                 callback.invoke(Result.Error("Error: ${t.message}"))
             }
-
         })
     }
 
