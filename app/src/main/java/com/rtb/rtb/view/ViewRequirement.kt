@@ -45,14 +45,14 @@ class ViewRequirement : AppCompatActivity() {
         val priorityName = binding.txtPriority.text
 
         val highColor = ContextCompat.getColorStateList(this, R.color.orange)
-        val lowColor = ContextCompat.getColorStateList(this, R.color.yellow)
-        val minimumColor = ContextCompat.getColorStateList(this, R.color.blue)
+        val mediumColor = ContextCompat.getColorStateList(this, R.color.yellow)
+        val lowColor = ContextCompat.getColorStateList(this, R.color.blue)
 
-        if (priorityName.equals("high")) {
+        if (priorityName.toString().equals("high", ignoreCase = true)) {
             priorityComponent.compoundDrawableTintList = highColor
-        } else if (priorityName.equals("minimum")) {
-            priorityComponent.compoundDrawableTintList = minimumColor
-        } else if (priorityName.equals("low")) {
+        } else if (priorityName.toString().equals("medium", ignoreCase = true)) {
+            priorityComponent.compoundDrawableTintList = mediumColor
+        } else if (priorityName.toString().equals("low", ignoreCase = true)) {
             priorityComponent.compoundDrawableTintList = lowColor
         }
 
